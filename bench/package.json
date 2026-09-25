@@ -1,0 +1,17 @@
+{
+  "name": "ngx-json-render-bench",
+  "private": true,
+  "description": "Benchmark harness: ngx-json-render vs @json-render/react on identical specs, plus hand-written framework baselines.",
+  "type": "module",
+  "scripts": {
+    "install:react": "npm --prefix react-bench install --no-audit --no-fund",
+    "build:react": "npm --prefix react-bench run build",
+    "build:angular": "cd angular-bench && ../../node_modules/.bin/ng build --configuration production",
+    "build": "npm run build:react && npm run build:angular",
+    "bench": "node driver/run.mjs",
+    "bench:boot": "node driver/boot.mjs"
+  },
+  "devDependencies": {
+    "playwright-core": "1.56.1"
+  }
+}

@@ -1,0 +1,7 @@
+node_modules/
+react-bench/dist/
+angular-bench/dist/
+angular-bench/out-tsc/
+angular-bench/.angular/
+# fresh runs land here; the runs behind the article live in results/<date>/
+results/*.json

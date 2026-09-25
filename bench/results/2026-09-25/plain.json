@@ -1,0 +1,803 @@
+{
+  "meta": {
+    "date": "2026-09-25T17:48:59.509Z",
+    "sizes": [100, 1000, 4000],
+    "rounds": 2,
+    "chromium": "141.0.7390.37",
+    "ua": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/141.0.7390.37 Safari/537.36",
+    "isolated": true
+  },
+  "runs": [
+    {
+      "round": 0,
+      "app": "react",
+      "scenario": "plainMount",
+      "size": 100,
+      "value": 0.6899999999441206,
+      "unit": "ms",
+      "first": 9.09499999973923,
+      "n": 101
+    },
+    {
+      "round": 0,
+      "app": "react",
+      "scenario": "plainMount",
+      "size": 1000,
+      "value": 1.9050000002607703,
+      "unit": "ms",
+      "first": 3.140000000130385,
+      "n": 1001
+    },
+    {
+      "round": 0,
+      "app": "react",
+      "scenario": "plainMount",
+      "size": 4000,
+      "value": 6.774999999906868,
+      "unit": "ms",
+      "first": 7.519999999552965,
+      "n": 4001
+    },
+    {
+      "round": 0,
+      "app": "react",
+      "scenario": "plainMountDeep",
+      "size": 100,
+      "value": 0.18499999959021807,
+      "unit": "ms",
+      "first": 0.5,
+      "n": 121,
+      "depth": 5
+    },
+    {
+      "round": 0,
+      "app": "react",
+      "scenario": "plainMountDeep",
+      "size": 1000,
+      "value": 1.6149999997578561,
+      "unit": "ms",
+      "first": 5.154999999795109,
+      "n": 1093,
+      "depth": 7
+    },
+    {
+      "round": 0,
+      "app": "react",
+      "scenario": "plainMountDeep",
+      "size": 4000,
+      "value": 5.274999999906868,
+      "unit": "ms",
+      "first": 4.7299999999813735,
+      "n": 3280,
+      "depth": 8
+    },
+    {
+      "round": 0,
+      "app": "react",
+      "scenario": "plainPatchLeaf",
+      "size": 100,
+      "value": 0.25,
+      "unit": "ms",
+      "n": 101
+    },
+    {
+      "round": 0,
+      "app": "react",
+      "scenario": "plainPatchLeaf",
+      "size": 1000,
+      "value": 0.6499999999068677,
+      "unit": "ms",
+      "n": 1001
+    },
+    {
+      "round": 0,
+      "app": "react",
+      "scenario": "plainPatchLeaf",
+      "size": 4000,
+      "value": 1.9250000002793968,
+      "unit": "ms",
+      "n": 4001
+    },
+    {
+      "round": 0,
+      "app": "react",
+      "scenario": "plainSameTree",
+      "size": 100,
+      "value": 0.06499999994412065,
+      "unit": "ms",
+      "n": 101
+    },
+    {
+      "round": 0,
+      "app": "react",
+      "scenario": "plainSameTree",
+      "size": 1000,
+      "value": 0.5200000000186265,
+      "unit": "ms",
+      "n": 1001
+    },
+    {
+      "round": 0,
+      "app": "react",
+      "scenario": "plainSameTree",
+      "size": 4000,
+      "value": 1.5200000000186265,
+      "unit": "ms",
+      "n": 4001
+    },
+    {
+      "round": 0,
+      "app": "react",
+      "scenario": "plainUnmount",
+      "size": 100,
+      "value": 0.0400000000372529,
+      "unit": "ms",
+      "n": 101
+    },
+    {
+      "round": 0,
+      "app": "react",
+      "scenario": "plainUnmount",
+      "size": 1000,
+      "value": 0.39500000001862645,
+      "unit": "ms",
+      "n": 1001
+    },
+    {
+      "round": 0,
+      "app": "react",
+      "scenario": "plainUnmount",
+      "size": 4000,
+      "value": 1.1749999998137355,
+      "unit": "ms",
+      "n": 4001
+    },
+    {
+      "round": 0,
+      "app": "angular",
+      "scenario": "plainMount",
+      "size": 100,
+      "value": 3.239999999757856,
+      "unit": "ms",
+      "first": 7.709999999962747,
+      "n": 101
+    },
+    {
+      "round": 0,
+      "app": "angular",
+      "scenario": "plainMount",
+      "size": 1000,
+      "value": 17.37999999988824,
+      "unit": "ms",
+      "first": 27.915000000037253,
+      "n": 1001
+    },
+    {
+      "round": 0,
+      "app": "angular",
+      "scenario": "plainMount",
+      "size": 4000,
+      "value": 32.25,
+      "unit": "ms",
+      "first": 46.424999999813735,
+      "n": 4001
+    },
+    {
+      "round": 0,
+      "app": "angular",
+      "scenario": "plainMountDeep",
+      "size": 100,
+      "value": 0.7850000001490116,
+      "unit": "ms",
+      "first": 1.0349999996833503,
+      "n": 121,
+      "depth": 5
+    },
+    {
+      "round": 0,
+      "app": "angular",
+      "scenario": "plainMountDeep",
+      "size": 1000,
+      "value": 8.5,
+      "unit": "ms",
+      "first": 7.224999999627471,
+      "n": 1093,
+      "depth": 7
+    },
+    {
+      "round": 0,
+      "app": "angular",
+      "scenario": "plainMountDeep",
+      "size": 4000,
+      "value": 24.614999999757856,
+      "unit": "ms",
+      "first": 29.41000000014901,
+      "n": 3280,
+      "depth": 8
+    },
+    {
+      "round": 0,
+      "app": "angular",
+      "scenario": "plainPatchLeaf",
+      "size": 100,
+      "value": 0.029999999795109034,
+      "unit": "ms",
+      "n": 101
+    },
+    {
+      "round": 0,
+      "app": "angular",
+      "scenario": "plainPatchLeaf",
+      "size": 1000,
+      "value": 0.03500000014901161,
+      "unit": "ms",
+      "n": 1001
+    },
+    {
+      "round": 0,
+      "app": "angular",
+      "scenario": "plainPatchLeaf",
+      "size": 4000,
+      "value": 0.07499999972060323,
+      "unit": "ms",
+      "n": 4001
+    },
+    {
+      "round": 0,
+      "app": "angular",
+      "scenario": "plainSameTree",
+      "size": 100,
+      "value": 0.009999999776482582,
+      "unit": "ms",
+      "n": 101
+    },
+    {
+      "round": 0,
+      "app": "angular",
+      "scenario": "plainSameTree",
+      "size": 1000,
+      "value": 0.01500000013038516,
+      "unit": "ms",
+      "n": 1001
+    },
+    {
+      "round": 0,
+      "app": "angular",
+      "scenario": "plainSameTree",
+      "size": 4000,
+      "value": 0.0400000000372529,
+      "unit": "ms",
+      "n": 4001
+    },
+    {
+      "round": 0,
+      "app": "angular",
+      "scenario": "plainUnmount",
+      "size": 100,
+      "value": 0.049999999813735485,
+      "unit": "ms",
+      "n": 101
+    },
+    {
+      "round": 0,
+      "app": "angular",
+      "scenario": "plainUnmount",
+      "size": 1000,
+      "value": 0.6200000001117587,
+      "unit": "ms",
+      "n": 1001
+    },
+    {
+      "round": 0,
+      "app": "angular",
+      "scenario": "plainUnmount",
+      "size": 4000,
+      "value": 2.390000000130385,
+      "unit": "ms",
+      "n": 4001
+    },
+    {
+      "round": 1,
+      "app": "angular",
+      "scenario": "plainMount",
+      "size": 100,
+      "value": 4.550000000279397,
+      "unit": "ms",
+      "first": 8,
+      "n": 101
+    },
+    {
+      "round": 1,
+      "app": "angular",
+      "scenario": "plainMount",
+      "size": 1000,
+      "value": 12.31499999994412,
+      "unit": "ms",
+      "first": 13.880000000353903,
+      "n": 1001
+    },
+    {
+      "round": 1,
+      "app": "angular",
+      "scenario": "plainMount",
+      "size": 4000,
+      "value": 32.02999999979511,
+      "unit": "ms",
+      "first": 45.21500000031665,
+      "n": 4001
+    },
+    {
+      "round": 1,
+      "app": "angular",
+      "scenario": "plainMountDeep",
+      "size": 100,
+      "value": 0.9199999999254942,
+      "unit": "ms",
+      "first": 0.9750000000931323,
+      "n": 121,
+      "depth": 5
+    },
+    {
+      "round": 1,
+      "app": "angular",
+      "scenario": "plainMountDeep",
+      "size": 1000,
+      "value": 9.359999999869615,
+      "unit": "ms",
+      "first": 9.544999999925494,
+      "n": 1093,
+      "depth": 7
+    },
+    {
+      "round": 1,
+      "app": "angular",
+      "scenario": "plainMountDeep",
+      "size": 4000,
+      "value": 27.399999999906868,
+      "unit": "ms",
+      "first": 27.399999999906868,
+      "n": 3280,
+      "depth": 8
+    },
+    {
+      "round": 1,
+      "app": "angular",
+      "scenario": "plainPatchLeaf",
+      "size": 100,
+      "value": 0.034999999683350325,
+      "unit": "ms",
+      "n": 101
+    },
+    {
+      "round": 1,
+      "app": "angular",
+      "scenario": "plainPatchLeaf",
+      "size": 1000,
+      "value": 0.05999999959021807,
+      "unit": "ms",
+      "n": 1001
+    },
+    {
+      "round": 1,
+      "app": "angular",
+      "scenario": "plainPatchLeaf",
+      "size": 4000,
+      "value": 0.09499999973922968,
+      "unit": "ms",
+      "n": 4001
+    },
+    {
+      "round": 1,
+      "app": "angular",
+      "scenario": "plainSameTree",
+      "size": 100,
+      "value": 0.01000000024214387,
+      "unit": "ms",
+      "n": 101
+    },
+    {
+      "round": 1,
+      "app": "angular",
+      "scenario": "plainSameTree",
+      "size": 1000,
+      "value": 0.014999999664723873,
+      "unit": "ms",
+      "n": 1001
+    },
+    {
+      "round": 1,
+      "app": "angular",
+      "scenario": "plainSameTree",
+      "size": 4000,
+      "value": 0.03500000014901161,
+      "unit": "ms",
+      "n": 4001
+    },
+    {
+      "round": 1,
+      "app": "angular",
+      "scenario": "plainUnmount",
+      "size": 100,
+      "value": 0.05999999959021807,
+      "unit": "ms",
+      "n": 101
+    },
+    {
+      "round": 1,
+      "app": "angular",
+      "scenario": "plainUnmount",
+      "size": 1000,
+      "value": 0.529999999795109,
+      "unit": "ms",
+      "n": 1001
+    },
+    {
+      "round": 1,
+      "app": "angular",
+      "scenario": "plainUnmount",
+      "size": 4000,
+      "value": 2.3250000001862645,
+      "unit": "ms",
+      "n": 4001
+    },
+    {
+      "round": 1,
+      "app": "react",
+      "scenario": "plainMount",
+      "size": 100,
+      "value": 0.9900000002235174,
+      "unit": "ms",
+      "first": 6.509999999776483,
+      "n": 101
+    },
+    {
+      "round": 1,
+      "app": "react",
+      "scenario": "plainMount",
+      "size": 1000,
+      "value": 3.0099999997764826,
+      "unit": "ms",
+      "first": 4.714999999850988,
+      "n": 1001
+    },
+    {
+      "round": 1,
+      "app": "react",
+      "scenario": "plainMount",
+      "size": 4000,
+      "value": 6.985000000335276,
+      "unit": "ms",
+      "first": 11.419999999925494,
+      "n": 4001
+    },
+    {
+      "round": 1,
+      "app": "react",
+      "scenario": "plainMountDeep",
+      "size": 100,
+      "value": 0.19999999972060323,
+      "unit": "ms",
+      "first": 0.48499999986961484,
+      "n": 121,
+      "depth": 5
+    },
+    {
+      "round": 1,
+      "app": "react",
+      "scenario": "plainMountDeep",
+      "size": 1000,
+      "value": 1.375,
+      "unit": "ms",
+      "first": 1.4799999999813735,
+      "n": 1093,
+      "depth": 7
+    },
+    {
+      "round": 1,
+      "app": "react",
+      "scenario": "plainMountDeep",
+      "size": 4000,
+      "value": 4.774999999906868,
+      "unit": "ms",
+      "first": 4.669999999925494,
+      "n": 3280,
+      "depth": 8
+    },
+    {
+      "round": 1,
+      "app": "react",
+      "scenario": "plainPatchLeaf",
+      "size": 100,
+      "value": 0.2800000002607703,
+      "unit": "ms",
+      "n": 101
+    },
+    {
+      "round": 1,
+      "app": "react",
+      "scenario": "plainPatchLeaf",
+      "size": 1000,
+      "value": 0.6000000000931323,
+      "unit": "ms",
+      "n": 1001
+    },
+    {
+      "round": 1,
+      "app": "react",
+      "scenario": "plainPatchLeaf",
+      "size": 4000,
+      "value": 1.8149999999441206,
+      "unit": "ms",
+      "n": 4001
+    },
+    {
+      "round": 1,
+      "app": "react",
+      "scenario": "plainSameTree",
+      "size": 100,
+      "value": 0.054999999701976776,
+      "unit": "ms",
+      "n": 101
+    },
+    {
+      "round": 1,
+      "app": "react",
+      "scenario": "plainSameTree",
+      "size": 1000,
+      "value": 0.375,
+      "unit": "ms",
+      "n": 1001
+    },
+    {
+      "round": 1,
+      "app": "react",
+      "scenario": "plainSameTree",
+      "size": 4000,
+      "value": 1.4100000001490116,
+      "unit": "ms",
+      "n": 4001
+    },
+    {
+      "round": 1,
+      "app": "react",
+      "scenario": "plainUnmount",
+      "size": 100,
+      "value": 0.03500000014901161,
+      "unit": "ms",
+      "n": 101
+    },
+    {
+      "round": 1,
+      "app": "react",
+      "scenario": "plainUnmount",
+      "size": 1000,
+      "value": 0.3899999996647239,
+      "unit": "ms",
+      "n": 1001
+    },
+    {
+      "round": 1,
+      "app": "react",
+      "scenario": "plainUnmount",
+      "size": 4000,
+      "value": 1.2749999999068677,
+      "unit": "ms",
+      "n": 4001
+    }
+  ],
+  "memory": {
+    "react": {
+      "100": {
+        "before": 2524384,
+        "mounted": 2901468,
+        "after": 2629052,
+        "treeBytes": 377084,
+        "retainedBytes": 104668
+      },
+      "1000": {
+        "before": 2629052,
+        "mounted": 5237264,
+        "after": 2831152,
+        "treeBytes": 2608212,
+        "retainedBytes": 202100
+      },
+      "4000": {
+        "before": 2686704,
+        "mounted": 12574528,
+        "after": 2692780,
+        "treeBytes": 9887824,
+        "retainedBytes": 6076
+      }
+    },
+    "angular": {
+      "100": {
+        "before": 3616776,
+        "mounted": 4966700,
+        "after": 3845588,
+        "treeBytes": 1349924,
+        "retainedBytes": 228812
+      },
+      "1000": {
+        "before": 3845588,
+        "mounted": 14879652,
+        "after": 4171840,
+        "treeBytes": 11034064,
+        "retainedBytes": 326252
+      },
+      "4000": {
+        "before": 4171840,
+        "mounted": 46135868,
+        "after": 4239892,
+        "treeBytes": 41964028,
+        "retainedBytes": 68052
+      }
+    }
+  },
+  "memoryPlain": {
+    "react": {
+      "100": {
+        "before": 2692780,
+        "mounted": 2741028,
+        "after": 2707768,
+        "treeBytes": 48248,
+        "retainedBytes": 14988
+      },
+      "1000": {
+        "before": 2692920,
+        "mounted": 3130644,
+        "after": 2693016,
+        "treeBytes": 437724,
+        "retainedBytes": 96
+      },
+      "4000": {
+        "before": 2693016,
+        "mounted": 4421480,
+        "after": 2699508,
+        "treeBytes": 1728464,
+        "retainedBytes": 6492
+      }
+    },
+    "angular": {
+      "100": {
+        "before": 4239892,
+        "mounted": 4367772,
+        "after": 4223856,
+        "treeBytes": 127880,
+        "retainedBytes": -16036
+      },
+      "1000": {
+        "before": 4223856,
+        "mounted": 5615304,
+        "after": 4254660,
+        "treeBytes": 1391448,
+        "retainedBytes": 30804
+      },
+      "4000": {
+        "before": 4254660,
+        "mounted": 9806328,
+        "after": 4272752,
+        "treeBytes": 5551668,
+        "retainedBytes": 18092
+      }
+    }
+  },
+  "summary": [
+    {
+      "scenario": "plainMount",
+      "size": 100,
+      "n": 101,
+      "react": 0.840000000083819,
+      "reactFirst": 7.802499999757856,
+      "angular": 3.8950000000186265,
+      "angularFirst": 7.8549999999813735
+    },
+    {
+      "scenario": "plainMount",
+      "size": 1000,
+      "n": 1001,
+      "react": 2.4575000000186265,
+      "reactFirst": 3.9274999999906868,
+      "angular": 14.847499999916181,
+      "angularFirst": 20.897500000195578
+    },
+    {
+      "scenario": "plainMount",
+      "size": 4000,
+      "n": 4001,
+      "react": 6.880000000121072,
+      "reactFirst": 9.46999999973923,
+      "angular": 32.139999999897555,
+      "angularFirst": 45.82000000006519
+    },
+    {
+      "scenario": "plainMountDeep",
+      "size": 100,
+      "n": 121,
+      "react": 0.19249999965541065,
+      "reactFirst": 0.4924999999348074,
+      "angular": 0.8525000000372529,
+      "angularFirst": 1.0049999998882413
+    },
+    {
+      "scenario": "plainMountDeep",
+      "size": 1000,
+      "n": 1093,
+      "react": 1.494999999878928,
+      "reactFirst": 3.3174999998882413,
+      "angular": 8.929999999934807,
+      "angularFirst": 8.384999999776483
+    },
+    {
+      "scenario": "plainMountDeep",
+      "size": 4000,
+      "n": 3280,
+      "react": 5.024999999906868,
+      "reactFirst": 4.699999999953434,
+      "angular": 26.007499999832362,
+      "angularFirst": 28.40500000002794
+    },
+    {
+      "scenario": "plainPatchLeaf",
+      "size": 100,
+      "n": 101,
+      "react": 0.26500000013038516,
+      "angular": 0.03249999973922968
+    },
+    {
+      "scenario": "plainPatchLeaf",
+      "size": 1000,
+      "n": 1001,
+      "react": 0.625,
+      "angular": 0.04749999986961484
+    },
+    {
+      "scenario": "plainPatchLeaf",
+      "size": 4000,
+      "n": 4001,
+      "react": 1.8700000001117587,
+      "angular": 0.08499999972991645
+    },
+    {
+      "scenario": "plainSameTree",
+      "size": 100,
+      "n": 101,
+      "react": 0.05999999982304871,
+      "angular": 0.010000000009313226
+    },
+    {
+      "scenario": "plainSameTree",
+      "size": 1000,
+      "n": 1001,
+      "react": 0.4475000000093132,
+      "angular": 0.014999999897554517
+    },
+    {
+      "scenario": "plainSameTree",
+      "size": 4000,
+      "n": 4001,
+      "react": 1.465000000083819,
+      "angular": 0.03750000009313226
+    },
+    {
+      "scenario": "plainUnmount",
+      "size": 100,
+      "n": 101,
+      "react": 0.03750000009313226,
+      "angular": 0.054999999701976776
+    },
+    {
+      "scenario": "plainUnmount",
+      "size": 1000,
+      "n": 1001,
+      "react": 0.39249999984167516,
+      "angular": 0.5749999999534339
+    },
+    {
+      "scenario": "plainUnmount",
+      "size": 4000,
+      "n": 4001,
+      "react": 1.2249999998603016,
+      "angular": 2.357500000158325
+    }
+  ]
+}

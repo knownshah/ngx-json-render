@@ -1,0 +1,1430 @@
+{
+  "meta": {
+    "date": "2026-09-25T17:21:13.120Z",
+    "sizes": [100, 1000, 4000],
+    "rounds": 2,
+    "chromium": "141.0.7390.37",
+    "ua": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/141.0.7390.37 Safari/537.36",
+    "isolated": true
+  },
+  "runs": [
+    {
+      "round": 0,
+      "app": "react",
+      "scenario": "mount",
+      "size": 100,
+      "value": 2.5300000000279397,
+      "unit": "ms",
+      "first": 12.880000000004657,
+      "n": 101
+    },
+    {
+      "round": 0,
+      "app": "react",
+      "scenario": "mount",
+      "size": 1000,
+      "value": 9.07999999995809,
+      "unit": "ms",
+      "first": 11.67499999993015,
+      "n": 1001
+    },
+    {
+      "round": 0,
+      "app": "react",
+      "scenario": "mount",
+      "size": 4000,
+      "value": 29.085000000079162,
+      "unit": "ms",
+      "first": 55.43999999994412,
+      "n": 4001
+    },
+    {
+      "round": 0,
+      "app": "react",
+      "scenario": "mountDeep",
+      "size": 100,
+      "value": 0.6999999999534339,
+      "unit": "ms",
+      "first": 0.7750000000232831,
+      "n": 121,
+      "depth": 5
+    },
+    {
+      "round": 0,
+      "app": "react",
+      "scenario": "mountDeep",
+      "size": 1000,
+      "value": 6.875,
+      "unit": "ms",
+      "first": 6.445000000065193,
+      "n": 1093,
+      "depth": 7
+    },
+    {
+      "round": 0,
+      "app": "react",
+      "scenario": "mountDeep",
+      "size": 4000,
+      "value": 17.710000000079162,
+      "unit": "ms",
+      "first": 16.78000000002794,
+      "n": 3280,
+      "depth": 8
+    },
+    {
+      "round": 0,
+      "app": "react",
+      "scenario": "patchLeaf",
+      "size": 100,
+      "value": 1.2000000000698492,
+      "unit": "ms",
+      "n": 101
+    },
+    {
+      "round": 0,
+      "app": "react",
+      "scenario": "patchLeaf",
+      "size": 1000,
+      "value": 5.444999999948777,
+      "unit": "ms",
+      "n": 1001
+    },
+    {
+      "round": 0,
+      "app": "react",
+      "scenario": "patchLeaf",
+      "size": 4000,
+      "value": 23.604999999981374,
+      "unit": "ms",
+      "n": 4001
+    },
+    {
+      "round": 0,
+      "app": "react",
+      "scenario": "patchLeafDeep",
+      "size": 100,
+      "value": 0.5150000000139698,
+      "unit": "ms",
+      "n": 121,
+      "depth": 5
+    },
+    {
+      "round": 0,
+      "app": "react",
+      "scenario": "patchLeafDeep",
+      "size": 1000,
+      "value": 4.994999999995343,
+      "unit": "ms",
+      "n": 1093,
+      "depth": 7
+    },
+    {
+      "round": 0,
+      "app": "react",
+      "scenario": "patchLeafDeep",
+      "size": 4000,
+      "value": 15.510000000009313,
+      "unit": "ms",
+      "n": 3280,
+      "depth": 8
+    },
+    {
+      "round": 0,
+      "app": "react",
+      "scenario": "sameSpec",
+      "size": 100,
+      "value": 0.5999999999767169,
+      "unit": "ms",
+      "n": 101
+    },
+    {
+      "round": 0,
+      "app": "react",
+      "scenario": "sameSpec",
+      "size": 1000,
+      "value": 5.0450000000419095,
+      "unit": "ms",
+      "n": 1001
+    },
+    {
+      "round": 0,
+      "app": "react",
+      "scenario": "sameSpec",
+      "size": 4000,
+      "value": 20.59499999997206,
+      "unit": "ms",
+      "n": 4001
+    },
+    {
+      "round": 0,
+      "app": "react",
+      "scenario": "stateOne",
+      "size": 100,
+      "value": 0.5749999999534339,
+      "unit": "ms",
+      "n": 101
+    },
+    {
+      "round": 0,
+      "app": "react",
+      "scenario": "stateOne",
+      "size": 1000,
+      "value": 5.239999999990687,
+      "unit": "ms",
+      "n": 1001
+    },
+    {
+      "round": 0,
+      "app": "react",
+      "scenario": "stateOne",
+      "size": 4000,
+      "value": 22.92000000004191,
+      "unit": "ms",
+      "n": 4001
+    },
+    {
+      "round": 0,
+      "app": "react",
+      "scenario": "stateAll",
+      "size": 100,
+      "value": 0.5150000000139698,
+      "unit": "ms",
+      "n": 101
+    },
+    {
+      "round": 0,
+      "app": "react",
+      "scenario": "stateAll",
+      "size": 1000,
+      "value": 4.7049999999580905,
+      "unit": "ms",
+      "n": 1001
+    },
+    {
+      "round": 0,
+      "app": "react",
+      "scenario": "stateAll",
+      "size": 4000,
+      "value": 22.875,
+      "unit": "ms",
+      "n": 4001
+    },
+    {
+      "round": 0,
+      "app": "react",
+      "scenario": "repeatAppend",
+      "size": 100,
+      "value": 1.1049999999813735,
+      "unit": "ms",
+      "n": 100
+    },
+    {
+      "round": 0,
+      "app": "react",
+      "scenario": "repeatAppend",
+      "size": 1000,
+      "value": 5.575000000069849,
+      "unit": "ms",
+      "n": 1000
+    },
+    {
+      "round": 0,
+      "app": "react",
+      "scenario": "repeatAppend",
+      "size": 4000,
+      "value": 26.380000000004657,
+      "unit": "ms",
+      "n": 4000
+    },
+    {
+      "round": 0,
+      "app": "react",
+      "scenario": "unmount",
+      "size": 100,
+      "value": 0.05500000005122274,
+      "unit": "ms",
+      "n": 101
+    },
+    {
+      "round": 0,
+      "app": "react",
+      "scenario": "unmount",
+      "size": 1000,
+      "value": 0.5849999999627471,
+      "unit": "ms",
+      "n": 1001
+    },
+    {
+      "round": 0,
+      "app": "react",
+      "scenario": "unmount",
+      "size": 4000,
+      "value": 2.89000000001397,
+      "unit": "ms",
+      "n": 4001
+    },
+    {
+      "round": 0,
+      "app": "react",
+      "scenario": "stream",
+      "size": 100,
+      "value": 66.57999999995809,
+      "unit": "ms total",
+      "tailPerPatch": 0.4563500000012573,
+      "n": 101
+    },
+    {
+      "round": 0,
+      "app": "react",
+      "scenario": "stream",
+      "size": 1000,
+      "value": 4703.419999998761,
+      "unit": "ms total",
+      "tailPerPatch": 4.916400000001304,
+      "n": 1001
+    },
+    {
+      "round": 0,
+      "app": "react",
+      "scenario": "stream",
+      "size": 4000,
+      "value": 80807.17000000167,
+      "unit": "ms total",
+      "tailPerPatch": 22.749299999999348,
+      "n": 4001
+    },
+    {
+      "round": 0,
+      "app": "angular",
+      "scenario": "mount",
+      "size": 100,
+      "value": 15,
+      "unit": "ms",
+      "first": 33.48499999998603,
+      "n": 101
+    },
+    {
+      "round": 0,
+      "app": "angular",
+      "scenario": "mount",
+      "size": 1000,
+      "value": 76.9649999999674,
+      "unit": "ms",
+      "first": 79.33499999996275,
+      "n": 1001
+    },
+    {
+      "round": 0,
+      "app": "angular",
+      "scenario": "mount",
+      "size": 4000,
+      "value": 260.1049999999814,
+      "unit": "ms",
+      "first": 259.95000000006985,
+      "n": 4001
+    },
+    {
+      "round": 0,
+      "app": "angular",
+      "scenario": "mountDeep",
+      "size": 100,
+      "value": 9.429999999934807,
+      "unit": "ms",
+      "first": 9.73499999998603,
+      "n": 121,
+      "depth": 5
+    },
+    {
+      "round": 0,
+      "app": "angular",
+      "scenario": "mountDeep",
+      "size": 1000,
+      "value": 74.93499999993946,
+      "unit": "ms",
+      "first": 57.69500000006519,
+      "n": 1093,
+      "depth": 7
+    },
+    {
+      "round": 0,
+      "app": "angular",
+      "scenario": "mountDeep",
+      "size": 4000,
+      "value": 254.97999999998137,
+      "unit": "ms",
+      "first": 292.2950000000419,
+      "n": 3280,
+      "depth": 8
+    },
+    {
+      "round": 0,
+      "app": "angular",
+      "scenario": "patchLeaf",
+      "size": 100,
+      "value": 0.8049999999348074,
+      "unit": "ms",
+      "n": 101
+    },
+    {
+      "round": 0,
+      "app": "angular",
+      "scenario": "patchLeaf",
+      "size": 1000,
+      "value": 4.730000000097789,
+      "unit": "ms",
+      "n": 1001
+    },
+    {
+      "round": 0,
+      "app": "angular",
+      "scenario": "patchLeaf",
+      "size": 4000,
+      "value": 17.179999999934807,
+      "unit": "ms",
+      "n": 4001
+    },
+    {
+      "round": 0,
+      "app": "angular",
+      "scenario": "patchLeafDeep",
+      "size": 100,
+      "value": 0.5150000000139698,
+      "unit": "ms",
+      "n": 121,
+      "depth": 5
+    },
+    {
+      "round": 0,
+      "app": "angular",
+      "scenario": "patchLeafDeep",
+      "size": 1000,
+      "value": 4.900000000023283,
+      "unit": "ms",
+      "n": 1093,
+      "depth": 7
+    },
+    {
+      "round": 0,
+      "app": "angular",
+      "scenario": "patchLeafDeep",
+      "size": 4000,
+      "value": 14.729999999981374,
+      "unit": "ms",
+      "n": 3280,
+      "depth": 8
+    },
+    {
+      "round": 0,
+      "app": "angular",
+      "scenario": "sameSpec",
+      "size": 100,
+      "value": 0.2950000000419095,
+      "unit": "ms",
+      "n": 101
+    },
+    {
+      "round": 0,
+      "app": "angular",
+      "scenario": "sameSpec",
+      "size": 1000,
+      "value": 3.790000000037253,
+      "unit": "ms",
+      "n": 1001
+    },
+    {
+      "round": 0,
+      "app": "angular",
+      "scenario": "sameSpec",
+      "size": 4000,
+      "value": 19.739999999990687,
+      "unit": "ms",
+      "n": 4001
+    },
+    {
+      "round": 0,
+      "app": "angular",
+      "scenario": "stateOne",
+      "size": 100,
+      "value": 0.34999999997671694,
+      "unit": "ms",
+      "n": 101
+    },
+    {
+      "round": 0,
+      "app": "angular",
+      "scenario": "stateOne",
+      "size": 1000,
+      "value": 3.7550000000046566,
+      "unit": "ms",
+      "n": 1001
+    },
+    {
+      "round": 0,
+      "app": "angular",
+      "scenario": "stateOne",
+      "size": 4000,
+      "value": 11.92499999993015,
+      "unit": "ms",
+      "n": 4001
+    },
+    {
+      "round": 0,
+      "app": "angular",
+      "scenario": "stateAll",
+      "size": 100,
+      "value": 1.1199999999953434,
+      "unit": "ms",
+      "n": 101
+    },
+    {
+      "round": 0,
+      "app": "angular",
+      "scenario": "stateAll",
+      "size": 1000,
+      "value": 10.349999999976717,
+      "unit": "ms",
+      "n": 1001
+    },
+    {
+      "round": 0,
+      "app": "angular",
+      "scenario": "stateAll",
+      "size": 4000,
+      "value": 59.19499999994878,
+      "unit": "ms",
+      "n": 4001
+    },
+    {
+      "round": 0,
+      "app": "angular",
+      "scenario": "repeatAppend",
+      "size": 100,
+      "value": 0.715000000083819,
+      "unit": "ms",
+      "n": 100
+    },
+    {
+      "round": 0,
+      "app": "angular",
+      "scenario": "repeatAppend",
+      "size": 1000,
+      "value": 4.470000000088476,
+      "unit": "ms",
+      "n": 1000
+    },
+    {
+      "round": 0,
+      "app": "angular",
+      "scenario": "repeatAppend",
+      "size": 4000,
+      "value": 17.92000000004191,
+      "unit": "ms",
+      "n": 4000
+    },
+    {
+      "round": 0,
+      "app": "angular",
+      "scenario": "unmount",
+      "size": 100,
+      "value": 0.43000000005122274,
+      "unit": "ms",
+      "n": 101
+    },
+    {
+      "round": 0,
+      "app": "angular",
+      "scenario": "unmount",
+      "size": 1000,
+      "value": 5.755000000004657,
+      "unit": "ms",
+      "n": 1001
+    },
+    {
+      "round": 0,
+      "app": "angular",
+      "scenario": "unmount",
+      "size": 4000,
+      "value": 25.114999999990687,
+      "unit": "ms",
+      "n": 4001
+    },
+    {
+      "round": 0,
+      "app": "angular",
+      "scenario": "stream",
+      "size": 100,
+      "value": 48.56999999959953,
+      "unit": "ms total",
+      "tailPerPatch": 0.3315499999932945,
+      "n": 101
+    },
+    {
+      "round": 0,
+      "app": "angular",
+      "scenario": "stream",
+      "size": 1000,
+      "value": 4522.424999998533,
+      "unit": "ms total",
+      "tailPerPatch": 4.789150000001537,
+      "n": 1001
+    },
+    {
+      "round": 0,
+      "app": "angular",
+      "scenario": "stream",
+      "size": 4000,
+      "value": 66864.24499999708,
+      "unit": "ms total",
+      "tailPerPatch": 16.08620000000461,
+      "n": 4001
+    },
+    {
+      "round": 1,
+      "app": "angular",
+      "scenario": "mount",
+      "size": 100,
+      "value": 14.479999999981374,
+      "unit": "ms",
+      "first": 31.800000000046566,
+      "n": 101
+    },
+    {
+      "round": 1,
+      "app": "angular",
+      "scenario": "mount",
+      "size": 1000,
+      "value": 74.94499999994878,
+      "unit": "ms",
+      "first": 79.55500000005122,
+      "n": 1001
+    },
+    {
+      "round": 1,
+      "app": "angular",
+      "scenario": "mount",
+      "size": 4000,
+      "value": 237.95999999996275,
+      "unit": "ms",
+      "first": 244.6050000000978,
+      "n": 4001
+    },
+    {
+      "round": 1,
+      "app": "angular",
+      "scenario": "mountDeep",
+      "size": 100,
+      "value": 5.875,
+      "unit": "ms",
+      "first": 6.304999999934807,
+      "n": 121,
+      "depth": 5
+    },
+    {
+      "round": 1,
+      "app": "angular",
+      "scenario": "mountDeep",
+      "size": 1000,
+      "value": 64.6600000000326,
+      "unit": "ms",
+      "first": 60.16499999992084,
+      "n": 1093,
+      "depth": 7
+    },
+    {
+      "round": 1,
+      "app": "angular",
+      "scenario": "mountDeep",
+      "size": 4000,
+      "value": 212.33499999996275,
+      "unit": "ms",
+      "first": 191.63999999989755,
+      "n": 3280,
+      "depth": 8
+    },
+    {
+      "round": 1,
+      "app": "angular",
+      "scenario": "patchLeaf",
+      "size": 100,
+      "value": 0.5949999999720603,
+      "unit": "ms",
+      "n": 101
+    },
+    {
+      "round": 1,
+      "app": "angular",
+      "scenario": "patchLeaf",
+      "size": 1000,
+      "value": 4.299999999930151,
+      "unit": "ms",
+      "n": 1001
+    },
+    {
+      "round": 1,
+      "app": "angular",
+      "scenario": "patchLeaf",
+      "size": 4000,
+      "value": 19.56000000005588,
+      "unit": "ms",
+      "n": 4001
+    },
+    {
+      "round": 1,
+      "app": "angular",
+      "scenario": "patchLeafDeep",
+      "size": 100,
+      "value": 0.4949999999953434,
+      "unit": "ms",
+      "n": 121,
+      "depth": 5
+    },
+    {
+      "round": 1,
+      "app": "angular",
+      "scenario": "patchLeafDeep",
+      "size": 1000,
+      "value": 4.679999999934807,
+      "unit": "ms",
+      "n": 1093,
+      "depth": 7
+    },
+    {
+      "round": 1,
+      "app": "angular",
+      "scenario": "patchLeafDeep",
+      "size": 4000,
+      "value": 14.555000000051223,
+      "unit": "ms",
+      "n": 3280,
+      "depth": 8
+    },
+    {
+      "round": 1,
+      "app": "angular",
+      "scenario": "sameSpec",
+      "size": 100,
+      "value": 0.34000000008381903,
+      "unit": "ms",
+      "n": 101
+    },
+    {
+      "round": 1,
+      "app": "angular",
+      "scenario": "sameSpec",
+      "size": 1000,
+      "value": 3.9300000000512227,
+      "unit": "ms",
+      "n": 1001
+    },
+    {
+      "round": 1,
+      "app": "angular",
+      "scenario": "sameSpec",
+      "size": 4000,
+      "value": 18.100000000093132,
+      "unit": "ms",
+      "n": 4001
+    },
+    {
+      "round": 1,
+      "app": "angular",
+      "scenario": "stateOne",
+      "size": 100,
+      "value": 0.3699999999953434,
+      "unit": "ms",
+      "n": 101
+    },
+    {
+      "round": 1,
+      "app": "angular",
+      "scenario": "stateOne",
+      "size": 1000,
+      "value": 5.175000000046566,
+      "unit": "ms",
+      "n": 1001
+    },
+    {
+      "round": 1,
+      "app": "angular",
+      "scenario": "stateOne",
+      "size": 4000,
+      "value": 13.510000000009313,
+      "unit": "ms",
+      "n": 4001
+    },
+    {
+      "round": 1,
+      "app": "angular",
+      "scenario": "stateAll",
+      "size": 100,
+      "value": 0.9200000000419095,
+      "unit": "ms",
+      "n": 101
+    },
+    {
+      "round": 1,
+      "app": "angular",
+      "scenario": "stateAll",
+      "size": 1000,
+      "value": 8.75,
+      "unit": "ms",
+      "n": 1001
+    },
+    {
+      "round": 1,
+      "app": "angular",
+      "scenario": "stateAll",
+      "size": 4000,
+      "value": 45.96000000007916,
+      "unit": "ms",
+      "n": 4001
+    },
+    {
+      "round": 1,
+      "app": "angular",
+      "scenario": "repeatAppend",
+      "size": 100,
+      "value": 0.8050000000512227,
+      "unit": "ms",
+      "n": 100
+    },
+    {
+      "round": 1,
+      "app": "angular",
+      "scenario": "repeatAppend",
+      "size": 1000,
+      "value": 4.51500000001397,
+      "unit": "ms",
+      "n": 1000
+    },
+    {
+      "round": 1,
+      "app": "angular",
+      "scenario": "repeatAppend",
+      "size": 4000,
+      "value": 20.85999999998603,
+      "unit": "ms",
+      "n": 4000
+    },
+    {
+      "round": 1,
+      "app": "angular",
+      "scenario": "unmount",
+      "size": 100,
+      "value": 0.4150000000372529,
+      "unit": "ms",
+      "n": 101
+    },
+    {
+      "round": 1,
+      "app": "angular",
+      "scenario": "unmount",
+      "size": 1000,
+      "value": 5.535000000032596,
+      "unit": "ms",
+      "n": 1001
+    },
+    {
+      "round": 1,
+      "app": "angular",
+      "scenario": "unmount",
+      "size": 4000,
+      "value": 23.945000000065193,
+      "unit": "ms",
+      "n": 4001
+    },
+    {
+      "round": 1,
+      "app": "angular",
+      "scenario": "stream",
+      "size": 100,
+      "value": 52.05500000016764,
+      "unit": "ms total",
+      "tailPerPatch": 0.365150000002468,
+      "n": 101
+    },
+    {
+      "round": 1,
+      "app": "angular",
+      "scenario": "stream",
+      "size": 1000,
+      "value": 4283.780000000377,
+      "unit": "ms total",
+      "tailPerPatch": 4.026499999994412,
+      "n": 1001
+    },
+    {
+      "round": 1,
+      "app": "angular",
+      "scenario": "stream",
+      "size": 4000,
+      "value": 65638.96500000812,
+      "unit": "ms total",
+      "tailPerPatch": 15.882800000023563,
+      "n": 4001
+    },
+    {
+      "round": 1,
+      "app": "react",
+      "scenario": "mount",
+      "size": 100,
+      "value": 2.444999999832362,
+      "unit": "ms",
+      "first": 13.145000000018626,
+      "n": 101
+    },
+    {
+      "round": 1,
+      "app": "react",
+      "scenario": "mount",
+      "size": 1000,
+      "value": 8.040000000037253,
+      "unit": "ms",
+      "first": 9.879999999888241,
+      "n": 1001
+    },
+    {
+      "round": 1,
+      "app": "react",
+      "scenario": "mount",
+      "size": 4000,
+      "value": 28.28499999991618,
+      "unit": "ms",
+      "first": 28.28499999991618,
+      "n": 4001
+    },
+    {
+      "round": 1,
+      "app": "react",
+      "scenario": "mountDeep",
+      "size": 100,
+      "value": 0.6049999999813735,
+      "unit": "ms",
+      "first": 0.7650000001303852,
+      "n": 121,
+      "depth": 5
+    },
+    {
+      "round": 1,
+      "app": "react",
+      "scenario": "mountDeep",
+      "size": 1000,
+      "value": 5.489999999990687,
+      "unit": "ms",
+      "first": 5.310000000055879,
+      "n": 1093,
+      "depth": 7
+    },
+    {
+      "round": 1,
+      "app": "react",
+      "scenario": "mountDeep",
+      "size": 4000,
+      "value": 20.854999999981374,
+      "unit": "ms",
+      "first": 17.24500000011176,
+      "n": 3280,
+      "depth": 8
+    },
+    {
+      "round": 1,
+      "app": "react",
+      "scenario": "patchLeaf",
+      "size": 100,
+      "value": 0.9950000001117587,
+      "unit": "ms",
+      "n": 101
+    },
+    {
+      "round": 1,
+      "app": "react",
+      "scenario": "patchLeaf",
+      "size": 1000,
+      "value": 6.635000000009313,
+      "unit": "ms",
+      "n": 1001
+    },
+    {
+      "round": 1,
+      "app": "react",
+      "scenario": "patchLeaf",
+      "size": 4000,
+      "value": 25.15500000002794,
+      "unit": "ms",
+      "n": 4001
+    },
+    {
+      "round": 1,
+      "app": "react",
+      "scenario": "patchLeafDeep",
+      "size": 100,
+      "value": 0.5049999998882413,
+      "unit": "ms",
+      "n": 121,
+      "depth": 5
+    },
+    {
+      "round": 1,
+      "app": "react",
+      "scenario": "patchLeafDeep",
+      "size": 1000,
+      "value": 7.790000000037253,
+      "unit": "ms",
+      "n": 1093,
+      "depth": 7
+    },
+    {
+      "round": 1,
+      "app": "react",
+      "scenario": "patchLeafDeep",
+      "size": 4000,
+      "value": 21.28500000014901,
+      "unit": "ms",
+      "n": 3280,
+      "depth": 8
+    },
+    {
+      "round": 1,
+      "app": "react",
+      "scenario": "sameSpec",
+      "size": 100,
+      "value": 0.4150000000372529,
+      "unit": "ms",
+      "n": 101
+    },
+    {
+      "round": 1,
+      "app": "react",
+      "scenario": "sameSpec",
+      "size": 1000,
+      "value": 4.25,
+      "unit": "ms",
+      "n": 1001
+    },
+    {
+      "round": 1,
+      "app": "react",
+      "scenario": "sameSpec",
+      "size": 4000,
+      "value": 25.295000000158325,
+      "unit": "ms",
+      "n": 4001
+    },
+    {
+      "round": 1,
+      "app": "react",
+      "scenario": "stateOne",
+      "size": 100,
+      "value": 0.659999999916181,
+      "unit": "ms",
+      "n": 101
+    },
+    {
+      "round": 1,
+      "app": "react",
+      "scenario": "stateOne",
+      "size": 1000,
+      "value": 5.46999999997206,
+      "unit": "ms",
+      "n": 1001
+    },
+    {
+      "round": 1,
+      "app": "react",
+      "scenario": "stateOne",
+      "size": 4000,
+      "value": 27.68500000005588,
+      "unit": "ms",
+      "n": 4001
+    },
+    {
+      "round": 1,
+      "app": "react",
+      "scenario": "stateAll",
+      "size": 100,
+      "value": 0.9200000001583248,
+      "unit": "ms",
+      "n": 101
+    },
+    {
+      "round": 1,
+      "app": "react",
+      "scenario": "stateAll",
+      "size": 1000,
+      "value": 4.78000000002794,
+      "unit": "ms",
+      "n": 1001
+    },
+    {
+      "round": 1,
+      "app": "react",
+      "scenario": "stateAll",
+      "size": 4000,
+      "value": 24.044999999925494,
+      "unit": "ms",
+      "n": 4001
+    },
+    {
+      "round": 1,
+      "app": "react",
+      "scenario": "repeatAppend",
+      "size": 100,
+      "value": 1.125,
+      "unit": "ms",
+      "n": 100
+    },
+    {
+      "round": 1,
+      "app": "react",
+      "scenario": "repeatAppend",
+      "size": 1000,
+      "value": 5.669999999925494,
+      "unit": "ms",
+      "n": 1000
+    },
+    {
+      "round": 1,
+      "app": "react",
+      "scenario": "repeatAppend",
+      "size": 4000,
+      "value": 25.31499999994412,
+      "unit": "ms",
+      "n": 4000
+    },
+    {
+      "round": 1,
+      "app": "react",
+      "scenario": "unmount",
+      "size": 100,
+      "value": 0.10000000009313226,
+      "unit": "ms",
+      "n": 101
+    },
+    {
+      "round": 1,
+      "app": "react",
+      "scenario": "unmount",
+      "size": 1000,
+      "value": 0.5750000001862645,
+      "unit": "ms",
+      "n": 1001
+    },
+    {
+      "round": 1,
+      "app": "react",
+      "scenario": "unmount",
+      "size": 4000,
+      "value": 2.8100000000558794,
+      "unit": "ms",
+      "n": 4001
+    },
+    {
+      "round": 1,
+      "app": "react",
+      "scenario": "stream",
+      "size": 100,
+      "value": 49.685000001685694,
+      "unit": "ms total",
+      "tailPerPatch": 0.34505000000819563,
+      "n": 101
+    },
+    {
+      "round": 1,
+      "app": "react",
+      "scenario": "stream",
+      "size": 1000,
+      "value": 4529.210000003688,
+      "unit": "ms total",
+      "tailPerPatch": 4.230600000000559,
+      "n": 1001
+    },
+    {
+      "round": 1,
+      "app": "react",
+      "scenario": "stream",
+      "size": 4000,
+      "value": 84047.51499999757,
+      "unit": "ms total",
+      "tailPerPatch": 22.250800000000744,
+      "n": 4001
+    }
+  ],
+  "memory": {
+    "react": {
+      "100": {
+        "before": 3000792,
+        "mounted": 3271840,
+        "after": 3000688,
+        "treeBytes": 271048,
+        "retainedBytes": -104
+      },
+      "1000": {
+        "before": 3000688,
+        "mounted": 5521852,
+        "after": 3002040,
+        "treeBytes": 2521164,
+        "retainedBytes": 1352
+      },
+      "4000": {
+        "before": 3002040,
+        "mounted": 12904964,
+        "after": 3001600,
+        "treeBytes": 9902924,
+        "retainedBytes": -440
+      }
+    },
+    "angular": {
+      "100": {
+        "before": 46283908,
+        "mounted": 47366036,
+        "after": 46299288,
+        "treeBytes": 1082128,
+        "retainedBytes": 15380
+      },
+      "1000": {
+        "before": 46299288,
+        "mounted": 56766280,
+        "after": 46297256,
+        "treeBytes": 10466992,
+        "retainedBytes": -2032
+      },
+      "4000": {
+        "before": 46297256,
+        "mounted": 88075804,
+        "after": 46348240,
+        "treeBytes": 41778548,
+        "retainedBytes": 50984
+      }
+    }
+  },
+  "summary": [
+    {
+      "scenario": "mount",
+      "size": 100,
+      "n": 101,
+      "react": 2.487499999930151,
+      "reactFirst": 13.012500000011642,
+      "angular": 14.739999999990687,
+      "angularFirst": 32.6425000000163
+    },
+    {
+      "scenario": "mount",
+      "size": 1000,
+      "n": 1001,
+      "react": 8.559999999997672,
+      "reactFirst": 10.777499999909196,
+      "angular": 75.95499999995809,
+      "angularFirst": 79.44500000000698
+    },
+    {
+      "scenario": "mount",
+      "size": 4000,
+      "n": 4001,
+      "react": 28.68499999999767,
+      "reactFirst": 41.86249999993015,
+      "angular": 249.03249999997206,
+      "angularFirst": 252.27750000008382
+    },
+    {
+      "scenario": "mountDeep",
+      "size": 100,
+      "n": 121,
+      "react": 0.6524999999674037,
+      "reactFirst": 0.7700000000768341,
+      "angular": 7.652499999967404,
+      "angularFirst": 8.019999999960419
+    },
+    {
+      "scenario": "mountDeep",
+      "size": 1000,
+      "n": 1093,
+      "react": 6.182499999995343,
+      "reactFirst": 5.877500000060536,
+      "angular": 69.79749999998603,
+      "angularFirst": 58.929999999993015
+    },
+    {
+      "scenario": "mountDeep",
+      "size": 4000,
+      "n": 3280,
+      "react": 19.282500000030268,
+      "reactFirst": 17.01250000006985,
+      "angular": 233.65749999997206,
+      "angularFirst": 241.96749999996973
+    },
+    {
+      "scenario": "patchLeaf",
+      "size": 100,
+      "n": 101,
+      "react": 1.097500000090804,
+      "angular": 0.6999999999534339
+    },
+    {
+      "scenario": "patchLeaf",
+      "size": 1000,
+      "n": 1001,
+      "react": 6.039999999979045,
+      "angular": 4.51500000001397
+    },
+    {
+      "scenario": "patchLeaf",
+      "size": 4000,
+      "n": 4001,
+      "react": 24.380000000004657,
+      "angular": 18.369999999995343
+    },
+    {
+      "scenario": "patchLeafDeep",
+      "size": 100,
+      "n": 121,
+      "react": 0.5099999999511056,
+      "angular": 0.5050000000046566
+    },
+    {
+      "scenario": "patchLeafDeep",
+      "size": 1000,
+      "n": 1093,
+      "react": 6.392500000016298,
+      "angular": 4.789999999979045
+    },
+    {
+      "scenario": "patchLeafDeep",
+      "size": 4000,
+      "n": 3280,
+      "react": 18.397500000079162,
+      "angular": 14.642500000016298
+    },
+    {
+      "scenario": "sameSpec",
+      "size": 100,
+      "n": 101,
+      "react": 0.5075000000069849,
+      "angular": 0.3175000000628643
+    },
+    {
+      "scenario": "sameSpec",
+      "size": 1000,
+      "n": 1001,
+      "react": 4.647500000020955,
+      "angular": 3.860000000044238
+    },
+    {
+      "scenario": "sameSpec",
+      "size": 4000,
+      "n": 4001,
+      "react": 22.945000000065193,
+      "angular": 18.92000000004191
+    },
+    {
+      "scenario": "stateOne",
+      "size": 100,
+      "n": 101,
+      "react": 0.6174999999348074,
+      "angular": 0.35999999998603016
+    },
+    {
+      "scenario": "stateOne",
+      "size": 1000,
+      "n": 1001,
+      "react": 5.3549999999813735,
+      "angular": 4.465000000025611
+    },
+    {
+      "scenario": "stateOne",
+      "size": 4000,
+      "n": 4001,
+      "react": 25.302500000048894,
+      "angular": 12.717499999969732
+    },
+    {
+      "scenario": "stateAll",
+      "size": 100,
+      "n": 101,
+      "react": 0.7175000000861473,
+      "angular": 1.0200000000186265
+    },
+    {
+      "scenario": "stateAll",
+      "size": 1000,
+      "n": 1001,
+      "react": 4.742499999993015,
+      "angular": 9.549999999988358
+    },
+    {
+      "scenario": "stateAll",
+      "size": 4000,
+      "n": 4001,
+      "react": 23.459999999962747,
+      "angular": 52.57750000001397
+    },
+    {
+      "scenario": "repeatAppend",
+      "size": 100,
+      "n": 100,
+      "react": 1.1149999999906868,
+      "angular": 0.7600000000675209
+    },
+    {
+      "scenario": "repeatAppend",
+      "size": 1000,
+      "n": 1000,
+      "react": 5.622499999997672,
+      "angular": 4.492500000051223
+    },
+    {
+      "scenario": "repeatAppend",
+      "size": 4000,
+      "n": 4000,
+      "react": 25.84749999997439,
+      "angular": 19.39000000001397
+    },
+    {
+      "scenario": "unmount",
+      "size": 100,
+      "n": 101,
+      "react": 0.0775000000721775,
+      "angular": 0.4225000000442378
+    },
+    {
+      "scenario": "unmount",
+      "size": 1000,
+      "n": 1001,
+      "react": 0.5800000000745058,
+      "angular": 5.6450000000186265
+    },
+    {
+      "scenario": "unmount",
+      "size": 4000,
+      "n": 4001,
+      "react": 2.8500000000349246,
+      "angular": 24.53000000002794
+    },
+    {
+      "scenario": "stream",
+      "size": 100,
+      "n": 101,
+      "react": 58.13250000082189,
+      "reactTail": 0.4007000000047265,
+      "angular": 50.312499999883585,
+      "angularTail": 0.34834999999788124
+    },
+    {
+      "scenario": "stream",
+      "size": 1000,
+      "n": 1001,
+      "react": 4616.315000001225,
+      "reactTail": 4.573500000000932,
+      "angular": 4403.102499999455,
+      "angularTail": 4.407824999997974
+    },
+    {
+      "scenario": "stream",
+      "size": 4000,
+      "n": 4001,
+      "react": 82427.34249999962,
+      "reactTail": 22.500050000000044,
+      "angular": 66251.6050000026,
+      "angularTail": 15.984500000014087
+    }
+  ]
+}

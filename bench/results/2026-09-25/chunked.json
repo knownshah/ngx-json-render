@@ -1,0 +1,146 @@
+{
+  "meta": {
+    "date": "2026-09-25T17:28:59.496Z",
+    "sizes": [1000, 4000],
+    "rounds": 2,
+    "chromium": "141.0.7390.37",
+    "ua": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/141.0.7390.37 Safari/537.36",
+    "isolated": true
+  },
+  "runs": [
+    {
+      "round": 0,
+      "app": "react",
+      "scenario": "streamChunked",
+      "size": 1000,
+      "value": 1089.0949999983422,
+      "unit": "ms total",
+      "tailPerPatch": 5.475499999988824,
+      "n": 1001
+    },
+    {
+      "round": 0,
+      "app": "react",
+      "scenario": "streamChunked",
+      "size": 4000,
+      "value": 18079.370000007795,
+      "unit": "ms total",
+      "tailPerPatch": 21.877750000020022,
+      "n": 4001
+    },
+    {
+      "round": 0,
+      "app": "angular",
+      "scenario": "streamChunked",
+      "size": 1000,
+      "value": 1068.6350000053644,
+      "unit": "ms total",
+      "tailPerPatch": 4.415249999973457,
+      "n": 1001
+    },
+    {
+      "round": 0,
+      "app": "angular",
+      "scenario": "streamChunked",
+      "size": 4000,
+      "value": 14285.554999999935,
+      "unit": "ms total",
+      "tailPerPatch": 20.54949999996461,
+      "n": 4001
+    },
+    {
+      "round": 1,
+      "app": "angular",
+      "scenario": "streamChunked",
+      "size": 1000,
+      "value": 1151.4550000010058,
+      "unit": "ms total",
+      "tailPerPatch": 5.069500000053085,
+      "n": 1001
+    },
+    {
+      "round": 1,
+      "app": "angular",
+      "scenario": "streamChunked",
+      "size": 4000,
+      "value": 13457.67500000447,
+      "unit": "ms total",
+      "tailPerPatch": 21.17650000002468,
+      "n": 4001
+    },
+    {
+      "round": 1,
+      "app": "react",
+      "scenario": "streamChunked",
+      "size": 1000,
+      "value": 968.4649999991525,
+      "unit": "ms total",
+      "tailPerPatch": 4.610499999974854,
+      "n": 1001
+    },
+    {
+      "round": 1,
+      "app": "react",
+      "scenario": "streamChunked",
+      "size": 4000,
+      "value": 16678.119999999646,
+      "unit": "ms total",
+      "tailPerPatch": 22.142000000050757,
+      "n": 4001
+    }
+  ],
+  "memory": {
+    "react": {
+      "1000": {
+        "before": 2692964,
+        "mounted": 5218028,
+        "after": 2699812,
+        "treeBytes": 2525064,
+        "retainedBytes": 6848
+      },
+      "4000": {
+        "before": 2699812,
+        "mounted": 12617400,
+        "after": 2708752,
+        "treeBytes": 9917588,
+        "retainedBytes": 8940
+      }
+    },
+    "angular": {
+      "1000": {
+        "before": 4139308,
+        "mounted": 14743928,
+        "after": 4182280,
+        "treeBytes": 10604620,
+        "retainedBytes": 42972
+      },
+      "4000": {
+        "before": 4182280,
+        "mounted": 46061952,
+        "after": 4235424,
+        "treeBytes": 41879672,
+        "retainedBytes": 53144
+      }
+    }
+  },
+  "summary": [
+    {
+      "scenario": "streamChunked",
+      "size": 1000,
+      "n": 1001,
+      "react": 1028.7799999987474,
+      "reactTail": 5.04299999998184,
+      "angular": 1110.0450000031851,
+      "angularTail": 4.742375000013271
+    },
+    {
+      "scenario": "streamChunked",
+      "size": 4000,
+      "n": 4001,
+      "react": 17378.74500000372,
+      "reactTail": 22.00987500003539,
+      "angular": 13871.615000002203,
+      "angularTail": 20.862999999994646
+    }
+  ]
+}
