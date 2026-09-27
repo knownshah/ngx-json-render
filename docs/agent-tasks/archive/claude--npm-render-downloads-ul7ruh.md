@@ -5,9 +5,9 @@
 - Branch: `claude/npm-render-downloads-ul7ruh`
 - Base branch: `main`
 - Base commit: `d0c9d7b` (Release ngx-json-render 0.7.1)
-- Current HEAD: the second commit on top of `d0c9d7b` (`7acd1f8` added the
-  skills; the next one shortened the renderer skill and updated this file)
-- Status: done — committed and pushed; waiting on the owner to open a PR or merge
+- Current HEAD: `1780922` on `main` (fast-forwarded from the branch)
+- Status: **done** — merged into `main` on 2026-09-27; this file is the
+  archived snapshot
 - Last updated: 2026-09-27
 - Last agent/tool: Claude Code
 
@@ -179,5 +179,7 @@ None.
 
 ## Next concrete step
 
-Open a pull request from `claude/npm-render-downloads-ul7ruh` into `main`, or merge;
-then move this file to `docs/agent-tasks/archive/`.
+None — the work is on `main` and this file is archived. Follow-ups, if
+wanted: a skills.sh badge once installs exist; `metadata.internal: true` on
+the vendored `.claude/skills` in their upstream repository so a bare
+`npx skills add shteynu/ngx-json-render` stops offering them.
