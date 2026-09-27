@@ -2,9 +2,51 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>ngx-json-render demo</title>
+    <title>ngx-json-render: Angular renderer for json-render</title>
     <base href="/" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Angular renderer for Vercel's json-render: give a model a catalog of your components, stream back a JSON spec, and render it as real Angular components with signals. Live demo with streaming, chat and a ready-made Angular Material catalog."
+    />
+    <link rel="canonical" href="https://shteynu.github.io/ngx-json-render/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="ngx-json-render" />
+    <meta
+      property="og:title"
+      content="ngx-json-render: Angular renderer for json-render"
+    />
+    <meta
+      property="og:description"
+      content="An LLM streams a JSON spec constrained to your component catalog; ngx-json-render renders it as real Angular components, progressively, with signals. Same spec format as the React, Vue, Svelte and Solid renderers."
+    />
+    <meta
+      property="og:url"
+      content="https://shteynu.github.io/ngx-json-render/"
+    />
+    <meta
+      property="og:image"
+      content="https://shteynu.github.io/ngx-json-render/og.png"
+    />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="A dashboard streamed from a model as JSON patches and rendered by ngx-json-render"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="ngx-json-render: Angular renderer for json-render"
+    />
+    <meta
+      name="twitter:description"
+      content="An LLM streams a JSON spec constrained to your component catalog; ngx-json-render renders it as real Angular components, progressively, with signals."
+    />
+    <meta
+      name="twitter:image"
+      content="https://shteynu.github.io/ngx-json-render/og.png"
+    />
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -14,6 +56,50 @@
     />
   </head>
   <body>
-    <app-root></app-root>
+    <app-root>
+      <!-- Shown until Angular bootstraps and replaced by the app; this is also
+           what a crawler without JavaScript reads. Keep it in step with the
+           README's first paragraph. -->
+      <main
+        style="max-width: 44rem; margin: 3rem auto; padding: 0 1rem; font: 16px/1.5 Roboto, system-ui, sans-serif; color: #1f2933"
+      >
+        <h1 style="font-size: 1.75rem; margin: 0 0 0.5rem">ngx-json-render</h1>
+        <p>
+          Angular renderer for
+          <a href="https://github.com/vercel-labs/json-render">json-render</a>,
+          Vercel's generative-UI format: give a model a catalog of your
+          components, stream back a JSON spec, and render it as real Angular
+          components with signals. No <code>innerHTML</code>, no
+          <code>eval</code>; the same spec the React, Vue, Svelte and Solid
+          renderers consume.
+        </p>
+        <p><code>npm install ngx-json-render @json-render/core zod</code></p>
+        <ul>
+          <li>
+            <a href="https://www.npmjs.com/package/ngx-json-render"
+              >ngx-json-render on npm</a
+            >
+          </li>
+          <li>
+            <a href="https://www.npmjs.com/package/ngx-json-render-material"
+              >ngx-json-render-material</a
+            >: 28 Angular Material components, ready to render
+          </li>
+          <li>
+            <a href="https://github.com/shteynu/ngx-json-render"
+              >Source and documentation on GitHub</a
+            >
+          </li>
+          <li>
+            Agent skill for Claude Code, Cursor and Codex:
+            <code>npx skills add shteynu/ngx-json-render</code>
+          </li>
+        </ul>
+        <p>
+          Loading the demo: a playground, an interactive spec, a streaming
+          dashboard and a chat…
+        </p>
+      </main>
+    </app-root>
   </body>
 </html>
