@@ -1,6 +1,8 @@
 ---
 name: task-tracker
 description: Manage work continuity in a repository - start, continue or resume a task, report status and next steps, save progress, prepare or consume a handoff, close a session, and keep parallel agents from clobbering each other. Use for substantial work that spans sessions or agents; do not run the full session ritual for a small question or a read-only lookup.
+metadata:
+  internal: true
 ---
 
 # Task Tracker

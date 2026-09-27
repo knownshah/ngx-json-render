@@ -1,6 +1,8 @@
 ---
 name: verification
 description: Verify changes and runtime behavior before claiming them done - prove a bugfix or feature correct, choose checks proportional to the diff, check merge readiness, verify a deployed environment safely, and record verification evidence (passed, failed, blocked, not run) without unverified claims. Use before any substantive "this works" or "ready to merge" statement.
+metadata:
+  internal: true
 ---
 
 # Verification
