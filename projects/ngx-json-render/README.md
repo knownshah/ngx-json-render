@@ -21,6 +21,8 @@ npm install ngx-json-render @json-render/core zod
 Requires Angular ≥ 20. CI proves both ends of that range on every push: the
 library builds and its suite passes on Angular 20 (the floor) and on Angular
 22 (the current release), as well as on the 21 the workspace itself pins.
+The same goes for `@json-render/core`: 0.20 and 0.21 are both admitted
+(`>=0.20.0 <0.22.0`), the workspace pins the newest and CI tests the floor.
 
 **Zoneless, and checked as such.** Zone.js appears in no manifest here, `NgZone`
 in no source file, and neither in the published bundles; every suite runs under

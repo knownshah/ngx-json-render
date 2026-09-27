@@ -40,7 +40,9 @@ const REGISTRY: ComponentRegistry = { Text: TText };
 })
 class Host {
   readonly spec = signal<Spec | null>(null);
-  readonly directives = signal<DirectiveDefinition[] | undefined>(undefined);
+  readonly directives = signal<DirectiveDefinition<any>[] | undefined>(
+    undefined,
+  );
   readonly registry = REGISTRY;
 }
 
@@ -55,7 +57,7 @@ async function render(
   content: unknown,
   options: {
     state?: Record<string, unknown>;
-    directives?: DirectiveDefinition[];
+    directives?: DirectiveDefinition<any>[];
   } = {},
 ) {
   // Reset first: several of these tests render more than one spec, and a

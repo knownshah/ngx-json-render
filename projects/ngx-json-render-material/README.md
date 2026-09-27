@@ -12,7 +12,7 @@ Angular Material catalog for [`ngx-json-render`](https://www.npmjs.com/package/n
 npm install ngx-json-render-material ngx-json-render @json-render/core @angular/material zod
 ```
 
-Requires Angular ≥ 20. Your app needs a Material theme and the icon font as usual — see [Angular Material theming](https://material.angular.dev/guide/theming).
+Requires Angular ≥ 20 and `@json-render/core` 0.20 or 0.21. Your app needs a Material theme and the icon font as usual — see [Angular Material theming](https://material.angular.dev/guide/theming).
 
 ## Agent skill
 

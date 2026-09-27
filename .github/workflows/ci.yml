@@ -110,6 +110,44 @@ jobs:
       - name: Build Material catalog
         run: npx ng build ngx-json-render-material
 
+  core-compat:
+    name: '@json-render/core ${{ matrix.core }} compatibility'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        core: ['0.20']
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      # The workspace pins the newest core the packages admit, so the main job
+      # proves that end; this one proves the floor of the peer range. --no-save
+      # leaves the manifests and the lockfile alone: only node_modules changes.
+      - name: Retarget @json-render/core to ${{ matrix.core }}
+        run: npm install --no-save --no-audit --no-fund @json-render/core@${{ matrix.core }} @json-render/directives@${{ matrix.core }}
+
+      - name: Build library
+        run: npm run build:lib
+
+      # Without --coverage, as in angular-compat: thresholds belong to the main
+      # job, which runs on the version the workspace pins.
+      - name: Test library
+        run: npx ng test ngx-json-render
+
+      - name: Build Material catalog
+        run: npm run build:material
+
+      - name: Test Material catalog
+        run: npm run test:material
+
   deploy-demo:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     needs: build-and-test

@@ -60,6 +60,7 @@ are the typecheck**, and they are strict — `strict`, `strictTemplates`,
 | `projects/demo`                                      | `npm run build:lib` **and** `npm run build:material` — the demo's playground renders the Material catalog — then `npx ng test demo --coverage` and `npx ng build demo`. A stale `dist/` hides a missing build step locally; CI starts empty  |
 | Public API, exports or the JSON spec/contract        | The full `npm run build` and `npm test`, plus a read of the affected `README.md` — a contract change that the docs still describe the old way is not done                                                                                    |
 | `package.json`, `package-lock.json`, Angular version | `npm ci` then the full `npm run build` and `npm test`; for an Angular-version change, a new dev dependency, or a new `test.options` key in `angular.json`, also run the `angular-compat` job's own steps in a throwaway checkout — see below |
+| `@json-render/core` version or its peer range        | `npm ci`, then the full `npm run build` and `npm test` on the version the workspace pins, then the `core-compat` steps at the floor of the range — see below                                                                                 |
 | `.github/workflows/**`, release config               | Read the workflow diff against the matching `npm run` script; releases are tag-driven and publish to npm — never trigger one as verification                                                                                                 |
 | Docs only (`README.md`, `docs/**`)                   | `git diff --check` and a link check; no build needed                                                                                                                                                                                         |
 
@@ -175,6 +176,25 @@ Run all of it, not just the install: the job stops at the first failing step,
 so a later break stays invisible until the earlier one is fixed. The job
 deliberately tests without `--coverage`; thresholds belong to the main job,
 which runs on the version the workspace actually pins.
+
+The `core-compat` CI job proves the floor of the `@json-render/core` peer range
+the way `angular-compat` proves the Angular floor. The workspace pins the newest
+core the packages admit, so the main job and its coverage thresholds run against
+that end; the job reinstalls `@json-render/core` and `@json-render/directives`
+at the floor with `npm install --no-save` (manifests and lockfile untouched) and
+builds and tests both libraries. It exists because upstream ships a core minor
+every two or three weeks and a 0.x caret stops below the next minor: `^0.20.0`
+shipped in 0.7.1, and once core 0.21 was out it ERESOLVEd for anyone already on
+0.21 and silently resolved core _down_ on a fresh install. When core publishes
+a new minor: move the workspace (`npm install @json-render/core@^0.x` and the
+same for `@json-render/directives`), widen the peer range in **both** package
+manifests to `>=0.20.0 <0.(x+1).0`, keep the floor in the matrix, and release
+both packages. Locally, the job's steps are
+
+    npm install --no-save @json-render/core@0.20 @json-render/directives@0.20
+    npm run build:lib && npx ng test ngx-json-render
+    npm run build:material && npm run test:material
+    npm ci   # back to the lockfile
 
 Deployment: pushing to `main` deploys the demo to GitHub Pages via
 `.github/workflows/ci.yml`. Treat `main` as deployed state.

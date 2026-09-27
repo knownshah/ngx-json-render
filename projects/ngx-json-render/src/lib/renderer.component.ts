@@ -166,7 +166,9 @@ export class JsonRenderer {
     undefined,
   );
   /** Custom directives for user-defined `$`-prefixed dynamic values. */
-  readonly directives = input<DirectiveDefinition[] | undefined>(undefined);
+  readonly directives = input<DirectiveDefinition<any>[] | undefined>(
+    undefined,
+  );
 
   /** Emits state changes in uncontrolled mode. */
   readonly stateChange = output<StateChange[]>();

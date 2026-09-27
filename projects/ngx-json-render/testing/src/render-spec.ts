@@ -57,7 +57,7 @@ export interface RenderSpecOptions {
   /** Custom validation functions. */
   validationFunctions?: Record<string, ValidationFunction>;
   /** Custom directives for `$`-prefixed values. */
-  directives?: DirectiveDefinition[];
+  directives?: DirectiveDefinition<any>[];
   /** Render as if the spec were still streaming. */
   loading?: boolean;
   /** Extra TestBed providers, e.g. a `JR_CONFIRM_DIALOG` replacement. */
@@ -146,7 +146,9 @@ class JrTestHost {
   readonly validationFunctions = signal<
     Record<string, ValidationFunction> | undefined
   >(undefined);
-  readonly directives = signal<DirectiveDefinition[] | undefined>(undefined);
+  readonly directives = signal<DirectiveDefinition<any>[] | undefined>(
+    undefined,
+  );
 
   record: (changes: StateChange[]) => void = () => {};
 }

@@ -24,7 +24,7 @@
   "peerDependencies": {
     "@angular/common": ">=20.0.0",
     "@angular/core": ">=20.0.0",
-    "@json-render/core": "^0.20.0",
+    "@json-render/core": ">=0.20.0 <0.22.0",
     "zod": "^4.0.0"
   },
   "dependencies": {

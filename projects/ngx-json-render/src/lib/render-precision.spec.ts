@@ -163,7 +163,9 @@ const FUNCTIONS: Record<string, ComputedFunction> = {
 class Host {
   readonly spec = signal<Spec | null>(null);
   readonly store = signal<StateStore | null>(null);
-  readonly directives = signal<DirectiveDefinition[] | undefined>(undefined);
+  readonly directives = signal<DirectiveDefinition<any>[] | undefined>(
+    undefined,
+  );
   readonly registry = REGISTRY;
   readonly functions = FUNCTIONS;
 }
@@ -194,7 +196,7 @@ async function settle(fixture: ComponentFixture<unknown>) {
 async function setup(
   spec: Spec,
   store: StateStore | null = null,
-  directives?: DirectiveDefinition[],
+  directives?: DirectiveDefinition<any>[],
   // Off unless a test is about it: the check calls `$computed` functions
   // again, which is exactly what `calls` counts.
   checkSkippedWrites = false,
