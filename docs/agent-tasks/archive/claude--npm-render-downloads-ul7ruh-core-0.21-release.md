@@ -8,8 +8,10 @@
   this one under a distinct name, e.g. `...-core-0.21-release.md`)
 - Base branch: `main`
 - Base commit: `d892709` (Hide the vendored process skills from the skills CLI)
-- Current HEAD: `d892709` — no commits yet
-- Status: in progress
+- Current HEAD: `9e51d4c` on `main`; released as `v0.7.2` and
+  `material-v0.3.5`, both tags on that commit
+- Status: **done** — published to npm on 2026-09-27; this file is the
+  archived snapshot
 - Last updated: 2026-09-27
 - Last agent/tool: Claude Code
 
@@ -133,10 +135,7 @@ input), `projects/ngx-json-render/src/lib/directives.spec.ts`,
 
 ## Remaining
 
-- Dispatch **Release** on `main` (the `tag` job creates `v0.7.2`), wait for
-  the publish and `check:published`; then dispatch **Release Material
-  catalog** (creates `material-v0.3.5`); verify both on npm; archive this
-  file under a distinct name.
+(nothing)
 
 ## Changed files
 
@@ -221,4 +220,12 @@ None.
 
 ## Next concrete step
 
-Read the verification log, run the tarball install probes, then commit.
+None. Published: `ngx-json-render@0.7.2` (Release run 36310058084) and
+`ngx-json-render-material@0.3.5` (run 36310206526), both by `workflow_dispatch`
+on `main` at `9e51d4c`; the `tag` job created `v0.7.2` and `material-v0.3.5`,
+`check:published` passed in both runs, GitHub releases exist for both. From
+the registry afterwards: a fresh `npm install ngx-json-render @json-render/core
+zod` resolves 0.7.2 with core 0.21.0; a project on core 0.21.0 installs 0.7.2
+without ERESOLVE; the catalog README's install line resolves 0.3.5 + 0.7.2 +
+core 0.21.0 + Angular 22.2.0; both npm READMEs carry the "Agent skill" section.
+
