@@ -8,8 +8,10 @@
   under `...-core-canary-seo.md`)
 - Base branch: `main`
 - Base commit: `2fe9cf6` (Archive the core 0.21 release task file)
-- Current HEAD: `2fe9cf6` — no commits yet
-- Status: in progress
+- Current HEAD: `003e1f6` on `main` (`afb690a` the canary, `003e1f6` the demo
+  page); this archive commit follows
+- Status: **done** — on `main` and deployed on 2026-09-27; this file is the
+  archived snapshot
 - Last updated: 2026-09-27
 - Last agent/tool: Claude Code
 
@@ -117,8 +119,7 @@ matching npm script, never trigger a release as verification.
 
 ## Remaining
 
-- Commit, fast-forward `main`, dispatch the canary once by hand to prove the
-  happy path (core 0.21.0 admitted, green, no issue), archive this file.
+(nothing)
 
 ## Changed files
 
@@ -143,6 +144,12 @@ matching npm script, never trigger a release as verification.
 --coverage` (7 files passed, coverage unchanged at 91.22 / 89.57 / 78.12 /
   93.96).
 - `npm run format:check` clean.
+- After the merge: CI on `003e1f6` green in all five jobs (run 36311405077,
+  `deploy-demo` included); the manual `core-canary` run 36311410478 green in
+  every step with core 0.21.0 admitted, no `core-canary` issue opened.
+- The deployed page, read by an external fetcher without JavaScript: the new
+  title, description, canonical, Open Graph (`og:image` 1200×630) and Twitter
+  card tags, and the intro text with the install and skill commands.
 
 ### Failed
 
@@ -150,9 +157,13 @@ matching npm script, never trigger a release as verification.
 
 ### Blocked or not run
 
-- The canary's live path (`gh issue create` against the real repository)
-  runs only in GitHub Actions; the manual dispatch after the merge proves the
-  green path, the red path is proven by the stubbed tests only.
+- The canary's red path (`gh issue create` against the real repository) is
+  proven by the stubbed tests only; it runs for real the day a core version
+  outside `<0.22.0` appears.
+- `og.png` on the live site: the container's egress proxy denies
+  `shteynu.github.io`, and the external fetcher returns `empty_content` for
+  a binary rather than a status; the file was in `dist/demo/browser` that
+  `deploy-demo` uploaded, and a missing file would have come back as a 404.
 
 ### Environment
 
@@ -183,4 +194,6 @@ None.
 
 ## Next concrete step
 
-Commit and push; fast-forward `main`; dispatch `core-canary.yml` once.
+None. The canary runs daily at 06:17 UTC; its first issue will be the next
+core minor.
+
