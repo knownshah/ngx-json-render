@@ -6,9 +6,9 @@
   archive under `...-skill-check-review-drafts.md`)
 - Base branch: `main`
 - Base commit: `16b5068`
-- Current HEAD: `84e0fcc` (the snippet check) plus the review-fix commit that
-  carries this update
-- Status: in progress
+- Current HEAD: `a0c3ccb` on `main` (`84e0fcc` the check, `3ef5c8a` the review
+  fixes, `a0c3ccb` the fixture fix); this archive commit follows
+- Status: **done** on 2026-09-27; this file is the archived snapshot
 - Last updated: 2026-09-27
 - Last agent/tool: Claude Code
 
@@ -77,21 +77,29 @@ diff against the matching npm script.
 ## Completed
 
 - `scripts/lib/skill-snippets.mjs` (parse, analyze, stitch, map),
-  `scripts/lib/skill-snippets.test.mjs` (six cases),
+  `scripts/lib/skill-snippets.test.mjs` (seven cases),
   `scripts/check-skill-snippets.mjs` (runner), `check:skills` npm script, CI
   step after the Material build, AGENTS.md row and paragraph, README line,
-  snippet fixes in both skills.
+  snippet fixes in both skills (`84e0fcc`).
+- Review of `d0c9d7b..84e0fcc` with the code-review skill: ten findings, all
+  fixed in `3ef5c8a` (canary range across every manifest via
+  `scripts/core-canary-range.mjs` + test, guarded Report step and script,
+  annotated-tag dereference in both release workflows, unterminated fence
+  is an error, ngc through node, dead code, temp dirs, comment, EOF blank
+  lines, task metadata). `3ef5c8a` shipped with a wrong test fixture that
+  `a0c3ccb` corrected; CI on `3ef5c8a` is the one red run on `main` today.
+- Drafts sent to the owner as files: PR #331 comment ("Community renderers"
+  section), maintainers' note (DM and forum versions), a dev.to article
+  built from the compiled snippets, newsletter / Discord / Angular Space /
+  social texts.
 
 ## In progress
 
-Review fixes (this commit).
+(nothing)
 
 ## Remaining
 
-- Review findings, if any, fixed.
-- Drafts (upstream, maintainers, article, newsletters, community) in the
-  scratchpad, sent to the owner.
-- Archive this file.
+(nothing)
 
 ## Changed files
 
@@ -110,24 +118,28 @@ Review fixes (this commit).
 
 ### Passed
 
-- `node --test scripts/lib/skill-snippets.test.mjs`: 6 pass;
-  `npm run test:scripts`: 25 pass, 0 fail.
-- `npm run check:skills` against the built packages: renderer 4 of 6 `ts`
-  blocks compiled (2 fragments), Material 4 of 4; "All 8 snippet modules
-  compile."
-- Failure path: `readonly registry: number = materialRegistry;` planted in
-  the Material skill is reported as
-  `skills/ngx-json-render-material/SKILL.md:41:12 - error TS2322 …` (the
-  right line), exit 1; the skill was restored.
-- `npm run format:check` clean.
+- `npm run test:scripts`: 29 pass (stitcher 7, canary report 6, canary range
+  3, release verdicts 13).
+- `npm run check:skills`: "All 8 snippet modules compile"; a planted type
+  error is reported as `skills/ngx-json-render-material/SKILL.md:41:12`.
+- Tag-step dry run with a stubbed `gh`: missing / same commit / other commit
+  / annotated tag on the same commit behave as intended.
+- `npm run format:check` clean; `git diff --check` clean, including the two
+  archived task files.
+- CI on `main`: `84e0fcc` green (the new "Compile the skills' snippets" step
+  included), `a0c3ccb` green in all five jobs.
+- `core-canary` dispatched on `a0c3ccb` (run 36313559868): range step with
+  both manifests, build, tests and Report all green, no issue opened.
 
 ### Failed
 
-(none)
+- CI on `3ef5c8a`: `test:scripts` failed on the unterminated-fence fixture
+  that closed its block after all; fixed in `a0c3ccb` (see Completed).
 
 ### Blocked or not run
 
-- CI on `main` with the new step: pending the push.
+- The canary's red path and the release workflows' annotated-tag path run
+  for real only when those situations occur; both are covered by dry runs.
 
 ### Environment
 
@@ -136,7 +148,7 @@ Cloud container, Node 22, npm 10.9.7, TypeScript 5.9.3, ngc from
 
 ### Residual risk
 
-- The stitcher resolves references by name only: a snippet that shadows an
+- The stitcher links references by name only: a snippet that shadows an
   earlier top-level name inside a function body is still linked to the
   earlier declaration if it also uses the name outside. Not the case today.
 
@@ -146,5 +158,4 @@ None.
 
 ## Next concrete step
 
-Drafts for the owner (upstream comment, maintainers' note, article,
-newsletter and community blurbs) in the scratchpad; then archive this file.
+None. Posting the drafts is the owner's.
