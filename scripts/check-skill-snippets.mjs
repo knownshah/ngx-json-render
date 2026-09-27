@@ -26,7 +26,7 @@ import {
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
-  isCompiled,
+  isTypeScript,
   mapLocation,
   parseBlocks,
   stitch,
@@ -60,7 +60,13 @@ const generated = [];
 const tsFiles = [];
 for (const skill of skills) {
   const skillPath = `skills/${skill}/SKILL.md`;
-  const blocks = parseBlocks(readFileSync(join(root, skillPath), 'utf8'));
+  let blocks;
+  try {
+    blocks = parseBlocks(readFileSync(join(root, skillPath), 'utf8'));
+  } catch (error) {
+    console.error(`${skillPath}: ${error.message}`);
+    process.exit(1);
+  }
   const { files, skipped } = stitch(blocks, skill);
   for (const f of files) {
     const path = join(outDir, f.name);
@@ -68,13 +74,10 @@ for (const skill of skills) {
     tsFiles.push(path);
   }
   generated.push({ skill, skillPath, files });
-  const total = blocks.filter(
-    (b) => b.lang === 'ts' || b.lang === 'typescript',
-  ).length;
+  const total = blocks.filter(isTypeScript).length;
   console.log(
     `${skillPath}: ${files.length} of ${total} ts blocks compiled, ${skipped} marked fragment`,
   );
-  void isCompiled;
 }
 
 if (tsFiles.length === 0) {
@@ -97,13 +100,19 @@ writeFileSync(
   ),
 );
 
+// Through node rather than the .bin shim, which is a .cmd on Windows that
+// spawnSync will not run without a shell.
 const ngc = join(
   root,
   'node_modules',
-  '.bin',
-  process.platform === 'win32' ? 'ngc.cmd' : 'ngc',
+  '@angular',
+  'compiler-cli',
+  'bundles',
+  'src',
+  'bin',
+  'ngc.js',
 );
-const result = spawnSync(ngc, ['-p', tsconfig], {
+const result = spawnSync(process.execPath, [ngc, '-p', tsconfig], {
   cwd: root,
   encoding: 'utf8',
   env: { ...process.env, FORCE_COLOR: '0', NO_COLOR: '1' },

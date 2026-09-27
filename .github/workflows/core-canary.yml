@@ -30,21 +30,20 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # semver is hoisted to the workspace root by @angular/cli, the same way
-      # scripts/check-peer-ranges.mjs relies on it.
+      # `range` is the peer range on core of every published package; the
+      # script reads them all, because a range widened in one manifest and
+      # forgotten in the other is exactly what this job is for.
       - name: Compare the newest core with the admitted range
         id: range
         run: |
           LATEST=$(npm view @json-render/core version)
-          RANGE=$(node -p "require('./projects/ngx-json-render/package.json').peerDependencies['@json-render/core']")
+          [ -n "$LATEST" ] || { echo "npm view returned no version" >&2; exit 1; }
           PINNED=$(node -p "require('./node_modules/@json-render/core/package.json').version")
-          ADMITTED=$(node -p "require('semver').satisfies('$LATEST', '$RANGE')")
-          echo "newest core $LATEST, admitted range '$RANGE' (admitted: $ADMITTED), workspace pins $PINNED"
+          echo "newest core $LATEST, workspace pins $PINNED"
+          node scripts/core-canary-range.mjs "$LATEST" | tee -a "$GITHUB_OUTPUT"
           {
             echo "latest=$LATEST"
-            echo "range=$RANGE"
             echo "pinned=$PINNED"
-            echo "admitted=$ADMITTED"
           } >>"$GITHUB_OUTPUT"
 
       # --no-save leaves the manifests and the lockfile alone: only
@@ -82,8 +81,11 @@ jobs:
       # closes whatever the canary opened before; anything else opens the
       # issue if it is not open already, then fails the run so the Actions
       # page and the notification say the same thing the issue does.
+      # Not `always()`: when the version lookup itself failed there is nothing
+      # to report and the red run says so; the build and test steps above are
+      # continue-on-error, so their failures still reach this step.
       - name: Report
-        if: always()
+        if: steps.range.outcome == 'success'
         env:
           GH_TOKEN: ${{ github.token }}
           LATEST: ${{ steps.range.outputs.latest }}

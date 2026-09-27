@@ -42,8 +42,12 @@ jobs:
             # A manual run publishes the commit it was started on. The tag may
             # already point there (a rerun); anything else means the version
             # was not bumped.
-            if gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/$TAG" --jq .object.sha >existing 2>/dev/null; then
-              EXISTING=$(cat existing)
+            if gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/$TAG" --jq '.object.type + " " + .object.sha' >existing 2>/dev/null; then
+              read -r KIND EXISTING <existing
+              # An annotated tag's ref points at the tag object; the commit is one step further.
+              if [ "$KIND" = "tag" ]; then
+                EXISTING=$(gh api "repos/$GITHUB_REPOSITORY/git/tags/$EXISTING" --jq .object.sha)
+              fi
               if [ "$EXISTING" != "$GITHUB_SHA" ]; then
                 echo "$TAG already exists at $EXISTING, not at $GITHUB_SHA: bump the version first" >&2
                 exit 1

@@ -5,7 +5,13 @@
  */
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
-import { mkdtempSync, readFileSync, writeFileSync, chmodSync } from 'node:fs';
+import {
+  chmodSync,
+  mkdtempSync,
+  readFileSync,
+  rmSync,
+  writeFileSync,
+} from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { test } from 'node:test';
@@ -50,6 +56,7 @@ exit 0
   try {
     calls = readFileSync(log, 'utf8').trim().split('\n').filter(Boolean);
   } catch {}
+  rmSync(dir, { recursive: true, force: true });
   return {
     status: result.status,
     stdout: result.stdout,

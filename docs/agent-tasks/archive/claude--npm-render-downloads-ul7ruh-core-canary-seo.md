@@ -196,4 +196,3 @@ None.
 
 None. The canary runs daily at 06:17 UTC; its first issue will be the next
 core minor.
-

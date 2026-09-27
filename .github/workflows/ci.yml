@@ -143,8 +143,9 @@ jobs:
       - name: Build library
         run: npm run build:lib
 
-      # Without --coverage, as in angular-compat: thresholds belong to the main
-      # job, which runs on the version the workspace pins.
+      # The library runs without --coverage, as in angular-compat. The catalog's
+      # runner below always collects coverage and checks its thresholds itself
+      # (see AGENTS.md); at the floor they hold with room to spare.
       - name: Test library
         run: npx ng test ngx-json-render
 

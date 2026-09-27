@@ -228,4 +228,3 @@ the registry afterwards: a fresh `npm install ngx-json-render @json-render/core
 zod` resolves 0.7.2 with core 0.21.0; a project on core 0.21.0 installs 0.7.2
 without ERESOLVE; the catalog README's install line resolves 0.3.5 + 0.7.2 +
 core 0.21.0 + Angular 22.2.0; both npm READMEs carry the "Agent skill" section.
-

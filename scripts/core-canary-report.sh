@@ -14,6 +14,11 @@
 set -euo pipefail
 
 LABEL=core-canary
+
+if [ -z "${LATEST:-}" ]; then
+  echo "LATEST is empty: the range step did not run; nothing to report." >&2
+  exit 1
+fi
 FAILED=""
 for pair in $OUTCOMES; do
   case "$pair" in

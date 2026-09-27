@@ -6,7 +6,8 @@
   archive under `...-skill-check-review-drafts.md`)
 - Base branch: `main`
 - Base commit: `16b5068`
-- Current HEAD: `16b5068` — no commits yet
+- Current HEAD: `84e0fcc` (the snippet check) plus the review-fix commit that
+  carries this update
 - Status: in progress
 - Last updated: 2026-09-27
 - Last agent/tool: Claude Code
@@ -83,7 +84,7 @@ diff against the matching npm script.
 
 ## In progress
 
-Review of `d0c9d7b..main`.
+Review fixes (this commit).
 
 ## Remaining
 
@@ -94,7 +95,16 @@ Review of `d0c9d7b..main`.
 
 ## Changed files
 
-(none yet)
+- Commit `84e0fcc`: `scripts/check-skill-snippets.mjs`,
+  `scripts/lib/skill-snippets.mjs`, `scripts/lib/skill-snippets.test.mjs`,
+  `package.json`, `.github/workflows/ci.yml`, `AGENTS.md`, `README.md`, both skills.
+- Review fixes: `.github/workflows/core-canary.yml`,
+  `scripts/core-canary-range.mjs` (new) with
+  `scripts/lib/core-canary-range.test.mjs`, `scripts/core-canary-report.sh`,
+  `scripts/lib/core-canary-report.test.mjs`, `.github/workflows/release.yml`,
+  `.github/workflows/release-material.yml`, `.github/workflows/ci.yml` (a
+  comment), the stitcher, the runner and their tests, the two archived task
+  files.
 
 ## Verification evidence
 
@@ -136,4 +146,5 @@ None.
 
 ## Next concrete step
 
-Write `scripts/check-skill-snippets.mjs`.
+Drafts for the owner (upstream comment, maintainers' note, article,
+newsletter and community blurbs) in the scratchpad; then archive this file.

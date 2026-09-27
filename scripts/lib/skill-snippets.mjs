@@ -48,15 +48,22 @@ export function parseBlocks(markdown) {
       open.codeLines.push(line);
     }
   }
+  if (open) {
+    throw new Error(
+      `unterminated code fence opened at line ${open.fenceLine}: a block that never closes would take every later snippet with it`,
+    );
+  }
   return blocks;
 }
 
-/** The blocks the checker compiles: `ts` (or `typescript`) and not `fragment`. */
+/** Whether a block is TypeScript, compiled or fragment. */
+export function isTypeScript(block) {
+  return block.lang === 'ts' || block.lang === 'typescript';
+}
+
+/** The blocks the checker compiles: TypeScript and not marked `fragment`. */
 export function isCompiled(block) {
-  return (
-    (block.lang === 'ts' || block.lang === 'typescript') &&
-    !block.tokens.includes('fragment')
-  );
+  return isTypeScript(block) && !block.tokens.includes('fragment');
 }
 
 /**
@@ -215,20 +222,14 @@ export function stitch(blocks, skill) {
   let skipped = 0;
   let index = 0;
   for (const block of blocks) {
-    if (block.lang === 'ts' || block.lang === 'typescript') {
-      if (!isCompiled(block)) {
-        skipped++;
-        continue;
-      }
-    } else {
+    if (!isTypeScript(block)) continue;
+    if (!isCompiled(block)) {
+      skipped++;
       continue;
     }
     index++;
     const name = `${skill}.block-${String(index).padStart(2, '0')}`;
-    const { sourceFile, topLevel, free, imports } = analyzeBlock(
-      block.code,
-      `${name}.ts`,
-    );
+    const { topLevel, free, imports } = analyzeBlock(block.code, `${name}.ts`);
 
     // Imports to add, grouped by the providing module.
     /** @type {Map<string, Set<string>>} */
@@ -279,7 +280,6 @@ export function stitch(blocks, skill) {
       fenceLine: block.fenceLine,
       injectedLines: header.length,
     });
-    void sourceFile;
   }
   return { files, skipped };
 }
