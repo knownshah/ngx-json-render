@@ -48,6 +48,12 @@ jobs:
       - name: Build Material catalog
         run: npm run build:material
 
+      # Every TypeScript snippet in skills/*/SKILL.md is compiled against the
+      # two builds above; an agent reads the skill instead of the README, so a
+      # public API change is not done until the skill compiles again.
+      - name: Compile the skills' snippets
+        run: npm run check:skills
+
       # Runs after both builds so it can read the bundles that actually ship,
       # not only the sources. Nothing else fails on an NgZone import, and a
       # suite that forgot provideZonelessChangeDetection() would still be

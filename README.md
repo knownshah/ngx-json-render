@@ -26,6 +26,8 @@ Sources: [`skills/ngx-json-render/SKILL.md`](skills/ngx-json-render/SKILL.md)
 and [`skills/ngx-json-render-material/SKILL.md`](skills/ngx-json-render-material/SKILL.md).
 An agent reads the skill instead of the README, so a change to a package's
 public API or its README is not done until the matching skill says the same.
+CI compiles every TypeScript snippet in both skills against the built
+packages (`npm run check:skills`), so a skill cannot silently fall behind.
 
 ## Workspace layout
 

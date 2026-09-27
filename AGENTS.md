@@ -62,6 +62,7 @@ are the typecheck**, and they are strict — `strict`, `strictTemplates`,
 | `package.json`, `package-lock.json`, Angular version | `npm ci` then the full `npm run build` and `npm test`; for an Angular-version change, a new dev dependency, or a new `test.options` key in `angular.json`, also run the `angular-compat` job's own steps in a throwaway checkout — see below                                        |
 | `@json-render/core` version or its peer range        | `npm ci`, then the full `npm run build` and `npm test` on the version the workspace pins, then the `core-compat` steps at the floor of the range — see below                                                                                                                        |
 | `.github/workflows/**`, release config               | Read the workflow diff against the matching `npm run` script; releases are tag-driven (a manual `workflow_dispatch` run creates the tag itself) and publish to npm — never trigger one as verification; `core-canary.yml` may be dispatched by hand, it only reads and files issues |
+| `skills/**`                                          | `npm run build:lib` and `npm run build:material`, then `npm run check:skills` — every `ts` block in a skill is compiled against the builds; see below                                                                                                                               |
 | Docs only (`README.md`, `docs/**`)                   | `git diff --check` and a link check; no build needed                                                                                                                                                                                                                                |
 
 Coverage: each project declares `coverageThresholds` in `angular.json`,
@@ -73,6 +74,20 @@ killed before the builder's own threshold check would run, so
 `scripts/run-material-tests.mjs` reads the thresholds out of `angular.json`
 and checks them itself. Raise a threshold when a suite clears it with room;
 never lower one to make a red build green.
+
+Skills: `npm run check:skills` (`scripts/check-skill-snippets.mjs`) compiles
+every `ts` block in `skills/*/SKILL.md` with ngc, templates included, against
+`dist/`, because an agent reads the skill instead of the README and a snippet
+that no longer compiles teaches the wrong API. Each block becomes its own
+module under `dist/skill-check/`; a block may use what an earlier block in the
+same skill declared at top level (`catalog`, `registry`, a component class)
+without importing it, and relative imports such as `./catalog` are dropped for
+the same reason — the stitcher (`scripts/lib/skill-snippets.mjs`, tested under
+`npm run test:scripts`) adds the import from the earlier block. A block that is
+an excerpt rather than a module — a server route for another process, a test
+fragment with free variables — carries `fragment` in its info string
+(` ```ts fragment `) and is skipped; keep those few. Errors are reported
+against the skill file and line. CI runs it after both builds.
 
 Formatting: `npm run format:check` (config in `.prettierrc`, exclusions in
 `.prettierignore`). CI runs it, so a failure is something you introduced;

@@ -261,7 +261,7 @@ export class GeneratePage {
 
 Any server that streams text works; `catalog.prompt()` teaches the model the vocabulary and the patch protocol.
 
-```ts
+```ts fragment
 // Express route; injectUIStream sends { prompt, context, currentSpec }
 app.post('/api/generate', async (req, res) => {
   const result = streamText({
@@ -291,7 +291,7 @@ The renderer never executes code from a spec, only dispatches actions you regist
 
 ## Testing (`ngx-json-render/testing`)
 
-```ts
+```ts fragment
 import { recordedTransport, renderComponent, renderSpec, specStream, usageLine } from 'ngx-json-render/testing';
 
 const ui = await renderSpec(spec, { registry: { Button: MyButton } }); // options mirror the renderer's inputs, plus providers

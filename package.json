@@ -16,6 +16,7 @@
     "check:peers": "node scripts/check-peer-ranges.mjs",
     "check:zoneless": "node scripts/check-zoneless.mjs",
     "check:published": "node scripts/check-published-resolution.mjs",
+    "check:skills": "node scripts/check-skill-snippets.mjs",
     "capture:gif": "node scripts/capture-streaming-gif.mjs"
   },
   "private": true,

@@ -181,26 +181,56 @@ A submit button validates every bound field and dispatches only when all pass:
 `materialComponents` is the plain name → component map; swap one entry and keep the rest:
 
 ```ts
-import { defineRegistry } from 'ngx-json-render';
+import { Component } from '@angular/core';
+import { JrChildren, defineRegistry, injectRenderContext } from 'ngx-json-render';
 import { materialCatalog, materialComponents } from 'ngx-json-render-material';
-import { BrandedCard } from './branded-card';
+
+@Component({
+  selector: 'app-branded-card',
+  imports: [JrChildren],
+  template: `
+    <section class="brand-card">
+      @if (ctx.props().title) {
+        <h3>{{ ctx.props().title }}</h3>
+      }
+      <jr-children />
+      <footer><jr-children slot="actions" /></footer>
+    </section>
+  `,
+})
+export class BrandedCard {
+  readonly ctx = injectRenderContext<{ title?: string; subtitle?: string }>();
+}
 
 export const { registry } = defineRegistry(materialCatalog, {
   components: { ...materialComponents, Card: BrandedCard },
 });
 ```
 
-The replacement is a catalog component like any other: it calls `injectRenderContext()` and renders `<jr-children />` for the `default` slot and `<jr-children slot="actions" />` for the footer.
+The replacement is a catalog component like any other: it calls `injectRenderContext()` and renders `<jr-children />` for the `default` slot and `<jr-children slot="actions" />` for the footer, the two slots the catalog declares for `Card`.
 
 ## Extending the vocabulary
 
 `materialCatalog.data.components` holds the definitions. Spread them into your own catalog to add components or actions, register the extra implementations, and prompt with the extended catalog:
 
 ```ts
-import { defineRegistry, schema } from 'ngx-json-render';
+import { Component } from '@angular/core';
+import { defineRegistry, injectRenderContext, schema } from 'ngx-json-render';
 import { materialCatalog, materialComponents } from 'ngx-json-render-material';
 import { z } from 'zod';
-import { Sparkline } from './sparkline';
+
+@Component({
+  selector: 'app-sparkline',
+  template: `<svg viewBox="0 0 100 20"><polyline [attr.points]="points()" fill="none" stroke="currentColor" /></svg>`,
+})
+export class Sparkline {
+  readonly ctx = injectRenderContext<{ values: number[] }>();
+  points(): string {
+    const v = this.ctx.props().values;
+    const max = Math.max(...v, 1);
+    return v.map((y, i) => `${(i / Math.max(v.length - 1, 1)) * 100},${20 - (y / max) * 20}`).join(' ');
+  }
+}
 
 export const catalog = schema.createCatalog({
   components: {
