@@ -10,10 +10,28 @@ Angular renderer for [json-render](https://github.com/vercel-labs/json-render): 
 
 ![A SpecStream of RFC 6902 patches rendering progressively into an Angular dashboard](docs/streaming.gif)
 
+## Agent skills
+
+One skill per published package for AI coding agents — the same idea as
+json-render's own `skills/` directory. The [skills CLI](https://skills.sh)
+installs them into Claude Code, Cursor, Codex and the other agents it
+supports, and the agent then writes catalogs, components and streaming code
+against the real API instead of guessing from the package name:
+
+```bash
+npx skills add shteynu/ngx-json-render --skill ngx-json-render --skill ngx-json-render-material
+```
+
+Sources: [`skills/ngx-json-render/SKILL.md`](skills/ngx-json-render/SKILL.md)
+and [`skills/ngx-json-render-material/SKILL.md`](skills/ngx-json-render-material/SKILL.md).
+An agent reads the skill instead of the README, so a change to a package's
+public API or its README is not done until the matching skill says the same.
+
 ## Workspace layout
 
 - [`projects/ngx-json-render`](projects/ngx-json-render) — the renderer (published as `ngx-json-render`).
 - [`projects/ngx-json-render-material`](projects/ngx-json-render-material) — a ready-made Angular Material catalog of 28 components (published as `ngx-json-render-material`), so a spec can be generated and rendered without writing a catalog first.
+- [`skills`](skills) — agent skills, one per published package (see below).
 - [`projects/demo`](projects/demo) — demo app, four tabs: a playground (edit a spec live, switch catalogs, read `catalog.prompt()`), an interactive spec (state bindings, repeat, confirm, watch), a SpecStream on `injectUIStream` with a stop button, and a chat on `injectChatUI` where prose and patches share one stream. The two streaming tabs swap only their transport between a recorded generation and a live model, so what you watch is the real client either way; the key is held in `sessionStorage` and goes straight from the browser to the provider.
 
 ## Develop

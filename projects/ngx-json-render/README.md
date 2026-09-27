@@ -29,6 +29,19 @@ in no source file, and neither in the published bundles; every suite runs under
 statement of intent — which matters because zoneless is the default for new
 applications from Angular 21 on.
 
+## Agent skill
+
+Using an AI coding agent (Claude Code, Cursor, Codex, …)? Install the skill
+that teaches it this package's API, so the catalogs, components and streaming
+code it writes compile against what actually ships:
+
+```bash
+npx skills add shteynu/ngx-json-render --skill ngx-json-render
+```
+
+The source is [`skills/ngx-json-render/SKILL.md`](https://github.com/shteynu/ngx-json-render/blob/main/skills/ngx-json-render/SKILL.md);
+the Material catalog has one too (`--skill ngx-json-render-material`).
+
 ## The shortest path: a ready-made catalog
 
 Writing a catalog is the honest first step, but you do not have to take it to

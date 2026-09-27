@@ -14,6 +14,19 @@ npm install ngx-json-render-material ngx-json-render @json-render/core @angular/
 
 Requires Angular ≥ 20. Your app needs a Material theme and the icon font as usual — see [Angular Material theming](https://material.angular.dev/guide/theming).
 
+## Agent skill
+
+Using an AI coding agent (Claude Code, Cursor, Codex, …)? Install the skill
+that teaches it this catalog — every component, its props, its events and the
+validation contract — so the specs and overrides it writes match what ships:
+
+```bash
+npx skills add shteynu/ngx-json-render --skill ngx-json-render-material
+```
+
+The source is [`skills/ngx-json-render-material/SKILL.md`](https://github.com/shteynu/ngx-json-render/blob/main/skills/ngx-json-render-material/SKILL.md);
+the renderer's skill is `--skill ngx-json-render`.
+
 ## Use
 
 ```ts
