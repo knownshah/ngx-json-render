@@ -53,16 +53,16 @@ lint script and no separate typecheck script in this workspace: **the builds
 are the typecheck**, and they are strict — `strict`, `strictTemplates`,
 `noPropertyAccessFromIndexSignature` and friends are on in `tsconfig.json`.
 
-| Changed area                                         | Commands                                                                                                                                                                                                                                     |
-| ---------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `projects/ngx-json-render`                           | `npm run build:lib` then `npx ng test ngx-json-render --coverage`; when the public API changed, also `npm run build:material` and `npx ng build demo`                                                                                        |
-| `projects/ngx-json-render-material`                  | `npm run build:lib`, then `npm run build:material` — the build type-checks every catalog template — and `npm run test:material`                                                                                                              |
-| `projects/demo`                                      | `npm run build:lib` **and** `npm run build:material` — the demo's playground renders the Material catalog — then `npx ng test demo --coverage` and `npx ng build demo`. A stale `dist/` hides a missing build step locally; CI starts empty  |
-| Public API, exports or the JSON spec/contract        | The full `npm run build` and `npm test`, plus a read of the affected `README.md` — a contract change that the docs still describe the old way is not done                                                                                    |
-| `package.json`, `package-lock.json`, Angular version | `npm ci` then the full `npm run build` and `npm test`; for an Angular-version change, a new dev dependency, or a new `test.options` key in `angular.json`, also run the `angular-compat` job's own steps in a throwaway checkout — see below |
-| `@json-render/core` version or its peer range        | `npm ci`, then the full `npm run build` and `npm test` on the version the workspace pins, then the `core-compat` steps at the floor of the range — see below                                                                                 |
-| `.github/workflows/**`, release config               | Read the workflow diff against the matching `npm run` script; releases are tag-driven (a manual `workflow_dispatch` run creates the tag itself) and publish to npm — never trigger one as verification                                       |
-| Docs only (`README.md`, `docs/**`)                   | `git diff --check` and a link check; no build needed                                                                                                                                                                                         |
+| Changed area                                         | Commands                                                                                                                                                                                                                                                                            |
+| ---------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `projects/ngx-json-render`                           | `npm run build:lib` then `npx ng test ngx-json-render --coverage`; when the public API changed, also `npm run build:material` and `npx ng build demo`                                                                                                                               |
+| `projects/ngx-json-render-material`                  | `npm run build:lib`, then `npm run build:material` — the build type-checks every catalog template — and `npm run test:material`                                                                                                                                                     |
+| `projects/demo`                                      | `npm run build:lib` **and** `npm run build:material` — the demo's playground renders the Material catalog — then `npx ng test demo --coverage` and `npx ng build demo`. A stale `dist/` hides a missing build step locally; CI starts empty                                         |
+| Public API, exports or the JSON spec/contract        | The full `npm run build` and `npm test`, plus a read of the affected `README.md` — a contract change that the docs still describe the old way is not done                                                                                                                           |
+| `package.json`, `package-lock.json`, Angular version | `npm ci` then the full `npm run build` and `npm test`; for an Angular-version change, a new dev dependency, or a new `test.options` key in `angular.json`, also run the `angular-compat` job's own steps in a throwaway checkout — see below                                        |
+| `@json-render/core` version or its peer range        | `npm ci`, then the full `npm run build` and `npm test` on the version the workspace pins, then the `core-compat` steps at the floor of the range — see below                                                                                                                        |
+| `.github/workflows/**`, release config               | Read the workflow diff against the matching `npm run` script; releases are tag-driven (a manual `workflow_dispatch` run creates the tag itself) and publish to npm — never trigger one as verification; `core-canary.yml` may be dispatched by hand, it only reads and files issues |
+| Docs only (`README.md`, `docs/**`)                   | `git diff --check` and a link check; no build needed                                                                                                                                                                                                                                |
 
 Coverage: each project declares `coverageThresholds` in `angular.json`,
 scoped to its own sources by `coverageInclude`. They are only enforced when
@@ -195,6 +195,18 @@ both packages. Locally, the job's steps are
     npm run build:lib && npx ng test ngx-json-render
     npm run build:material && npm run test:material
     npm ci   # back to the lockfile
+
+`core-canary.yml` is the other half of that: `core-compat` proves the floor of
+the range on every push, the canary proves the newest published core against
+`main` every night (`npm install --no-save @json-render/core@latest
+@json-render/directives@latest`, then the same build and test steps). When the
+newest core is outside the admitted range, or the suite fails against it, the
+run goes red and `scripts/core-canary-report.sh` opens one issue per core
+version, labelled `core-canary`, with the outcome and the procedure above; the
+first green run afterwards closes it. The decision logic is a script so that
+`scripts/lib/core-canary-report.test.mjs` can dry-run it with a stubbed `gh`
+under `npm run test:scripts`. A red canary is a to-do, not a broken build:
+nothing on `main` changed.
 
 Deployment: pushing to `main` deploys the demo to GitHub Pages via
 `.github/workflows/ci.yml`. Treat `main` as deployed state.

@@ -1,0 +1,95 @@
+name: Core canary
+
+# Watches @json-render/core for a version the packages do not admit yet.
+# Upstream ships a core minor every two or three weeks. `core-compat` in
+# ci.yml proves the floor of the admitted peer range on every push; this
+# proves the newest release against the same commit on a schedule, so the
+# next minor shows up here as an issue before it shows up as an ERESOLVE in
+# someone's project. The run is red whenever the issue is open, and the next
+# green run closes it.
+on:
+  schedule:
+    - cron: '17 6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  canary:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      # semver is hoisted to the workspace root by @angular/cli, the same way
+      # scripts/check-peer-ranges.mjs relies on it.
+      - name: Compare the newest core with the admitted range
+        id: range
+        run: |
+          LATEST=$(npm view @json-render/core version)
+          RANGE=$(node -p "require('./projects/ngx-json-render/package.json').peerDependencies['@json-render/core']")
+          PINNED=$(node -p "require('./node_modules/@json-render/core/package.json').version")
+          ADMITTED=$(node -p "require('semver').satisfies('$LATEST', '$RANGE')")
+          echo "newest core $LATEST, admitted range '$RANGE' (admitted: $ADMITTED), workspace pins $PINNED"
+          {
+            echo "latest=$LATEST"
+            echo "range=$RANGE"
+            echo "pinned=$PINNED"
+            echo "admitted=$ADMITTED"
+          } >>"$GITHUB_OUTPUT"
+
+      # --no-save leaves the manifests and the lockfile alone: only
+      # node_modules changes, as in core-compat.
+      - name: Install the newest core and directives
+        id: install
+        continue-on-error: true
+        run: npm install --no-save --no-audit --no-fund @json-render/core@latest @json-render/directives@latest
+
+      - name: Build library
+        id: build_lib
+        if: steps.install.outcome == 'success'
+        continue-on-error: true
+        run: npm run build:lib
+
+      - name: Test library
+        id: test_lib
+        if: steps.build_lib.outcome == 'success'
+        continue-on-error: true
+        run: npx ng test ngx-json-render
+
+      - name: Build Material catalog
+        id: build_material
+        if: steps.build_lib.outcome == 'success'
+        continue-on-error: true
+        run: npm run build:material
+
+      - name: Test Material catalog
+        id: test_material
+        if: steps.build_material.outcome == 'success'
+        continue-on-error: true
+        run: npm run test:material
+
+      # One issue per newest version, labelled core-canary. Green and admitted
+      # closes whatever the canary opened before; anything else opens the
+      # issue if it is not open already, then fails the run so the Actions
+      # page and the notification say the same thing the issue does.
+      - name: Report
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          LATEST: ${{ steps.range.outputs.latest }}
+          RANGE: ${{ steps.range.outputs.range }}
+          PINNED: ${{ steps.range.outputs.pinned }}
+          ADMITTED: ${{ steps.range.outputs.admitted }}
+          OUTCOMES: 'install=${{ steps.install.outcome }} build_lib=${{ steps.build_lib.outcome }} test_lib=${{ steps.test_lib.outcome }} build_material=${{ steps.build_material.outcome }} test_material=${{ steps.test_material.outcome }}'
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: bash scripts/core-canary-report.sh
