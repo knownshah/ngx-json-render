@@ -5,7 +5,8 @@
 - Branch: `claude/npm-render-downloads-ul7ruh`
 - Base branch: `main`
 - Base commit: `d0c9d7b` (Release ngx-json-render 0.7.1)
-- Current HEAD: the commit that carries this file (one commit on top of `d0c9d7b`)
+- Current HEAD: the second commit on top of `d0c9d7b` (`7acd1f8` added the
+  skills; the next one shortened the renderer skill and updated this file)
 - Status: done — committed and pushed; waiting on the owner to open a PR or merge
 - Last updated: 2026-09-27
 - Last agent/tool: Claude Code
@@ -91,8 +92,9 @@ via `npm run format:check`. No build needed.
 
 - Research: upstream skill layout, skills CLI discovery rules, public API of
   both packages.
-- `skills/ngx-json-render/SKILL.md` (492 lines) and
-  `skills/ngx-json-render-material/SKILL.md` (231 lines).
+- `skills/ngx-json-render/SKILL.md` (326 lines, cut from a 492-line first
+  draft at the owner's request) and `skills/ngx-json-render-material/SKILL.md`
+  (231 lines).
 - "Agent skills" section in the root README (plus a `skills/` row in the
   workspace layout) and an "Agent skill" section in both package READMEs.
 
@@ -123,6 +125,8 @@ via `npm run format:check`. No build needed.
   a deliberate `const x: number = 'x'` in one of them made the same build
   fail, proving the files were type-checked. The files were deleted before
   the commit.
+  Repeated for the shortened renderer skill: its snippets were recompiled
+  the same way before the second commit.
 - `npx skills add ./ --list` (skills CLI 1.7.0) lists `ngx-json-render`,
   `ngx-json-render-material`, `task-tracker`, `verification`.
 - `npm run format:check`: all matched files use Prettier code style.
