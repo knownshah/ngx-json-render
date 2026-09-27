@@ -140,9 +140,7 @@ test('a block that redeclares a name keeps its own declaration', () => {
 test('a fence that never closes is an error, not a silently shorter skill', () => {
   assert.throws(
     () =>
-      parseBlocks(
-        '# x\n\n```ts\nconst a = 1;\n```` \n\n```ts\nconst b = 2;\n```\n',
-      ),
+      parseBlocks('# x\n\n```ts\nconst a = 1;\n```` \n\n```ts\nconst b = 2;\n'),
     /unterminated code fence opened at line 3/,
   );
 });
