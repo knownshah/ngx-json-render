@@ -100,6 +100,15 @@ input), `projects/ngx-json-render/src/lib/directives.spec.ts`,
   dependency is `^0.21.0`.
 - Docs keep saying `DirectiveDefinition[]` for the input; the generic is an
   implementation detail.
+- Tags cannot be pushed from this container (the session's git proxy
+  answers `HTTP 403` to `refs/tags/*` pushes; branch pushes work), so both
+  release workflows gained `workflow_dispatch`: a separate `tag` job with
+  `contents: write` (and no npm credentials) derives the tag from the
+  manifest, creates it with the workflow token (which starts no second run),
+  refuses a tag that already exists on another commit, and hands the name to
+  the publish and release jobs. A tag push goes through the same graph. The
+  step logic was dry-run locally with a stubbed `gh` for both events and the
+  three tag states.
 
 ## Assumptions
 
@@ -124,9 +133,10 @@ input), `projects/ngx-json-render/src/lib/directives.spec.ts`,
 
 ## Remaining
 
-- Owner go-ahead; fast-forward `main`; CI green there; tags `v0.7.2`, then
-  `material-v0.3.5` (renderer first, catalog after); both release workflows
-  run `check:published` after publishing.
+- Dispatch **Release** on `main` (the `tag` job creates `v0.7.2`), wait for
+  the publish and `check:published`; then dispatch **Release Material
+  catalog** (creates `material-v0.3.5`); verify both on npm; archive this
+  file under a distinct name.
 
 ## Changed files
 

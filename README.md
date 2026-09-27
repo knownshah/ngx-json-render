@@ -64,6 +64,14 @@ git tag material-v0.x.y && git push origin main material-v0.x.y
 Each workflow verifies the tag matches the package version, builds, runs that
 project's tests, publishes to npm, and creates the GitHub release.
 
+Both workflows can also be started by hand, for a machine that cannot push
+tags: **Actions → Release** (or **Release Material catalog**) → **Run
+workflow** on the branch holding the version bump, normally `main`. The
+workflow then derives the tag from the manifest (`v<version>` or
+`material-v<version>`), creates it on the commit it runs on, and continues
+exactly as a tag push would; a tag that already exists on another commit
+fails the run instead of publishing, so a forgotten bump cannot ship twice.
+
 One-time setup on npmjs.com, **per package** — configuring one does not cover the
 other, and a package with no connection gets no credentials at all in Actions and
 fails with `ENEEDAUTH`. Under package **Settings → Trusted Publisher → GitHub
