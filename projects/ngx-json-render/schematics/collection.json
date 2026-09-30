@@ -1,0 +1,9 @@
+{
+  "$schema": "../../../node_modules/@angular-devkit/schematics/collection-schema.json",
+  "schematics": {
+    "ng-add": {
+      "description": "Adds ngx-json-render's peer dependencies (@json-render/core and zod) to the workspace.",
+      "factory": "./ng-add/index.cjs#ngAdd"
+    }
+  }
+}

@@ -1,0 +1,16 @@
+/* Compiled by scripts/build-schematics.mjs into dist/ngx-json-render-material/schematics. */
+{
+  "compilerOptions": {
+    "strict": true,
+    "noImplicitReturns": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "skipLibCheck": true,
+    "target": "ES2022",
+    "module": "commonjs",
+    "moduleResolution": "node10",
+    "types": [],
+    "rootDir": ".",
+    "outDir": "../../../dist/ngx-json-render-material/schematics"
+  },
+  "include": ["**/*.cts"]
+}

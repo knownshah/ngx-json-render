@@ -54,6 +54,12 @@ jobs:
       - name: Compile the skills' snippets
         run: npm run check:skills
 
+      # `ng add` for both packages, run against a generated Angular workspace.
+      # The schematics are compiled by build:lib and build:material into the
+      # dist folders the tests load, so this has to come after both builds.
+      - name: Test the ng add schematics
+        run: npm run test:schematics
+
       # Runs after both builds so it can read the bundles that actually ship,
       # not only the sources. Nothing else fails on an NgZone import, and a
       # suite that forgot provideZonelessChangeDetection() would still be

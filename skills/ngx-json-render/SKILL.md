@@ -13,6 +13,8 @@ Angular renderer for [json-render](https://github.com/vercel-labs/json-render): 
 npm install ngx-json-render @json-render/core zod
 ```
 
+In an Angular CLI workspace, `ng add ngx-json-render` does the same.
+
 Peer dependencies: `@angular/core` and `@angular/common` `>=20`, `@json-render/core` 0.20 or 0.21, `zod ^4`. `ngx-json-render-material` adds a ready 28-component Angular Material catalog (`materialRegistry`, `materialCatalog.prompt()`); see its skill.
 
 ## Quick Start

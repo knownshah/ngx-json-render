@@ -10,8 +10,14 @@ description: Angular Material catalog for ngx-json-render. Use when rendering js
 ## Installation
 
 ```bash
-npm install ngx-json-render-material ngx-json-render @json-render/core @angular/material zod
+ng add ngx-json-render-material
 ```
+
+`ng add` adds the renderer, `@json-render/core`, `zod`, and — when the
+workspace has none — Angular Material at the workspace's Angular version,
+then runs Material's own `ng add` (theme, typography, icon font). Installing
+by hand, pin Material to the Angular major (`@angular/material@21` on Angular
+21); a bare `@angular/material` resolves to the newest major and `ERESOLVE`s.
 
 Angular ≥ 20. These are real Material components: the app needs a Material theme and the Material Symbols icon font, as any Material app does (see [Angular Material theming](https://material.angular.dev/guide/theming)).
 

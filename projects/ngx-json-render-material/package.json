@@ -32,8 +32,20 @@
     "ngx-json-render": "^0.7.0",
     "zod": "^4.0.0"
   },
+  "peerDependenciesMeta": {
+    "@angular/cdk": {
+      "optional": true
+    },
+    "@angular/material": {
+      "optional": true
+    }
+  },
   "dependencies": {
     "tslib": "^2.3.0"
   },
-  "sideEffects": false
+  "sideEffects": false,
+  "schematics": "./schematics/collection.json",
+  "ng-add": {
+    "save": "dependencies"
+  }
 }

@@ -6,6 +6,8 @@ Angular renderer for [json-render](https://github.com/vercel-labs/json-render): 
 
 **→ Package documentation: [`projects/ngx-json-render/README.md`](projects/ngx-json-render/README.md)**
 
+**→ Compared with Hashbrown, the other generative-UI library for Angular: [ngx-json-render or Hashbrown?](projects/ngx-json-render/README.md#ngx-json-render-or-hashbrown)**
+
 **→ Live demo: <https://shteynu.github.io/ngx-json-render/>** — four tabs: a playground that renders a spec you edit by hand against either catalog and shows the system prompt a model would receive; an interactive spec (bindings, repeat, confirm, watch); a SpecStream rendering progressively, which you can stop mid-generation and inspect half-built; and a chat where prose and UI patches arrive in the same reply. The last two replay a recording by default and call a real model if you paste in your own key — or [![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/shteynu/ngx-json-render)
 
 ![A SpecStream of RFC 6902 patches rendering progressively into an Angular dashboard](docs/streaming.gif)

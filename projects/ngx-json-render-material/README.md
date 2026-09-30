@@ -9,10 +9,31 @@ Angular Material catalog for [`ngx-json-render`](https://www.npmjs.com/package/n
 ## Install
 
 ```bash
-npm install ngx-json-render-material ngx-json-render @json-render/core @angular/material zod
+ng add ngx-json-render-material
 ```
 
-Requires Angular ≥ 20 and `@json-render/core` 0.20 or 0.21. Your app needs a Material theme and the icon font as usual — see [Angular Material theming](https://material.angular.dev/guide/theming).
+That adds the renderer, `@json-render/core` and `zod` at the ranges this
+package admits, and — when the workspace has no Angular Material yet — adds
+Material at your Angular version and runs Material's own `ng add`, which sets
+up the theme, typography and icon font the components need. A workspace that
+already has Material keeps its setup as it is.
+
+Or by hand — pin Material to your Angular major (`@angular/material@21` on
+Angular 21): a bare `@angular/material` resolves to the newest major, whose
+peers reject an older Angular with `ERESOLVE`.
+
+```bash
+npm install ngx-json-render-material ngx-json-render @json-render/core zod @angular/material@<your Angular major>
+```
+
+Requires Angular ≥ 20 and `@json-render/core` 0.20 or 0.21. Installed by hand,
+your app needs a Material theme and the icon font as usual — see
+[Angular Material theming](https://material.angular.dev/guide/theming).
+
+Bundle size: Angular Material and `zod` put a new app's initial bundle at
+about 1.3 MB raw (≈250 kB transferred), which is over the 1 MB error budget
+`ng new` writes into `angular.json`. Raise `maximumError` there, or render
+specs in a lazy-loaded route.
 
 ## Agent skill
 
