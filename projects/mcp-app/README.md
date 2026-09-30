@@ -10,13 +10,13 @@ not beside it. That package ships the server side (the `render-ui` tool and
 the `ui://` resource) and a React hook, `useJsonRenderApp`, for the view in
 the iframe. This project adds the missing Angular piece:
 
-| Piece                          | React (upstream)               | Angular (here)                                       |
-| ------------------------------ | ------------------------------ | ---------------------------------------------------- |
-| MCP server, tool, `ui://` view | `@json-render/mcp`             | the same, see [`server/server.ts`](server/server.ts) |
-| View: connect to the host      | `useJsonRenderApp()`           | `injectJsonRenderApp()`, signals                     |
-| View: render the spec          | `<Renderer>` + shadcn registry | `<json-render>` + `materialRegistry`                 |
-| Render while the model writes  | no, waits for the tool result  | yes, from `toolinputpartial` (`streamPartialInput`)  |
-| Host theme                     | not handled                    | follows `theme` from the host context                |
+| Piece                          | React (upstream)               | Angular (here)                                      |
+| ------------------------------ | ------------------------------ | --------------------------------------------------- |
+| MCP server, tool, `ui://` view | `@json-render/mcp`             | the same, see [`server/app.ts`](server/app.ts)      |
+| View: connect to the host      | `useJsonRenderApp()`           | `injectJsonRenderApp()`, signals                    |
+| View: render the spec          | `<Renderer>` + shadcn registry | `<json-render>` + `materialRegistry`                |
+| Render while the model writes  | no, waits for the tool result  | yes, from `toolinputpartial` (`streamPartialInput`) |
+| Host theme                     | not handled                    | follows `theme` from the host context               |
 
 ## Run it
 
@@ -57,8 +57,13 @@ dashboard of my last three releases".
 - `scripts/build-mcp-app.mjs`: hosts load a `ui://` resource as one HTML
   document, so the script folds Angular's chunks into one inline module and
   inlines the styles. It then type-checks and bundles the server.
-- `server/server.ts`: uses upstream's `registerJsonRenderResource` for the view
-  and registers the tool the way `createMcpApp` does, with one fix, below.
+- `server/app.ts`: registers the tool the way `createMcpApp` does, with one
+  fix (below), a read-only annotation, and a CSP that allows only Google Fonts
+  instead of any `https:` origin. It serves Streamable HTTP statelessly.
+- `server/server.ts`: stdio and a local HTTP server. `server/vercel.ts`: the
+  hosted endpoint. `npm run build:mcp-app -- --vercel` bundles it, with every
+  dependency and the view inlined, into `.vercel/output`, and `vercel.json`
+  builds it that way on every push to `main`.
 
 The server imports the Material catalog from source
 (`projects/ngx-json-render-material/src/lib/catalog.ts`). The published bundle
@@ -80,7 +85,7 @@ _always_ send `state` for data-backed UI, so tables and lists arrive empty,
 and no button does anything. The React schema has the same shape, so this is
 not specific to Angular.
 
-`specInputSchema()` in `server/server.ts` works around it: the spec and element
+`specInputSchema()` in `server/app.ts` works around it: the spec and element
 objects keep unknown keys, `state` is declared so the model sees it in the
 tool's JSON Schema, and components and props stay typed, so an unknown
 component type is still rejected. Once upstream fixes it, the server can go

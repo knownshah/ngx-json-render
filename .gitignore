@@ -49,3 +49,4 @@ Thumbs.db
 # Marketing / outreach drafts — local only, never committed.
 # Code-facing docs (and docs/streaming.gif, used by the READMEs) stay tracked.
 docs/*.local.md
+.vercel

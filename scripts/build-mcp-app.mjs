@@ -3,12 +3,16 @@
 //   view.html   the Angular view as one self-contained page — MCP hosts load a
 //               `ui://` resource as a single HTML document, so scripts and
 //               styles are inlined
-//   server.mjs  the MCP server (`createMcpApp` from @json-render/mcp)
+//   server.mjs  the MCP server, for stdio or a local HTTP server
+//
+// With --vercel it also writes .vercel/output (Vercel's Build Output API): the
+// hosted /mcp endpoint as one Node.js function with every dependency and the
+// view bundled in, plus a landing page. `vercel.json` runs it that way.
 //
 // Needs dist/ngx-json-render and dist/ngx-json-render-material, like the demo
 // (`npm run build:lib && npm run build:material`).
 import { execFileSync } from 'node:child_process';
-import { readFileSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import { join } from 'node:path';
 import { build } from 'esbuild';
@@ -58,6 +62,12 @@ replace(
 );
 writeFileSync(join(out, 'view.html'), html);
 
+// The catalog's only import from the renderer is its schema, which needs
+// nothing but @json-render/core.
+const alias = {
+  'ngx-json-render': './projects/ngx-json-render/src/lib/schema.ts',
+};
+
 await build({
   entryPoints: ['projects/mcp-app/server/server.ts'],
   outfile: join(out, 'server.mjs'),
@@ -65,11 +75,53 @@ await build({
   platform: 'node',
   format: 'esm',
   packages: 'external',
-  // The catalog's only import from the renderer is its schema, which needs
-  // nothing but @json-render/core.
-  alias: { 'ngx-json-render': './projects/ngx-json-render/src/lib/schema.ts' },
+  alias,
   logLevel: 'warning',
 });
+
+if (process.argv.includes('--vercel')) {
+  const output = join('.vercel', 'output');
+  const func = join(output, 'functions', 'mcp.func');
+  rmSync(output, { recursive: true, force: true });
+  mkdirSync(func, { recursive: true });
+  mkdirSync(join(output, 'static'), { recursive: true });
+
+  await build({
+    entryPoints: ['projects/mcp-app/server/vercel.ts'],
+    outfile: join(func, 'index.mjs'),
+    bundle: true,
+    platform: 'node',
+    target: 'node22',
+    format: 'esm',
+    minify: true,
+    alias: { ...alias, 'mcp-app-view.html': `./${out}/view.html` },
+    loader: { '.html': 'text' },
+    // Some CommonJS dependencies call require(); give the ESM bundle one.
+    banner: {
+      js: "import { createRequire } from 'node:module'; const require = createRequire(import.meta.url);",
+    },
+    logLevel: 'warning',
+  });
+  writeFileSync(
+    join(func, '.vc-config.json'),
+    JSON.stringify({
+      runtime: 'nodejs22.x',
+      handler: 'index.mjs',
+      launcherType: 'Nodejs',
+      shouldAddHelpers: false,
+      maxDuration: 30,
+    }),
+  );
+  writeFileSync(
+    join(output, 'static', 'index.html'),
+    readFileSync('projects/mcp-app/server/landing.html', 'utf8'),
+  );
+  writeFileSync(
+    join(output, 'config.json'),
+    JSON.stringify({ version: 3, routes: [{ handle: 'filesystem' }] }),
+  );
+  console.log(`Built ${output} for Vercel`);
+}
 
 console.log(
   `Built ${join(out, 'view.html')} (${Math.round(html.length / 1024)} kB) and ${join(out, 'server.mjs')}`,
