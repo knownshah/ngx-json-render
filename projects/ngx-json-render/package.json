@@ -22,8 +22,8 @@
     "url": "https://github.com/shteynu/ngx-json-render/issues"
   },
   "peerDependencies": {
-    "@angular/common": ">=20.0.0",
-    "@angular/core": ">=20.0.0",
+    "@angular/common": ">=19.0.0",
+    "@angular/core": ">=19.0.0",
     "@json-render/core": ">=0.20.0 <0.22.0",
     "zod": "^4.0.0"
   },

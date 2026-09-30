@@ -1,4 +1,5 @@
-import { type Provider, provideZonelessChangeDetection } from '@angular/core';
+import * as angularCore from '@angular/core';
+import type { EnvironmentProviders, Provider } from '@angular/core';
 import { type ComponentFixture, TestBed } from '@angular/core/testing';
 
 /**
@@ -7,6 +8,33 @@ import { type ComponentFixture, TestBed } from '@angular/core/testing';
  *
  * @internal Not exported from the entry point.
  */
+
+/**
+ * Zoneless change detection, under whichever name this Angular exports it.
+ *
+ * Angular 19 calls it `provideExperimentalZonelessChangeDetection`, 20 renamed
+ * it `provideZonelessChangeDetection`, and 21 dropped the old name. The peer
+ * range spans both, so neither can be a named import: whichever one the
+ * consumer's Angular lacks would fail their bundler with a missing export.
+ * `core` is a parameter only so the fallback can be tested on a newer Angular.
+ */
+export function zonelessChangeDetection(
+  core: object = angularCore,
+): EnvironmentProviders {
+  const named = core as Record<
+    string,
+    (() => EnvironmentProviders) | undefined
+  >;
+  const provide =
+    named['provideZonelessChangeDetection'] ??
+    named['provideExperimentalZonelessChangeDetection'];
+  if (!provide) {
+    throw new Error(
+      'ngx-json-render/testing: this @angular/core exports no zoneless change detection provider.',
+    );
+  }
+  return provide();
+}
 
 /**
  * Configure the TestBed, unless the test already did.
@@ -19,7 +47,7 @@ import { type ComponentFixture, TestBed } from '@angular/core/testing';
 export function configureTestBed(caller: string, providers: Provider[]): void {
   try {
     TestBed.configureTestingModule({
-      providers: [provideZonelessChangeDetection(), ...providers],
+      providers: [zonelessChangeDetection(), ...providers],
     });
   } catch {
     if (providers.length > 0) {

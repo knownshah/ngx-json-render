@@ -264,7 +264,10 @@ export class JsonRenderer {
    * one token wide instead of a component contract the renderer would have to
    * bind to.
    */
-  protected readonly confirmInjector = computed(() => {
+  // Typed as Injector, not left to inference: Angular 20+ infers its
+  // `DestroyableInjector`, which Angular 19's typings do not export, and the
+  // inferred type would land in the published declarations.
+  protected readonly confirmInjector = computed((): Injector | null => {
     const config = this.pendingConfirm();
     if (!config) return null;
     const context: ConfirmContext = {

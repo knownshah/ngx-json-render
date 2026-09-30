@@ -105,7 +105,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        angular: [20, 22]
+        angular: [19, 20, 22]
     steps:
       - uses: actions/checkout@v7
 
@@ -122,11 +122,46 @@ jobs:
       - name: Build library
         run: npx ng build ngx-json-render
 
+      # Angular 19 has no unit-test builder, so on that line the library is
+      # only built here; consumer-smoke runs it in a browser instead.
       - name: Test library
+        if: matrix.angular != 19
         run: npx ng test ngx-json-render
 
+      # The catalog's own floor is Angular 20: it uses Material 20's button API.
       - name: Build Material catalog
+        if: matrix.angular != 19
         run: npx ng build ngx-json-render-material
+
+  # angular-compat compiles the sources on each line. What ships is the
+  # package built on the pinned line, linked by the consumer's compiler and
+  # type-checked by the consumer's TypeScript — this job installs exactly that
+  # into a fresh app and drives it in Chrome.
+  consumer-smoke:
+    name: Consumer app on Angular ${{ matrix.angular }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        angular: [19, 20, 22]
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build library
+        run: npm run build:lib
+
+      - name: Build and drive a consumer app
+        run: node scripts/consumer-smoke.mjs ${{ matrix.angular }}
+        env:
+          CHROMIUM_PATH: /usr/bin/google-chrome
 
   core-compat:
     name: '@json-render/core ${{ matrix.core }} compatibility'
