@@ -1,0 +1,9 @@
+/* Type-checks the MCP server; `npm run build:mcp-app` runs it before esbuild bundles the server. */
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "types": ["node"]
+  },
+  "files": ["server/server.ts"]
+}

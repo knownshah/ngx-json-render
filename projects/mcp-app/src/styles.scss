@@ -1,0 +1,22 @@
+@use '@angular/material' as mat;
+
+// Both palettes in one pass; the app sets `color-scheme` from the host's
+// theme, which picks one.
+html {
+  color-scheme: light dark;
+
+  @include mat.theme(
+    (
+      color: mat.$azure-palette,
+      typography: Roboto,
+      density: 0,
+    )
+  );
+}
+
+body {
+  margin: 0;
+  background: transparent;
+  color: var(--mat-sys-on-surface);
+  font-family: Roboto, system-ui, sans-serif;
+}

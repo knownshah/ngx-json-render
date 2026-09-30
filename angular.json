@@ -157,6 +157,67 @@
           }
         }
       }
+    },
+    "mcp-app": {
+      "projectType": "application",
+      "schematics": {},
+      "root": "projects/mcp-app",
+      "sourceRoot": "projects/mcp-app/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:application",
+          "options": {
+            "browser": "projects/mcp-app/src/main.ts",
+            "tsConfig": "projects/mcp-app/tsconfig.app.json",
+            "styles": [
+              "projects/mcp-app/src/styles.scss"
+            ],
+            "outputPath": "dist/mcp-app/angular",
+            "outputHashing": "none"
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "1.5MB",
+                  "maximumError": "2MB"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "4kB",
+                  "maximumError": "8kB"
+                }
+              ]
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "coverageInclude": [
+              "projects/mcp-app/src/**"
+            ],
+            "coverageExclude": [
+              "projects/mcp-app/src/index.html",
+              "projects/mcp-app/src/main.ts"
+            ],
+            "coverageThresholds": {
+              "statements": 95,
+              "branches": 90,
+              "functions": 90,
+              "lines": 95
+            }
+          }
+        }
+      }
     }
   }
 }

@@ -1,0 +1,76 @@
+// Builds the MCP App example into dist/mcp-app:
+//
+//   view.html   the Angular view as one self-contained page — MCP hosts load a
+//               `ui://` resource as a single HTML document, so scripts and
+//               styles are inlined
+//   server.mjs  the MCP server (`createMcpApp` from @json-render/mcp)
+//
+// Needs dist/ngx-json-render and dist/ngx-json-render-material, like the demo
+// (`npm run build:lib && npm run build:material`).
+import { execFileSync } from 'node:child_process';
+import { readFileSync, writeFileSync } from 'node:fs';
+import { createRequire } from 'node:module';
+import { join } from 'node:path';
+import { build } from 'esbuild';
+
+const out = join('dist', 'mcp-app');
+const browser = join(out, 'angular', 'browser');
+const require = createRequire(import.meta.url);
+const run = (bin, args) =>
+  execFileSync(process.execPath, [require.resolve(bin), ...args], {
+    stdio: 'inherit',
+  });
+
+run('@angular/cli/bin/ng.js', ['build', 'mcp-app']);
+// esbuild does not type-check; the server gets its own tsc pass.
+run('typescript/bin/tsc', ['-p', 'projects/mcp-app/tsconfig.server.json']);
+
+// Angular splits the app into chunks; fold them back into one module.
+const bundled = await build({
+  entryPoints: [join(browser, 'main.js')],
+  bundle: true,
+  format: 'esm',
+  minify: true,
+  write: false,
+  logLevel: 'warning',
+});
+const js = bundled.outputFiles[0].text.replaceAll('</script', '<\\/script');
+const css = readFileSync(join(browser, 'styles.css'), 'utf8').replaceAll(
+  '</style',
+  '<\\/style',
+);
+
+let html = readFileSync(join(browser, 'index.html'), 'utf8');
+const replace = (pattern, value) => {
+  if (!pattern.test(html)) {
+    throw new Error(`build-mcp-app: ${pattern} not found in index.html`);
+  }
+  html = html.replace(pattern, () => value);
+};
+replace(/<link rel="modulepreload"[^>]*>/g, '');
+replace(
+  /<link rel="stylesheet" href="styles\.css"[^>]*>(<noscript>.*?<\/noscript>)?/,
+  `<style>${css}</style>`,
+);
+replace(
+  /<script src="main\.js" type="module"><\/script>/,
+  `<script type="module">${js}</script>`,
+);
+writeFileSync(join(out, 'view.html'), html);
+
+await build({
+  entryPoints: ['projects/mcp-app/server/server.ts'],
+  outfile: join(out, 'server.mjs'),
+  bundle: true,
+  platform: 'node',
+  format: 'esm',
+  packages: 'external',
+  // The catalog's only import from the renderer is its schema, which needs
+  // nothing but @json-render/core.
+  alias: { 'ngx-json-render': './projects/ngx-json-render/src/lib/schema.ts' },
+  logLevel: 'warning',
+});
+
+console.log(
+  `Built ${join(out, 'view.html')} (${Math.round(html.length / 1024)} kB) and ${join(out, 'server.mjs')}`,
+);

@@ -81,6 +81,12 @@ jobs:
       - name: Build demo
         run: npx ng build demo
 
+      - name: Test MCP App
+        run: npx ng test mcp-app --coverage
+
+      - name: Build MCP App
+        run: npm run build:mcp-app
+
       - name: Upload library package
         uses: actions/upload-artifact@v7
         with:
