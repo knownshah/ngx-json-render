@@ -5,9 +5,9 @@
 - Branch: `claude/ng-add-schematic`
 - Base branch: `main`
 - Base commit: `beeb144`
-- Status: **done** on the branch on 2026-09-30; not merged (merging deploys
-  the demo, and the schematics reach npm only with the next release of each
-  package — both are the owner's call)
+- Status: **done** — merged into `main` on 2026-09-30 at the owner's explicit
+  request, versions bumped to `ngx-json-render` 0.7.3 and
+  `ngx-json-render-material` 0.3.6 for release
 - Last agent/tool: Claude Code
 
 ## Objective
@@ -54,5 +54,5 @@ and the renderer's README answers "why not Hashbrown?".
 
 ## Next concrete step
 
-Owner: merge, then release both packages (patch bumps are enough) so
-`ng add` reaches npm.
+Release both tags (renderer first), then the owner enables GitHub
+Discussions (Settings → General → Features).
