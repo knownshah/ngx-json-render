@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ngx-json-render MCP App: privacy policy</title>
+    <link rel="icon" type="image/png" href="icon-64.png" />
+    <style>
+      :root {
+        color-scheme: light dark;
+      }
+      body {
+        max-width: 46rem;
+        margin: 2.5rem auto;
+        padding: 0 16px;
+        font: 16px/1.6 system-ui, sans-serif;
+      }
+      h1 {
+        font-size: 1.75rem;
+      }
+      h2 {
+        margin-top: 2rem;
+        font-size: 1.2rem;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Privacy policy</h1>
+    <p>
+      Effective 30 September 2026. This policy covers the ngx-json-render MCP
+      App: the MCP server at <code>https://ngx-json-render.vercel.app/mcp</code>
+      and the interactive view it serves to AI clients such as Claude and
+      ChatGPT.
+    </p>
+
+    <h2>What the server receives</h2>
+    <p>
+      When your AI assistant calls the <code>render-ui</code> tool, the server
+      receives the UI spec the assistant wrote: component names, their props,
+      and the data shown in them, which comes from your conversation. The server
+      also receives standard request metadata (IP address, user agent, time).
+    </p>
+
+    <h2>How it is used and stored</h2>
+    <p>
+      The spec is validated and returned to your AI client in the same response
+      so the view can render it. The server has no database, no accounts, and no
+      cookies. It does not write specs or conversation content to disk or to
+      logs, and it does not keep them after the response is sent. It does not
+      use them for analytics, advertising or model training.
+    </p>
+
+    <h2>Third parties</h2>
+    <ul>
+      <li>
+        <strong>Hosting</strong>: the server runs on Vercel, which keeps
+        standard request logs (such as IP address, URL and time) under the
+        <a href="https://vercel.com/legal/privacy-policy"
+          >Vercel privacy policy</a
+        >.
+      </li>
+      <li>
+        <strong>Fonts</strong>: the view loads the Roboto and Material Symbols
+        fonts from Google Fonts, so Google receives your IP address and user
+        agent under the
+        <a href="https://policies.google.com/privacy">Google privacy policy</a>.
+      </li>
+      <li>
+        <strong>Your AI client</strong>: the conversation itself, including the
+        tool call, is handled by your AI provider under its own policy.
+      </li>
+    </ul>
+    <p>We do not sell or share data with anyone else.</p>
+
+    <h2>Retention</h2>
+    <p>
+      The server keeps nothing after a request completes. Hosting logs are kept
+      by Vercel for its standard retention period.
+    </p>
+
+    <h2>Contact</h2>
+    <p>
+      Questions about this policy:
+      <a href="https://github.com/shteynu/ngx-json-render/issues"
+        >GitHub issues</a
+      >
+      for the ngx-json-render project. Changes to this policy are published on
+      this page with a new effective date.
+    </p>
+    <p><a href="./">Documentation</a></p>
+  </body>
+</html>

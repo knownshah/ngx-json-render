@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ngx-json-render MCP App: documentation</title>
+    <link rel="icon" type="image/png" href="icon-64.png" />
+    <style>
+      :root {
+        color-scheme: light dark;
+        --fg: #1f2933;
+        --muted: #52606d;
+        --border: #d9dee4;
+        --code: #f1f3f5;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --fg: #e4e7eb;
+          --muted: #9aa5b1;
+          --border: #323a44;
+          --code: #1f242b;
+        }
+      }
+      body {
+        max-width: 46rem;
+        margin: 2.5rem auto;
+        padding: 0 16px;
+        font: 16px/1.6 system-ui, sans-serif;
+        color: var(--fg);
+      }
+      h1 {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 1.75rem;
+      }
+      h1 img {
+        width: 40px;
+        height: 40px;
+      }
+      h2 {
+        margin-top: 2.2rem;
+        font-size: 1.25rem;
+      }
+      code,
+      pre {
+        background: var(--code);
+        border-radius: 6px;
+      }
+      code {
+        padding: 0.1em 0.35em;
+      }
+      pre {
+        padding: 12px;
+        overflow-x: auto;
+      }
+      pre code {
+        padding: 0;
+      }
+      figure {
+        margin: 1.2rem 0;
+      }
+      figure img {
+        width: 100%;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+      }
+      figcaption,
+      .muted {
+        color: var(--muted);
+        font-size: 0.92rem;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>
+      <img src="icon-512.png" alt="" />
+      ngx-json-render MCP App
+    </h1>
+    <p>
+      An MCP server with one tool, <code>render-ui</code>. When you ask your AI
+      assistant for a dashboard, a form, a status summary or a comparison, it
+      describes the UI as a
+      <a href="https://github.com/vercel-labs/json-render">json-render</a> spec
+      and the tool renders it inline in the chat as interactive Angular Material
+      components: tables, cards, metrics, forms with validation, tabs, lists and
+      buttons.
+    </p>
+    <p>
+      It works in any client that supports
+      <a href="https://modelcontextprotocol.io/docs/extensions/apps">MCP Apps</a
+      >: Claude, ChatGPT, VS Code, Cursor, Goose and others. No account and no
+      authentication are needed, and the server stores nothing (see the
+      <a href="privacy.html">privacy policy</a>).
+    </p>
+
+    <h2>Connect</h2>
+    <p>Server URL (Streamable HTTP, no authentication):</p>
+    <pre><code>https://ngx-json-render.vercel.app/mcp</code></pre>
+    <ul>
+      <li>
+        <strong>Claude</strong>: Settings → Connectors → Add custom connector,
+        paste the URL.
+      </li>
+      <li>
+        <strong>ChatGPT</strong>: Settings → Apps → Advanced settings →
+        Developer mode, then create an app with the URL.
+      </li>
+      <li>
+        <strong>VS Code, Cursor</strong>: add it to your MCP configuration:
+        <pre><code>&#123;
+  "mcpServers": &#123;
+    "ngx-json-render": &#123; "url": "https://ngx-json-render.vercel.app/mcp" &#125;
+  &#125;
+&#125;</code></pre>
+      </li>
+    </ul>
+
+    <h2>Examples</h2>
+    <figure>
+      <img
+        src="screenshots/1-dashboard.png"
+        alt="A Q3 sales dashboard with four metrics and a table by region"
+      />
+      <figcaption>"Show me a dashboard of our Q3 sales by region"</figcaption>
+    </figure>
+    <figure>
+      <img
+        src="screenshots/2-form.png"
+        alt="A beta sign-up form with name, email, team size and a submit button"
+      />
+      <figcaption>
+        "Create a sign-up form for our beta with validation"
+      </figcaption>
+    </figure>
+    <figure>
+      <img
+        src="screenshots/3-status.png"
+        alt="A release status page with a success callout, progress bars and a list of blockers"
+      />
+      <figcaption>"Summarize the status of the mobile app release"</figcaption>
+    </figure>
+    <figure>
+      <img
+        src="screenshots/4-compare.png"
+        alt="Three hosting plans compared side by side in cards"
+      />
+      <figcaption>"Compare the three hosting plans side by side"</figcaption>
+    </figure>
+
+    <h2>The <code>render-ui</code> tool</h2>
+    <ul>
+      <li>
+        <strong>Input</strong>: <code>spec</code>, a json-render spec: a
+        <code>root</code> element key, a flat map of <code>elements</code> (each
+        a component <code>type</code>, its <code>props</code> and its
+        <code>children</code>), and an optional <code>state</code> object that
+        props bind to. The tool description lists the 28 available components
+        and their props.
+      </li>
+      <li>
+        <strong>Output</strong>: the same spec, which the app's view renders. A
+        spec that names an unknown component or passes invalid props is rejected
+        with an error describing what is wrong, so the model can fix it.
+      </li>
+      <li>
+        <strong>Read-only</strong>: the tool reads and changes nothing outside
+        the chat. Buttons and form fields change the view's own state only.
+      </li>
+    </ul>
+
+    <h2>Limitations</h2>
+    <ul>
+      <li>
+        The UI shows data the model already has in the conversation; the server
+        does not connect to your systems or fetch data.
+      </li>
+      <li>
+        Buttons act inside the rendered view (update fields, validate a form)
+        and do not send data anywhere.
+      </li>
+    </ul>
+
+    <h2>Support</h2>
+    <p>
+      Report problems and ask questions in
+      <a href="https://github.com/shteynu/ngx-json-render/issues"
+        >GitHub issues</a
+      >. The source is in
+      <a
+        href="https://github.com/shteynu/ngx-json-render/tree/main/projects/mcp-app"
+        >projects/mcp-app</a
+      >
+      of the ngx-json-render repository (Apache-2.0).
+    </p>
+    <p class="muted">
+      <a href="privacy.html">Privacy policy</a> ·
+      <a href="../">ngx-json-render demo</a>
+    </p>
+  </body>
+</html>

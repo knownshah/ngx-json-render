@@ -1,0 +1,104 @@
+# MCP App directory listing
+
+Copy for the Claude Connectors Directory
+([claude.ai/directory/manage](https://claude.ai/directory/manage) → Submit new →
+MCP connector) and the ChatGPT app submission. Assets are published with the
+demo on GitHub Pages, from `projects/demo/public/mcp/`.
+
+## Links
+
+| Field           | Value                                                             |
+| --------------- | ----------------------------------------------------------------- |
+| Server URL      | `https://ngx-json-render.vercel.app/mcp`                          |
+| Documentation   | https://shteynu.github.io/ngx-json-render/mcp/                    |
+| Privacy policy  | https://shteynu.github.io/ngx-json-render/mcp/privacy.html        |
+| Support         | https://github.com/shteynu/ngx-json-render/issues                 |
+| Icon (512 px)   | https://shteynu.github.io/ngx-json-render/mcp/icon-512.png        |
+| Icon (64 px)    | https://shteynu.github.io/ngx-json-render/mcp/icon-64.png         |
+| Screenshots     | `https://shteynu.github.io/ngx-json-render/mcp/screenshots/*.png` |
+| Authentication  | None (public, stateless)                                          |
+| Reads or writes | Neither: the one tool is read-only and touches no external system |
+
+## Listing
+
+- **Name**: ngx-json-render UI
+- **One-liner** (Claude, ≤ 200): Renders interactive dashboards, forms,
+  tables and status pages inline in the chat as Angular Material components.
+- **Short description** (ChatGPT, ≤ 30): Interactive UI in your chat
+- **Categories**: Design; Productivity; Developer tools
+- **Slug**: `ngx-json-render-ui` (permanent once published)
+
+**Description** (≤ 2,000):
+
+> Ask for a dashboard, a form, a status summary or a comparison, and see it
+> as a real interface instead of a wall of text. The assistant describes the
+> UI as a json-render spec, and the render-ui tool draws it inline in the chat
+> with Angular Material: metric tiles, sortable-looking tables, cards, tabs,
+> lists, progress bars, callouts, and forms with inputs, selects, checkboxes
+> and validation. Form fields and buttons are live inside the view, so you can
+> fill in a form and see validation messages without another round trip.
+>
+> The tool is read-only. It shows data that is already in the conversation;
+> it does not connect to your systems, store anything, or send data anywhere.
+> No account or sign-in is needed.
+>
+> Built on json-render, the open generative-UI format from Vercel Labs, and
+> ngx-json-render, its open-source Angular renderer (Apache-2.0).
+
+## Screenshots and prompts
+
+Each PNG is 1200 px wide, cropped to the app's response.
+
+| File                          | Prompt                                             |
+| ----------------------------- | -------------------------------------------------- |
+| `screenshots/1-dashboard.png` | Show me a dashboard of our Q3 sales by region      |
+| `screenshots/2-form.png`      | Create a sign-up form for our beta with validation |
+| `screenshots/3-status.png`    | Summarize the status of the mobile app release     |
+| `screenshots/4-compare.png`   | Compare the three hosting plans side by side       |
+
+## Use cases (Claude portal)
+
+- Turn data from the conversation into a dashboard or a table.
+- Draft a form, with validation, to review how it will look and behave.
+- Summarize a project or release as a status page.
+- Compare options (plans, vendors, candidates) side by side.
+
+**Prerequisites for users**: none.
+
+## Notes for reviewers
+
+No test account is needed: the server has no authentication and no user
+data. To test, add the server URL as a custom connector and send any prompt
+from the table above; the assistant calls `render-ui` and the result renders
+inline. `render-ui` has `readOnlyHint: true`. The view's CSP allows only
+`https://fonts.googleapis.com` and `https://fonts.gstatic.com` (fonts) and no
+connect domains. The view does not open external links.
+
+## ChatGPT test cases
+
+Positive (the app should be used):
+
+1. "Show me a dashboard of our Q3 sales by region" → metric tiles and a
+   regional table render.
+2. "Create a sign-up form for our beta with validation" → a form renders;
+   leaving the email empty and tabbing out shows a validation message.
+3. "Summarize the status of the mobile app release" → a status page with a
+   callout, progress bars and a list of blockers.
+4. "Compare the three hosting plans side by side" → three cards in a grid.
+5. "Show these as a table: Alice 34 Berlin, Bob 29 Lisbon, Chen 41 Taipei"
+   → a three-row table.
+
+Negative (the app should not be used):
+
+1. "What is the capital of Portugal?" → a plain text answer, no UI.
+2. "Write a haiku about autumn" → plain text.
+3. "Translate 'good morning' into Spanish" → plain text.
+
+## Before submitting
+
+- [ ] The Vercel project is live and `https://ngx-json-render.vercel.app/mcp`
+      answers (update this file and the docs page if the URL differs).
+- [ ] Tested as a custom connector in Claude and in ChatGPT developer mode.
+- [ ] Tested with MCP Inspector (`npx @modelcontextprotocol/inspector`).
+- [ ] A paid Claude plan for the Claude portal; a verified OpenAI developer
+      account and a verified domain for ChatGPT.
