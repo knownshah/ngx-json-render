@@ -6,8 +6,9 @@
 - Base branch: `main`
 - Base commit: `beeb144`
 - Status: **done** — merged into `main` on 2026-09-30 at the owner's explicit
-  request, versions bumped to `ngx-json-render` 0.7.3 and
-  `ngx-json-render-material` 0.3.6 for release
+  request; released as `ngx-json-render` 0.7.3 and
+  `ngx-json-render-material` 0.3.6 through the workflows' `workflow_dispatch`
+  (this environment's git proxy refuses tag pushes; each run created its tag)
 - Last agent/tool: Claude Code
 
 ## Objective
@@ -48,11 +49,17 @@ and the renderer's README answers "why not Hashbrown?".
   in `styles.scss`, Roboto and Material Icons in `index.html` — and the
   README's Material example builds once the budget is raised.
 
+- After release: `ng new` (Angular 21) plus `ng add ngx-json-render-material`
+  from the public registry added the renderer, core, zod and Material 21,
+  and set up the theme and icon font; both release runs green, npm `latest`
+  is 0.7.3 / 0.3.6 with the schematics and the optional Material peers.
+- Good-first issues #1–#3 opened.
+
 ### Blocked or not run
 
 - `angular-compat` (20/22) not re-run: no library source changed.
 
 ## Next concrete step
 
-Release both tags (renderer first), then the owner enables GitHub
-Discussions (Settings → General → Features).
+None on the code. Owner: enable GitHub Discussions (Settings → General →
+Features); post the outreach drafts, now with `ng add` as the first step.
