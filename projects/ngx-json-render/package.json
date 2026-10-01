@@ -1,6 +1,6 @@
 {
   "name": "ngx-json-render",
-  "version": "0.7.3",
+  "version": "0.7.4",
   "description": "Angular renderer for json-render — stream AI-generated JSON specs into real Angular components with signals.",
   "keywords": [
     "angular",
@@ -22,8 +22,8 @@
     "url": "https://github.com/shteynu/ngx-json-render/issues"
   },
   "peerDependencies": {
-    "@angular/common": ">=20.0.0",
-    "@angular/core": ">=20.0.0",
+    "@angular/common": ">=19.0.0",
+    "@angular/core": ">=19.0.0",
     "@json-render/core": ">=0.20.0 <0.22.0",
     "zod": "^4.0.0"
   },

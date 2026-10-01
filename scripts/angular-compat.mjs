@@ -1,10 +1,15 @@
 /**
  * Prepares the workspace to build and test the library against an Angular
- * line other than the one `package.json` pins, so CI can prove the `>=20`
+ * line other than the one `package.json` pins, so CI can prove the `>=19`
  * peer range in `projects/ngx-json-render/package.json` still holds at both
  * ends: the floor it promises, and the newest line a consumer can be on.
  *
- * Usage: node scripts/angular-compat.mjs 20
+ * Angular 19 has no unit-test builder, so on that line CI only builds the
+ * library; `scripts/consumer-smoke.mjs` covers it at run time instead. The
+ * Material catalog keeps a `>=20` floor of its own and is not built on 19.
+ *
+ * Usage: node scripts/angular-compat.mjs 19
+ *        node scripts/angular-compat.mjs 20
  *        node scripts/angular-compat.mjs 22
  */
 import { readFileSync, writeFileSync } from 'node:fs';
@@ -31,6 +36,12 @@ if (major === '22') {
   // Angular 22 peers on TypeScript 6.0 exactly (`>=6.0 <6.1`), so the
   // workspace's ~5.9 pin ERESOLVEs before anything gets a chance to compile.
   pkg.devDependencies.typescript = '~6.0.0';
+}
+if (major === '19') {
+  // Angular 19 peers on TypeScript <5.9. 5.7 would do for Angular, but not for
+  // this source: it cannot narrow `step` in element.component.ts's
+  // `repeatsItself` loop and reports it as possibly null.
+  pkg.devDependencies.typescript = '~5.8.0';
 }
 if (major === '20') {
   // @angular/build@20 declares a peer of vitest ^3.1.1; vitest 4 fails ERESOLVE.
@@ -60,6 +71,21 @@ if (major === '20') {
     delete test.options.coverageInclude;
     delete test.options.coverageExclude;
     delete test.options.coverageThresholds;
+  }
+  write('angular.json', ng);
+}
+
+if (major === '19') {
+  // The v19 ng-packagr builder requires `project`; v20 onwards default it to
+  // the project's own ng-package.json.
+  const ng = read('angular.json');
+  for (const project of Object.values(ng.projects)) {
+    const build = project.architect?.build;
+    if (!build?.builder.endsWith(':ng-packagr')) continue;
+    build.options = {
+      project: `${project.root}/ng-package.json`,
+      ...build.options,
+    };
   }
   write('angular.json', ng);
 }

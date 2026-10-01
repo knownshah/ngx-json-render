@@ -431,7 +431,9 @@ export class JrElement {
     },
   };
 
-  protected readonly outletInjector = Injector.create({
+  // Typed as Injector for the peer range: see `confirmInjector` in
+  // renderer.component.ts.
+  protected readonly outletInjector: Injector = Injector.create({
     providers: [
       { provide: RENDER_CONTEXT, useValue: this.renderCtx },
       { provide: ELEMENT_KEY, useValue: this.elementKey },

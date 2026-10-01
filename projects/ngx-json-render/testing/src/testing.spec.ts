@@ -15,6 +15,7 @@ import {
   injectUIStream,
 } from 'ngx-json-render';
 import { recordedTransport, specStream, usageLine } from './recorded-transport';
+import { zonelessChangeDetection } from './fixture-helpers';
 import { renderComponent } from './render-component';
 import { renderSpec } from './render-spec';
 
@@ -538,5 +539,42 @@ describe('recordedTransport', () => {
       // than read as another level of path.
       { op: 'add', path: '/elements/a~1b', value: { type: 'Text', props: {} } },
     ]);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// zonelessChangeDetection — one harness across the whole peer range
+// ---------------------------------------------------------------------------
+
+describe('zonelessChangeDetection', () => {
+  const marker = {} as ReturnType<typeof zonelessChangeDetection>;
+
+  it("uses Angular 20's name when it is there", () => {
+    expect(
+      zonelessChangeDetection({
+        provideZonelessChangeDetection: () => marker,
+        provideExperimentalZonelessChangeDetection: () => {
+          throw new Error('the older name was preferred');
+        },
+      }),
+    ).toBe(marker);
+  });
+
+  it("falls back to Angular 19's experimental name", () => {
+    expect(
+      zonelessChangeDetection({
+        provideExperimentalZonelessChangeDetection: () => marker,
+      }),
+    ).toBe(marker);
+  });
+
+  it('says so when neither is exported', () => {
+    expect(() => zonelessChangeDetection({})).toThrowError(
+      /no zoneless change detection provider/,
+    );
+  });
+
+  it('finds the real provider in the Angular this workspace runs', () => {
+    expect(() => zonelessChangeDetection()).not.toThrow();
   });
 });

@@ -25,9 +25,16 @@ ng add ngx-json-render
 npm install ngx-json-render @json-render/core zod
 ```
 
-Requires Angular ≥ 20. CI proves both ends of that range on every push: the
-library builds and its suite passes on Angular 20 (the floor) and on Angular
-22 (the current release), as well as on the 21 the workspace itself pins.
+Requires Angular ≥ 19. CI proves both ends of that range on every push: the
+library builds on Angular 19 (the floor), and its suite passes on 20 and on
+22 (the current release) as well as on the 21 the workspace itself pins —
+Angular 19's CLI has no unit-test builder to run it with. What npm serves is
+checked too: the package built on 21 is installed into a fresh app on 19, 20
+and 22, built with strict templates and driven in Chrome. On Angular 19 the
+`ngx-json-render/testing` harness uses 19's
+`provideExperimentalZonelessChangeDetection` by itself. The Material catalog,
+[`ngx-json-render-material`](../ngx-json-render-material/README.md), needs
+Angular ≥ 20.
 The same goes for `@json-render/core`: 0.20 and 0.21 are both admitted
 (`>=0.20.0 <0.22.0`), the workspace pins the newest and CI tests the floor.
 
