@@ -22,7 +22,6 @@ review changes what the reviewers read. Not yet submitted to ChatGPT.
 | Icon (512 px)   | https://shteynu.github.io/ngx-json-render/mcp/icon-512.png        |
 | Icon (64 px)    | https://shteynu.github.io/ngx-json-render/mcp/icon-64.png         |
 | Screenshots     | `https://shteynu.github.io/ngx-json-render/mcp/screenshots/*.png` |
-| Claude Code     | https://shteynu.github.io/ngx-json-render/mcp/#claude-code        |
 | Authentication  | None (public, stateless)                                          |
 | Reads or writes | Neither: the one tool is read-only and touches no external system |
 
@@ -36,8 +35,9 @@ review changes what the reviewers read. Not yet submitted to ChatGPT.
   Claude portal has no Design category.
 - **Categories** (ChatGPT, planned): Design; Productivity; Developer tools
 - **Slug**: `ngx-json-render-ui` (permanent once submitted)
-- **Works with** (Claude): Claude (web & mobile), Claude API, Claude Code,
-  Claude Desktop
+- **Works with** (Claude): Claude (web & mobile), Claude API, Claude Desktop.
+  Claude Code was removed on 2026-10-06: the desktop Code tab shows the tool
+  result as raw spec JSON, not the interactive view.
 - **Author and company** (Claude): ngx-json-render,
   https://github.com/shteynu/ngx-json-render
 - **Has an MCP App** (Claude): yes
@@ -124,10 +124,13 @@ not open external links.
 
 ## Integration snippets (Claude portal)
 
-Shown on the listing for Claude API and Claude Code users. Whether the
-interactive view renders in either has not been checked: the Messages API
-returns the tool result, so there the caller most likely gets the spec, not
-the UI.
+Shown on the listing for Claude API users. Whether the interactive view
+renders there has not been checked: the Messages API returns the tool result,
+so the caller most likely gets the spec, not the UI.
+
+The Claude Code copy text and external link were cleared on 2026-10-06, with
+Claude Code in Works with: a desktop Code-tab session that called
+`render-ui` showed the spec as raw JSON and no card.
 
 **Claude API copy text**:
 
@@ -141,14 +144,6 @@ Header: anthropic-beta: mcp-client-2025-11-20
   { "type": "mcp_toolset", "mcp_server_name": "ngx-json-render-ui" }
 ]
 ```
-
-**Claude Code copy text**:
-
-```bash
-claude mcp add --transport http ngx-json-render-ui https://ngx-json-render.vercel.app/mcp
-```
-
-**Claude Code external link**: https://shteynu.github.io/ngx-json-render/mcp/#claude-code
 
 ## ChatGPT test cases
 
