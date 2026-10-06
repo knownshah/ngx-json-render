@@ -26,7 +26,7 @@ export const mcpCatalog = defineCatalog(materialCatalog.schema, {
         'Use it for choices and follow-ups ("Approve", "Show more", a picked option). ' +
         'To send a form, gate it with submitForm: ' +
         '{ "action": "submitForm", "params": { "action": "sendMessage", "params": { "text": "Submit the sign-up form", "data": { "$state": "/form" } } } }. ' +
-        "The message appears in the chat as the user's, so write `text` in their voice.",
+        "The host puts the message in the chat as the user's (Claude lets the user review it and send it), so write `text` in their voice.",
     },
   },
 });

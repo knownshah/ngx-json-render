@@ -163,13 +163,14 @@
         <code>root</code> element key, a flat map of <code>elements</code> (each
         a component <code>type</code>, its <code>props</code> and its
         <code>children</code>), and an optional <code>state</code> object that
-        props bind to. The tool description lists the 28 available components
-        and their props.
+        props bind to. The input schema lists the 28 available components with
+        their props and allowed values, and the actions with their params.
       </li>
       <li>
         <strong>Output</strong>: the same spec, which the app's view renders. A
-        spec that names an unknown component or passes invalid props is rejected
-        with an error describing what is wrong, so the model can fix it.
+        spec that names an unknown component or action, passes invalid props or
+        refers to a missing child is rejected with an error describing what is
+        wrong, so the model can fix it.
       </li>
       <li>
         <strong>Read-only</strong>: the tool reads and changes nothing outside
@@ -177,11 +178,12 @@
       </li>
       <li>
         <strong>Actions</strong>: besides the built-in state and form actions, a
-        button can run <code>sendMessage</code>, which posts a message to the
+        button can run <code>sendMessage</code>, which puts a message in the
         chat as yours, such as "Approve the release" or a submitted form as
-        JSON, so the assistant carries on from what you clicked. A form is sent
-        only once it validates. The message goes to your AI client, not to the
-        server, and only in clients that accept messages from apps.
+        JSON, so the assistant carries on from what you clicked. In Claude the
+        message lands in the message box for you to review and send. A form is
+        sent only once it validates. The message goes to your AI client, not to
+        the server, and only in clients that accept messages from apps.
       </li>
     </ul>
 

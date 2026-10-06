@@ -58,9 +58,14 @@ dashboard of my last three releases".
 - `scripts/build-mcp-app.mjs`: hosts load a `ui://` resource as one HTML
   document, so the script folds Angular's chunks into one inline module and
   inlines the styles. It then type-checks and bundles the server.
-- `server/app.ts`: registers the tool the way `createMcpApp` does, with one
-  fix (below), a read-only annotation, and a CSP that allows only Google Fonts
-  instead of any `https:` origin. It serves Streamable HTTP statelessly.
+- `server/app.ts`: registers the tool the way `createMcpApp` does, with the
+  description and input schema from `server/tool.ts` (below), a read-only
+  annotation, and a CSP that allows only Google Fonts instead of any `https:`
+  origin. It serves Streamable HTTP statelessly.
+- `server/tool.ts`: what the model sees of the tool. A short description, and
+  an input schema with each component's props and each action's params,
+  which the SDK also enforces. A spec whose children or root are missing is
+  sent back to the model as an error.
 - `server/catalog.ts`: the catalog the tool describes to the model, the
   Material catalog plus a `sendMessage` action (below). The published catalog
   stays host-neutral; the action needs the view's handler.
@@ -77,7 +82,9 @@ and its JIT compiler. Upstream splits these two with separate
 `ngx-json-render-material/catalog` entry point would do the same here and let
 an app's server import the catalog from npm.
 
-## Upstream issue: `createMcpApp` drops `state`, `on` and `watch`
+## Upstream issues in `createMcpApp`
+
+### It drops `state`, `on` and `watch`
 
 `createMcpApp` in `@json-render/mcp` 0.21.0 passes `catalog.zodSchema()` as
 the tool's input schema. That schema describes `root` and `elements` (`type`,
@@ -89,11 +96,29 @@ _always_ send `state` for data-backed UI, so tables and lists arrive empty,
 and no button does anything. The React schema has the same shape, so this is
 not specific to Angular.
 
-`specInputSchema()` in `server/app.ts` works around it: the spec and element
-objects keep unknown keys, `state` is declared so the model sees it in the
-tool's JSON Schema, and components and props stay typed, so an unknown
-component type is still rejected. Once upstream fixes it, the server can go
-back to a plain `createMcpApp({ name, version, catalog, html })`.
+`specInputSchema()` in `server/tool.ts` replaces it with a schema built from
+the catalog: `state`, `on`, `watch`, `visible` and `repeat` are declared, each
+component's props are its own schema (a value may also be a dynamic
+expression such as `{ "$state": "/path" }`; an unknown prop is rejected), and
+each binding's `action` must be a built-in or a catalog action, with the
+catalog action's params checked. Shared parts are JSON Schema definitions, so
+the whole schema is about 39 000 characters.
+
+### Claude cuts the description off
+
+`createMcpApp` uses `catalog.prompt()` as the tool description: about 26 000
+characters, written as a system prompt for a model that streams JSON Patch.
+Claude shows a tool description to the model cut off after roughly 2 000
+characters, which that prompt spends on its patch-streaming instructions.
+Asked to quote where the description ended, Claude quoted the middle of the
+state-streaming example: it had seen no component, prop or action, and
+guessed (`"variant": "primary"` on a Button, which the view then could not
+draw). `TOOL_DESCRIPTION` in `server/tool.ts` is about 1 600 characters,
+covers what a schema cannot say (state, bindings, repeat, events,
+`sendMessage`), and leaves the vocabulary to the input schema.
+
+Once upstream fixes both, the server can go back to a plain
+`createMcpApp({ name, version, catalog, html })`.
 
 ## Actions that reach the model
 
@@ -117,10 +142,11 @@ submitted form), the tool description offers one more action:
 
 The view's handler calls `mcp.sendMessage(text, data)`, which posts a
 `ui/message` to the host as a user message: the text, then `data` as a JSON
-block. The model answers it like anything the user typed, and can call
-`render-ui` again with the next screen. It rejects, so a binding's `onError`
-runs, when the host does not declare the `message` capability or declines the
-message.
+block. Claude does not send it on its own: it puts the message in the message
+box, under a warning to review it, and the user sends it. The model then
+answers it like anything the user typed, and can call `render-ui` again with
+the next screen. The handler rejects, so a binding's `onError` runs, when the
+host does not declare the `message` capability or declines the message.
 
 `data` has to be a single `{ "$state": "/path" }`: core resolves `$state` only
 at the top level of a custom action's params. Through `submitForm` the inner
@@ -132,9 +158,9 @@ either way so the model has one rule.
 - Only `sendMessage` is wired. `mcp.callServerTool()` (replace the spec with a
   server tool's result) and `app.updateModelContext()` (hand the model context
   without a visible message) are there for an app that needs them.
-- Not yet tried in a real host: the tests drive the view with the MCP Apps
-  `AppBridge`, and whether Claude and ChatGPT accept `ui/message` from this
-  view, and how they show it, still has to be checked after a deploy.
+- Tried in Claude (the message lands in the message box, as above), not yet
+  in ChatGPT. Whether Claude passes the whole input schema to the model, or
+  cuts it off like the description, is checked only by asking it.
 - `injectJsonRenderApp` lives in this example. If the approach holds, it
   belongs in a `ngx-json-render/mcp` secondary entry point with
   `@modelcontextprotocol/ext-apps` as an optional peer, plus a README section
