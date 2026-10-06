@@ -1,6 +1,6 @@
 import type { Type } from '@angular/core';
 import type { Catalog, StateStore } from '@json-render/core';
-import { flattenToPointers } from '@json-render/core/store-utils';
+import { flattenToPointers } from './pointer';
 import type {
   Actions,
   CatalogHasActions,

@@ -14,7 +14,7 @@ import {
   createStateStore,
   getByPath,
 } from '@json-render/core';
-import { flattenToPointers } from '@json-render/core/store-utils';
+import { escapePointerSegment, flattenToPointers } from './pointer';
 import { JsonRenderRootContext } from './root-context';
 import type { StateChange } from './types';
 
@@ -213,7 +213,11 @@ function diffState(prev: StateModel, next: StateModel): StateChange[] {
     if (path) changes.push({ path, value: b });
     const keys = new Set([...childKeys(a), ...childKeys(b)]);
     for (const key of keys) {
-      walk(child(a, key), child(b, key), `${path}/${escapePointer(key)}`);
+      walk(
+        child(a, key),
+        child(b, key),
+        `${path}/${escapePointerSegment(key)}`,
+      );
     }
   };
   walk(prev, next, '');
@@ -228,10 +232,6 @@ function child(value: unknown, key: string): unknown {
   return value !== null && typeof value === 'object'
     ? (value as Record<string, unknown>)[key]
     : undefined;
-}
-
-function escapePointer(key: string): string {
-  return key.replace(/~/g, '~0').replace(/\//g, '~1');
 }
 
 /**

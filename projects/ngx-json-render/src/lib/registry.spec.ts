@@ -103,4 +103,13 @@ describe('createStoreSetState', () => {
     expect(store.get('/user/name')).toBe('Grace');
     expect(store.get('/count')).toBeUndefined();
   });
+
+  it('writes a key containing / or ~ to that key, not to a nested path', () => {
+    const store = createStateStore({ links: { 'a/b': '', 'c~d': '' } });
+    const setState = createStoreSetState(store);
+
+    setState((prev) => ({ ...prev, links: { 'a/b': 'x', 'c~d': 'y' } }));
+
+    expect(store.getSnapshot()).toEqual({ links: { 'a/b': 'x', 'c~d': 'y' } });
+  });
 });

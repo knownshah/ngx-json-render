@@ -103,6 +103,17 @@ describe('JsonRenderStateService — uncontrolled mode', () => {
     expect(state.get('/a')).toBe(3);
   });
 
+  it('seeds a key containing / or ~ as that key, not as a nested path', () => {
+    const { state } = setup({
+      state: { links: { 'a/b': 'https://x.dev', 'c~d': 'set' } },
+    });
+
+    expect(state.state()).toEqual({
+      links: { 'a/b': 'https://x.dev', 'c~d': 'set' },
+    });
+    expect(state.get('/links/a~1b')).toBe('https://x.dev');
+  });
+
   it('applies leaves added to the initial state while streaming', () => {
     const { state, initialState } = setup({ state: { title: 'Draft' } });
     // The user edits a field before the rest of `spec.state` has arrived.
