@@ -273,21 +273,20 @@ export class JsonRenderActionsService {
       }
 
       if (resolved.confirm) {
+        // One question at a time: a confirm arriving while another is open
+        // cancels that one, so its caller settles instead of waiting forever.
+        untracked(this._pendingConfirmation)?.reject();
         // Awaited, not returned: a returned promise would let the `finally`
         // below settle the observers before the user has even answered.
         await new Promise<void>((resolve, reject) => {
-          this._pendingConfirmation.set({
+          const pending: PendingConfirmation = {
             action: resolved,
             handler,
-            resolve: () => {
-              this._pendingConfirmation.set(null);
-              resolve();
-            },
-            reject: () => {
-              this._pendingConfirmation.set(null);
-              reject(new ActionCancelledError());
-            },
-          });
+            resolve: () => this.answer(pending, resolve),
+            reject: () =>
+              this.answer(pending, () => reject(new ActionCancelledError())),
+          };
+          this._pendingConfirmation.set(pending);
         });
       }
 
@@ -317,6 +316,17 @@ export class JsonRenderActionsService {
   /** Cancel the pending confirmation dialog. */
   cancel(): void {
     untracked(this._pendingConfirmation)?.reject();
+  }
+
+  /**
+   * Close `pending` and run `settle`, but only while it is still the open
+   * question: a late answer to one that was replaced must not close its
+   * successor.
+   */
+  private answer(pending: PendingConfirmation, settle: () => void): void {
+    if (untracked(this._pendingConfirmation) !== pending) return;
+    this._pendingConfirmation.set(null);
+    settle();
   }
 
   /**

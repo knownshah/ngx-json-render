@@ -258,6 +258,45 @@ describe('built-in actions', () => {
     expect(submitted).toEqual(['called']);
   });
 
+  it('a second confirm cancels the one still open, so both callers settle', async () => {
+    const ran: string[] = [];
+    const { actions } = setup({
+      handlers: {
+        archive: () => {
+          ran.push('archive');
+        },
+        purge: () => {
+          ran.push('purge');
+        },
+      },
+    });
+
+    const first = actions.execute({
+      action: 'archive',
+      confirm: { title: 'Archive?', message: 'Moves it to the archive.' },
+    });
+    await Promise.resolve();
+    const firstQuestion = actions.pendingConfirmation();
+    expect(firstQuestion?.action.action).toBe('archive');
+
+    const second = actions.execute({
+      action: 'purge',
+      confirm: { title: 'Purge?', message: 'This cannot be undone.' },
+    });
+    await expect(first).rejects.toThrowError('Action cancelled');
+    expect(actions.pendingConfirmation()?.action.action).toBe('purge');
+
+    // A late answer to the question that was replaced must not close the
+    // open one, nor run the handler it was asked about.
+    firstQuestion?.resolve();
+    expect(actions.pendingConfirmation()?.action.action).toBe('purge');
+
+    actions.confirm();
+    await second;
+    expect(ran).toEqual(['purge']);
+    expect(actions.pendingConfirmation()).toBeNull();
+  });
+
   it('submitForm hands onSuccess to the action it submitted', async () => {
     const routes: string[] = [];
     const { state, actions } = setup({

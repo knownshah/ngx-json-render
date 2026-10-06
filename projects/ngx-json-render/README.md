@@ -849,7 +849,9 @@ Spec checking: `checkSpec`, `formatSpecCheckIssues`, and the types
 
 `injectActions().execute()` rejects when the user dismisses a `confirm`
 dialog, which is a normal gesture rather than a failure — `isActionCancelled(error)`
-is how you tell the two apart.
+is how you tell the two apart. One dialog is open at a time: an action with a
+`confirm` dispatched while another is waiting cancels the waiting one, so its
+`execute()` rejects the same way.
 
 Registry & schema: `defineRegistry`, `createStoreSetState`, `schema`.
 
