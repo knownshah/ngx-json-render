@@ -123,6 +123,9 @@ export { injectDevtoolsActive } from './lib/devtools';
 export type {
   ActionBinding,
   ActionHandler,
+  InferActionParams,
+  InferCatalogComponents,
+  InferComponentProps,
   JsonPatch,
   Spec,
   SpecIssue,

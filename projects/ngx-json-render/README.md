@@ -161,7 +161,12 @@ export const catalog = schema.createCatalog({
 
 ```ts
 import { Component } from '@angular/core';
-import { JrChildren, injectRenderContext } from 'ngx-json-render';
+import {
+  type InferComponentProps,
+  JrChildren,
+  injectRenderContext,
+} from 'ngx-json-render';
+import type { catalog } from './catalog';
 
 @Component({
   selector: 'app-card',
@@ -174,7 +179,8 @@ import { JrChildren, injectRenderContext } from 'ngx-json-render';
   `,
 })
 export class CardComponent {
-  readonly ctx = injectRenderContext<{ title?: string }>();
+  readonly ctx =
+    injectRenderContext<InferComponentProps<typeof catalog, 'Card'>>();
 }
 
 @Component({
@@ -182,9 +188,12 @@ export class CardComponent {
   template: `<button (click)="ctx.emit('press')">{{ ctx.props().label }}</button>`,
 })
 export class ButtonComponent {
-  readonly ctx = injectRenderContext<{ label: string }>();
+  readonly ctx =
+    injectRenderContext<InferComponentProps<typeof catalog, 'Button'>>();
 }
 ```
+
+`InferComponentProps` reads a component's props type off its Zod schema in the catalog, so the component and the catalog cannot drift apart; a hand-written type such as `injectRenderContext<{ label: string }>()` works too. One mismatch to know: a `.default()` field comes out required, but the renderer passes props as the spec wrote them and applies no Zod defaults, so keep such a field optional or fall back in the template.
 
 `<jr-children />` renders the element's children where you place it — like a `router-outlet` for the spec tree. Use `<jr-children slot="header" />` for named slots.
 
@@ -859,7 +868,7 @@ is how you tell the two apart. One dialog is open at a time: an action with a
 `confirm` dispatched while another is waiting cancels the waiting one, so its
 `execute()` rejects the same way.
 
-Registry & schema: `defineRegistry`, `createStoreSetState`, `schema`.
+Registry & schema: `defineRegistry`, `createStoreSetState`, `schema`, and the catalog types `InferComponentProps`, `InferCatalogComponents`, `InferActionParams` (re-exported from core).
 
 Testing (`ngx-json-render/testing`): `renderSpec`, `renderComponent`, `recordedTransport`, `specStream`, `usageLine`.
 

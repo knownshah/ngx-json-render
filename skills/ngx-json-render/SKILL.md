@@ -58,7 +58,11 @@ A catalog component is a plain standalone component with no inputs; it injects t
 
 ```ts
 import { Component, type ElementRef, effect, viewChild } from '@angular/core';
-import { JrChildren, injectRenderContext } from 'ngx-json-render';
+import {
+  type InferComponentProps,
+  JrChildren,
+  injectRenderContext,
+} from 'ngx-json-render';
 
 @Component({
   selector: 'app-card',
@@ -74,7 +78,8 @@ import { JrChildren, injectRenderContext } from 'ngx-json-render';
   `,
 })
 export class CardComponent {
-  readonly ctx = injectRenderContext<{ title?: string }>();
+  readonly ctx =
+    injectRenderContext<InferComponentProps<typeof catalog, 'Card'>>();
 }
 
 @Component({
@@ -82,7 +87,8 @@ export class CardComponent {
   template: `<button (click)="ctx.emit('press')">{{ ctx.props().label }}</button>`,
 })
 export class ButtonComponent {
-  readonly ctx = injectRenderContext<{ label: string }>();
+  readonly ctx =
+    injectRenderContext<InferComponentProps<typeof catalog, 'Button'>>();
 }
 
 // Two-way binding: write through setBound and sync the DOM imperatively. A
@@ -93,7 +99,8 @@ export class ButtonComponent {
   template: `<input #el (input)="onInput($event)" (keydown.enter)="ctx.emit('submit')" />`,
 })
 export class InputComponent {
-  readonly ctx = injectRenderContext<{ value?: string }>();
+  readonly ctx =
+    injectRenderContext<InferComponentProps<typeof catalog, 'Input'>>();
   private readonly el = viewChild.required<ElementRef<HTMLInputElement>>('el');
   constructor() {
     effect(() => {
@@ -106,6 +113,8 @@ export class InputComponent {
   }
 }
 ```
+
+`InferComponentProps<typeof catalog, 'Card'>` types the props from the catalog's Zod schema (or pass a hand-written type). A `.default()` field comes out required, but the renderer applies no Zod defaults, so keep such fields optional.
 
 `RenderContext<P>` from `injectRenderContext<P>()`: `props()` and `element()` (resolved; read these in templates, they are what a state write refreshes), `emit(event)`, `on(event)` → `{ emit, bound, shouldPreventDefault }`, `bindings()` (prop → state path for `$bindState` / `$bindItem`), `setBound(prop, value)`, `loading()`.
 
