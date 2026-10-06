@@ -5,6 +5,12 @@ Copy for the Claude Connectors Directory
 MCP connector) and the ChatGPT app submission. Assets are published with the
 demo on GitHub Pages, from `projects/demo/public/mcp/`.
 
+**Status**: submitted to the Claude Connectors Directory on 2026-10-06, in
+review. The Claude sections below match the live listing; edit it from
+[its manage page](https://claude.ai/directory/manage/ngx-json-render-ui) →
+Edit → Open the full editor, and keep this file in step. An edit made during
+review changes what the reviewers read. Not yet submitted to ChatGPT.
+
 ## Links
 
 | Field           | Value                                                             |
@@ -16,6 +22,7 @@ demo on GitHub Pages, from `projects/demo/public/mcp/`.
 | Icon (512 px)   | https://shteynu.github.io/ngx-json-render/mcp/icon-512.png        |
 | Icon (64 px)    | https://shteynu.github.io/ngx-json-render/mcp/icon-64.png         |
 | Screenshots     | `https://shteynu.github.io/ngx-json-render/mcp/screenshots/*.png` |
+| Claude Code     | https://shteynu.github.io/ngx-json-render/mcp/#claude-code        |
 | Authentication  | None (public, stateless)                                          |
 | Reads or writes | Neither: the one tool is read-only and touches no external system |
 
@@ -25,8 +32,15 @@ demo on GitHub Pages, from `projects/demo/public/mcp/`.
 - **One-liner** (Claude, ≤ 200): Renders interactive dashboards, forms,
   tables and status pages inline in the chat as Angular Material components.
 - **Short description** (ChatGPT, ≤ 30): Interactive UI in your chat
-- **Categories**: Design; Productivity; Developer tools
-- **Slug**: `ngx-json-render-ui` (permanent once published)
+- **Categories** (Claude, up to 5): Productivity; Development tools. The
+  Claude portal has no Design category.
+- **Categories** (ChatGPT, planned): Design; Productivity; Developer tools
+- **Slug**: `ngx-json-render-ui` (permanent once submitted)
+- **Works with** (Claude): Claude (web & mobile), Claude API, Claude Code,
+  Claude Desktop
+- **Author and company** (Claude): ngx-json-render,
+  https://github.com/shteynu/ngx-json-render
+- **Has an MCP App** (Claude): yes
 
 **Description** (≤ 2,000):
 
@@ -45,9 +59,20 @@ demo on GitHub Pages, from `projects/demo/public/mcp/`.
 > Built on json-render, the open generative-UI format from Vercel Labs, and
 > ngx-json-render, its open-source Angular renderer (Apache-2.0).
 
+**Permissions summary** (Claude, shown on the listing):
+
+> Accesses nothing on your behalf. The single tool, render-ui, is read-only:
+> it draws a UI from data already in the conversation, does not connect to
+> your systems, and stores or sends nothing. No account or sign-in.
+
+**Sensitive data types** (Claude): none, left empty on purpose. Each entry is
+shown on the listing as data the server accesses.
+
 ## Screenshots and prompts
 
-Each PNG is 1200 px wide, cropped to the app's response.
+Each PNG is 1200 px wide, cropped to the app's response. In the Claude
+listing they are the carousel images, entered as full GitHub Pages URLs, in
+this order and paired with these prompts.
 
 | File                          | Prompt                                             |
 | ----------------------------- | -------------------------------------------------- |
@@ -58,21 +83,69 @@ Each PNG is 1200 px wide, cropped to the app's response.
 
 ## Use cases (Claude portal)
 
-- Turn data from the conversation into a dashboard or a table.
-- Draft a form, with validation, to review how it will look and behave.
-- Summarize a project or release as a status page.
-- Compare options (plans, vendors, candidates) side by side.
+Shown to reviewers only. The portal takes up to three, each with an example
+prompt:
 
-**Prerequisites for users**: none.
+| Use case                                                              | Example prompt                                     |
+| --------------------------------------------------------------------- | -------------------------------------------------- |
+| Turn data from the conversation into a dashboard or a table.          | Show me a dashboard of our Q3 sales by region      |
+| Draft a form, with validation, to review how it will look and behave. | Create a sign-up form for our beta with validation |
+| Summarize a project or release as a status page.                      | Summarize the status of the mobile app release     |
+
+A fourth, comparing options (plans, vendors, candidates) side by side, did not
+fit; screenshot 4 still shows it.
+
+**Prerequisites**:
+
+> None. No account, sign-in or API key is needed: the server has no
+> authentication and no user data. Add the connector and send a prompt; the
+> assistant calls render-ui and the UI renders inline.
+
+**Read / write**: read only.
+
+## Data handling (Claude portal)
+
+- **API ownership**: we own the API (the server is ours).
+- **Personal health data**: no.
+- **Sponsored or promoted content**: no.
 
 ## Notes for reviewers
 
 No test account is needed: the server has no authentication and no user
-data. To test, add the server URL as a custom connector and send any prompt
-from the table above; the assistant calls `render-ui` and the result renders
-inline. `render-ui` has `readOnlyHint: true`. The view's CSP allows only
-`https://fonts.googleapis.com` and `https://fonts.gstatic.com` (fonts) and no
-connect domains. The view does not open external links.
+data. To test, add the server URL as a custom connector and send a prompt
+such as "Show me a dashboard of our Q3 sales by region"; the assistant calls
+`render-ui` and the result renders inline. `render-ui` has
+`readOnlyHint: true`. The view's CSP allows only `https://fonts.googleapis.com`
+and `https://fonts.gstatic.com` (fonts) and no connect domains. The view does
+not open external links.
+
+## Integration snippets (Claude portal)
+
+Shown on the listing for Claude API and Claude Code users. Whether the
+interactive view renders in either has not been checked: the Messages API
+returns the tool result, so there the caller most likely gets the spec, not
+the UI.
+
+**Claude API copy text**:
+
+```text
+Header: anthropic-beta: mcp-client-2025-11-20
+
+"mcp_servers": [
+  { "type": "url", "url": "https://ngx-json-render.vercel.app/mcp", "name": "ngx-json-render-ui" }
+],
+"tools": [
+  { "type": "mcp_toolset", "mcp_server_name": "ngx-json-render-ui" }
+]
+```
+
+**Claude Code copy text**:
+
+```bash
+claude mcp add --transport http ngx-json-render-ui https://ngx-json-render.vercel.app/mcp
+```
+
+**Claude Code external link**: https://shteynu.github.io/ngx-json-render/mcp/#claude-code
 
 ## ChatGPT test cases
 
@@ -96,9 +169,10 @@ Negative (the app should not be used):
 
 ## Before submitting
 
-- [ ] The Vercel project is live and `https://ngx-json-render.vercel.app/mcp`
+- [x] The Vercel project is live and `https://ngx-json-render.vercel.app/mcp`
       answers (update this file and the docs page if the URL differs).
-- [ ] Tested as a custom connector in Claude and in ChatGPT developer mode.
+- [x] Claude: self-tested and the policy acknowledgements confirmed at
+      submission, 2026-10-06.
+- [ ] Tested in ChatGPT developer mode.
 - [ ] Tested with MCP Inspector (`npx @modelcontextprotocol/inspector`).
-- [ ] A paid Claude plan for the Claude portal; a verified OpenAI developer
-      account and a verified domain for ChatGPT.
+- [ ] A verified OpenAI developer account and a verified domain for ChatGPT.
