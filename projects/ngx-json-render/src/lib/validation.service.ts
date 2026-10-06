@@ -12,6 +12,7 @@ import {
   type ValidationConfig,
   type ValidationFunction,
   type ValidationResult,
+  getByPath,
   runValidation,
 } from '@json-render/core';
 import { JsonRenderRootContext } from './root-context';
@@ -158,16 +159,9 @@ export class JsonRenderValidationService {
   /** Validate a single field and record the result. */
   validate(path: string, config: ValidationConfig): ValidationResult {
     const currentState = this.state.getSnapshot();
-    const segments = path.split('/').filter(Boolean);
-    let value: unknown = currentState;
-    for (const seg of segments) {
-      if (value != null && typeof value === 'object') {
-        value = (value as Record<string, unknown>)[seg];
-      } else {
-        value = undefined;
-        break;
-      }
-    }
+    // The store's own pointer walk, so `~1` and `~0` mean what they mean
+    // everywhere else a path is read.
+    const value = getByPath(currentState, path);
     const result = runValidation(config, {
       value,
       stateModel: currentState,

@@ -72,6 +72,15 @@ describe('JsonRenderValidationService', () => {
     expect(validation.validate('/user/name', REQUIRED).valid).toBe(true);
   });
 
+  it('unescapes ~1 and ~0 in a path, as the state store does', () => {
+    const { validation } = setup({
+      state: { links: { 'a/b': 'https://x.dev', 'c~d': 'set' } },
+    });
+
+    expect(validation.validate('/links/a~1b', REQUIRED).valid).toBe(true);
+    expect(validation.validate('/links/c~0d', REQUIRED).valid).toBe(true);
+  });
+
   it('treats a path through a missing branch as undefined', () => {
     const { validation } = setup({ state: {} });
 
