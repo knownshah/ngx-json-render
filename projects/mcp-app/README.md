@@ -146,7 +146,9 @@ block. Claude does not send it on its own: it puts the message in the message
 box, under a warning to review it, and the user sends it. The model then
 answers it like anything the user typed, and can call `render-ui` again with
 the next screen. The handler rejects, so a binding's `onError` runs, when the
-host does not declare the `message` capability or declines the message.
+host does not declare the `message` capability or declines the message. Either
+way the view says what happened under the UI: "Message passed to the chat."
+or the reason it could not send.
 
 `data` has to be a single `{ "$state": "/path" }`: core resolves `$state` only
 at the top level of a custom action's params. Through `submitForm` the inner

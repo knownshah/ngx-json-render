@@ -103,27 +103,30 @@ describe('App', () => {
     return { ...connection, messages };
   }
 
-  it('posts a button press to the chat as a user message', async () => {
-    const { fixture, host, messages } = await render({
-      root: 'order',
-      state: { order: { plan: 'Pro', seats: 3 } },
-      elements: {
-        order: {
-          type: 'Button',
-          props: { label: 'Order' },
-          on: {
-            press: {
-              action: 'sendMessage',
-              params: {
-                text: 'Order the Pro plan',
-                data: { $state: '/order' },
-              },
+  /** A single button that sends "Order the Pro plan" with `/order`. */
+  const orderSpec: Spec = {
+    root: 'order',
+    state: { order: { plan: 'Pro', seats: 3 } },
+    elements: {
+      order: {
+        type: 'Button',
+        props: { label: 'Order' },
+        on: {
+          press: {
+            action: 'sendMessage',
+            params: {
+              text: 'Order the Pro plan',
+              data: { $state: '/order' },
             },
           },
-          children: [],
         },
+        children: [],
       },
-    });
+    },
+  };
+
+  it('posts a button press to the chat as a user message', async () => {
+    const { fixture, host, messages } = await render(orderSpec);
 
     host.querySelector('button')!.click();
     await settle(fixture);
@@ -131,6 +134,22 @@ describe('App', () => {
     expect(messages).toEqual([
       messageText('Order the Pro plan', { plan: 'Pro', seats: 3 }),
     ]);
+    expect(host.querySelector('[role=status]')?.textContent).toContain(
+      'Message passed to the chat.',
+    );
+  });
+
+  it('says so when the host declines the message', async () => {
+    const { bridge, fixture, host } = await render(orderSpec);
+    bridge.onmessage = async () => ({ isError: true });
+    vi.spyOn(console, 'error').mockImplementation(() => undefined);
+
+    host.querySelector('button')!.click();
+    await settle(fixture);
+
+    expect(host.querySelector('[role=alert]')?.textContent).toContain(
+      'Could not send the message: The host declined the message.',
+    );
   });
 
   it('sends nothing for a sendMessage without text', async () => {
@@ -140,9 +159,13 @@ describe('App', () => {
       .mockResolvedValue();
     const { sendMessage } = fixture.componentInstance.handlers;
 
-    expect(() => sendMessage!({ text: ' ' })).toThrow(
+    await expect(sendMessage!({ text: ' ' })).rejects.toThrow(
       'sendMessage needs a non-empty "text" param.',
     );
+    expect(fixture.componentInstance.notice()).toEqual({
+      error: true,
+      text: 'Could not send the message: sendMessage needs a non-empty "text" param.',
+    });
     await sendMessage!({ text: 'Show more', data: ['not', 'an', 'object'] });
     expect(send).toHaveBeenCalledExactlyOnceWith('Show more', undefined);
   });

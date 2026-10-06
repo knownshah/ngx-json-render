@@ -1,4 +1,10 @@
-import { Component, InjectionToken, effect, inject } from '@angular/core';
+import {
+  Component,
+  InjectionToken,
+  effect,
+  inject,
+  signal,
+} from '@angular/core';
 import type { ActionHandler } from '@json-render/core';
 import type { McpUiTheme } from '@modelcontextprotocol/ext-apps';
 import { JsonRenderer } from 'ngx-json-render';
@@ -30,6 +36,15 @@ export const JSON_RENDER_APP_OPTIONS = new InjectionToken<JsonRenderAppOptions>(
         [registry]="registry"
         [handlers]="handlers"
       />
+      @if (notice(); as notice) {
+        <p
+          class="status"
+          [class.error]="notice.error"
+          [attr.role]="notice.error ? 'alert' : 'status'"
+        >
+          {{ notice.text }}
+        </p>
+      }
     } @else {
       <p class="status">Waiting for the model's spec…</p>
     }
@@ -38,6 +53,9 @@ export const JSON_RENDER_APP_OPTIONS = new InjectionToken<JsonRenderAppOptions>(
     :host {
       display: block;
       padding: 16px;
+    }
+    json-render + .status {
+      margin-top: 12px;
     }
     .status {
       margin: 0;
@@ -59,19 +77,37 @@ export class App {
   readonly registry = materialRegistry;
 
   /**
+   * What became of the last `sendMessage`. A host may decline it, or not take
+   * messages at all, and without this a press would look like it did nothing.
+   */
+  readonly notice = signal<{ error: boolean; text: string } | null>(null);
+
+  /**
    * The actions `server/catalog.ts` adds to the Material catalog. A spec's
    * built-in actions (setState, submitForm, …) never reach these.
    */
   readonly handlers: Record<string, ActionHandler> = {
-    sendMessage: ({ text, data }) => {
-      if (typeof text !== 'string' || !text.trim()) {
-        throw new Error('sendMessage needs a non-empty "text" param.');
+    sendMessage: async ({ text, data }) => {
+      try {
+        if (typeof text !== 'string' || !text.trim()) {
+          throw new Error('sendMessage needs a non-empty "text" param.');
+        }
+        const isObject =
+          data && typeof data === 'object' && !Array.isArray(data);
+        await this.mcp.sendMessage(
+          text,
+          isObject ? (data as Record<string, unknown>) : undefined,
+        );
+        this.notice.set({ error: false, text: 'Message passed to the chat.' });
+      } catch (error) {
+        const reason = error instanceof Error ? error.message : String(error);
+        this.notice.set({
+          error: true,
+          text: `Could not send the message: ${reason}`,
+        });
+        // Rethrown, so a binding's `onError` still runs.
+        throw error;
       }
-      const isObject = data && typeof data === 'object' && !Array.isArray(data);
-      return this.mcp.sendMessage(
-        text,
-        isObject ? (data as Record<string, unknown>) : undefined,
-      );
     },
   };
 
