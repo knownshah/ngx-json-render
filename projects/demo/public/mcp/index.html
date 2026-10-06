@@ -173,7 +173,15 @@
       </li>
       <li>
         <strong>Read-only</strong>: the tool reads and changes nothing outside
-        the chat. Buttons and form fields change the view's own state only.
+        the chat. Form fields change the view's own state.
+      </li>
+      <li>
+        <strong>Actions</strong>: besides the built-in state and form actions, a
+        button can run <code>sendMessage</code>, which posts a message to the
+        chat as yours, such as "Approve the release" or a submitted form as
+        JSON, so the assistant carries on from what you clicked. A form is sent
+        only once it validates. The message goes to your AI client, not to the
+        server, and only in clients that accept messages from apps.
       </li>
     </ul>
 
@@ -184,8 +192,9 @@
         does not connect to your systems or fetch data.
       </li>
       <li>
-        Buttons act inside the rendered view (update fields, validate a form)
-        and do not send data anywhere.
+        Buttons either act inside the rendered view (update fields, validate a
+        form) or post a message to the chat. They cannot call other tools or
+        send data anywhere else.
       </li>
     </ul>
 
