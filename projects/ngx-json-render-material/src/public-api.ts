@@ -3,7 +3,11 @@
  */
 
 // Catalog — the vocabulary an LLM generates against.
-export { materialCatalog, type MaterialCatalog } from './lib/catalog';
+export {
+  materialCatalog,
+  type MaterialCatalog,
+  type MaterialProps,
+} from './lib/catalog';
 
 // Registry — drop straight into <json-render [registry]="...">.
 export { materialComponents, materialRegistry } from './lib/registry';

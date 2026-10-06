@@ -4,7 +4,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatTableModule } from '@angular/material/table';
 import { JrChildren, injectRenderContext } from 'ngx-json-render';
-import type { ThemeColor } from './theme';
+import type { MaterialProps } from './catalog';
 
 /** Section heading (level 1–3) on the Material type scale. */
 @Component({
@@ -28,10 +28,7 @@ import type { ThemeColor } from './theme';
   `,
 })
 export class JrmHeading {
-  private readonly ctx = injectRenderContext<{
-    content?: unknown;
-    level?: 1 | 2 | 3;
-  }>();
+  private readonly ctx = injectRenderContext<MaterialProps<'Heading'>>();
   readonly props = this.ctx.props;
 }
 
@@ -55,10 +52,7 @@ export class JrmHeading {
   `,
 })
 export class JrmText {
-  private readonly ctx = injectRenderContext<{
-    content?: unknown;
-    tone?: 'default' | 'muted' | 'strong';
-  }>();
+  private readonly ctx = injectRenderContext<MaterialProps<'Text'>>();
   readonly props = this.ctx.props;
 }
 
@@ -70,10 +64,7 @@ export class JrmText {
   template: `<mat-icon [color]="props().color ?? null">{{ props().name }}</mat-icon>`,
 })
 export class JrmIcon {
-  private readonly ctx = injectRenderContext<{
-    name?: string;
-    color?: ThemeColor;
-  }>();
+  private readonly ctx = injectRenderContext<MaterialProps<'Icon'>>();
   readonly props = this.ctx.props;
 }
 
@@ -108,12 +99,7 @@ export class JrmIcon {
   `,
 })
 export class JrmMetric {
-  private readonly ctx = injectRenderContext<{
-    label?: unknown;
-    value?: unknown;
-    delta?: string;
-    trend?: 'up' | 'down' | 'flat';
-  }>();
+  private readonly ctx = injectRenderContext<MaterialProps<'Metric'>>();
   readonly props = this.ctx.props;
   readonly trend = computed(() => this.props().trend ?? 'flat');
   readonly trendIcon = computed(() => {
@@ -141,11 +127,7 @@ export class JrmMetric {
   `,
 })
 export class JrmChip {
-  private readonly ctx = injectRenderContext<{
-    label?: unknown;
-    color?: ThemeColor;
-    icon?: string;
-  }>();
+  private readonly ctx = injectRenderContext<MaterialProps<'Chip'>>();
   readonly props = this.ctx.props;
 }
 
@@ -186,11 +168,7 @@ export class JrmList {}
   `,
 })
 export class JrmListItem {
-  readonly ctx = injectRenderContext<{
-    title?: unknown;
-    description?: unknown;
-    icon?: string;
-  }>();
+  readonly ctx = injectRenderContext<MaterialProps<'ListItem'>>();
   readonly props = this.ctx.props;
   /** Only present the row as a control when the spec actually bound `press`. */
   readonly pressBound = computed(() => this.ctx.on('press').bound);
@@ -236,10 +214,7 @@ interface TableColumn {
   `,
 })
 export class JrmTable {
-  private readonly ctx = injectRenderContext<{
-    columns?: TableColumn[];
-    rows?: Array<Record<string, unknown>>;
-  }>();
+  private readonly ctx = injectRenderContext<MaterialProps<'Table'>>();
   readonly props = this.ctx.props;
 
   readonly columns = computed<TableColumn[]>(() => {

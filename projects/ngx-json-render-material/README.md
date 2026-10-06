@@ -191,6 +191,14 @@ export const { registry } = defineRegistry(materialCatalog, {
 });
 ```
 
+Type the replacement's props with `MaterialProps`, so they are the ones the catalog declares for that component — every field optional, because the renderer checks them against the schema only when `validate` is on:
+
+```ts
+export class BrandedCard {
+  readonly ctx = injectRenderContext<MaterialProps<'Card'>>();
+}
+```
+
 ## Notes
 
 - `Tabs` discovers its tabs from `Tab` children in the spec rather than through `@ContentChildren`, which a spec-driven tree cannot satisfy. Each `Tab` hands its label and body to the parent, which replays them into real `<mat-tab>` elements.

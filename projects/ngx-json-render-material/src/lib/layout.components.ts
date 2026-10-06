@@ -22,7 +22,7 @@ import {
   injectElementKey,
   injectRenderContext,
 } from 'ngx-json-render';
-import type { ThemeColor } from './theme';
+import type { MaterialProps } from './catalog';
 
 /** Layout container that stacks children vertically or horizontally. */
 @Component({
@@ -47,14 +47,7 @@ import type { ThemeColor } from './theme';
   `,
 })
 export class JrmStack {
-  private readonly ctx = injectRenderContext<{
-    direction?: 'vertical' | 'horizontal';
-    gap?: number;
-    padding?: number;
-    align?: 'start' | 'center' | 'end' | 'stretch';
-    justify?: 'start' | 'center' | 'between' | 'end';
-    wrap?: boolean;
-  }>();
+  private readonly ctx = injectRenderContext<MaterialProps<'Stack'>>();
   readonly props = this.ctx.props;
 
   readonly direction = computed(() =>
@@ -96,10 +89,7 @@ export class JrmStack {
   `,
 })
 export class JrmGrid {
-  private readonly ctx = injectRenderContext<{
-    columns?: number;
-    gap?: number;
-  }>();
+  private readonly ctx = injectRenderContext<MaterialProps<'Grid'>>();
   readonly props = this.ctx.props;
   readonly columns = computed(
     () => `repeat(${this.props().columns ?? 2}, minmax(0, 1fr))`,
@@ -129,11 +119,7 @@ export class JrmGrid {
   `,
 })
 export class JrmCard {
-  private readonly ctx = injectRenderContext<{
-    title?: string;
-    subtitle?: string;
-    appearance?: 'outlined' | 'raised' | 'filled';
-  }>();
+  private readonly ctx = injectRenderContext<MaterialProps<'Card'>>();
   readonly props = this.ctx.props;
 }
 
@@ -156,10 +142,7 @@ export class JrmCard {
   `,
 })
 export class JrmToolbar {
-  private readonly ctx = injectRenderContext<{
-    title?: string;
-    color?: ThemeColor;
-  }>();
+  private readonly ctx = injectRenderContext<MaterialProps<'Toolbar'>>();
   readonly props = this.ctx.props;
 }
 
@@ -181,11 +164,7 @@ export class JrmToolbar {
   `,
 })
 export class JrmExpansionPanel {
-  private readonly ctx = injectRenderContext<{
-    title?: string;
-    description?: string;
-    expanded?: boolean;
-  }>();
+  private readonly ctx = injectRenderContext<MaterialProps<'ExpansionPanel'>>();
   readonly props = this.ctx.props;
 }
 
@@ -293,7 +272,7 @@ export class JrmTabs {
   `,
 })
 export class JrmTab {
-  private readonly ctx = injectRenderContext<{ label?: string }>();
+  private readonly ctx = injectRenderContext<MaterialProps<'Tab'>>();
   private readonly registry = inject(JrmTabRegistry, { optional: true });
   private readonly key = injectElementKey();
   private readonly body = viewChild<TemplateRef<unknown>>('body');

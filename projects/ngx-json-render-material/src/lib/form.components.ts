@@ -18,7 +18,7 @@ import { MatSliderModule } from '@angular/material/slider';
 import type { ValidationConfig } from '@json-render/core';
 import { injectRenderContext } from 'ngx-json-render';
 import { type JrmField, injectJrmField } from './field';
-import type { ThemeColor } from './theme';
+import type { MaterialProps } from './catalog';
 
 interface SelectOption {
   value: string;
@@ -66,13 +66,7 @@ function syncErrorState(
   `,
 })
 export class JrmButton {
-  readonly ctx = injectRenderContext<{
-    label?: string;
-    variant?: 'text' | 'filled' | 'elevated' | 'outlined' | 'tonal';
-    color?: ThemeColor;
-    icon?: string;
-    disabled?: boolean;
-  }>();
+  readonly ctx = injectRenderContext<MaterialProps<'Button'>>();
   readonly props = this.ctx.props;
 }
 
@@ -94,12 +88,7 @@ export class JrmButton {
   `,
 })
 export class JrmIconButton {
-  readonly ctx = injectRenderContext<{
-    icon?: string;
-    label?: string;
-    color?: ThemeColor;
-    disabled?: boolean;
-  }>();
+  readonly ctx = injectRenderContext<MaterialProps<'IconButton'>>();
   readonly props = this.ctx.props;
 }
 
@@ -137,16 +126,7 @@ export class JrmIconButton {
   `,
 })
 export class JrmInput {
-  readonly ctx = injectRenderContext<{
-    label?: string;
-    value?: string;
-    placeholder?: string;
-    hint?: string;
-    type?: 'text' | 'number' | 'email' | 'password';
-    required?: boolean;
-    disabled?: boolean;
-    validation?: ValidationConfig;
-  }>();
+  readonly ctx = injectRenderContext<MaterialProps<'Input'>>();
   readonly props = this.ctx.props;
   readonly field: JrmField = injectJrmField(this.ctx, 'value', 'blur');
   private readonly el = viewChild.required<ElementRef<HTMLInputElement>>('el');
@@ -199,14 +179,7 @@ export class JrmInput {
   `,
 })
 export class JrmTextarea {
-  readonly ctx = injectRenderContext<{
-    label?: string;
-    value?: string;
-    placeholder?: string;
-    rows?: number;
-    disabled?: boolean;
-    validation?: ValidationConfig;
-  }>();
+  readonly ctx = injectRenderContext<MaterialProps<'Textarea'>>();
   readonly props = this.ctx.props;
   readonly field: JrmField = injectJrmField(this.ctx, 'value', 'blur');
   private readonly el =
@@ -258,13 +231,7 @@ export class JrmTextarea {
   `,
 })
 export class JrmSelect {
-  readonly ctx = injectRenderContext<{
-    label?: string;
-    value?: string;
-    options?: SelectOption[];
-    disabled?: boolean;
-    validation?: ValidationConfig;
-  }>();
+  readonly ctx = injectRenderContext<MaterialProps<'Select'>>();
   readonly props = this.ctx.props;
   readonly field: JrmField = injectJrmField(this.ctx, 'value', 'change');
   private readonly control = viewChild.required(MatSelect);
@@ -307,12 +274,7 @@ export class JrmSelect {
   `,
 })
 export class JrmCheckbox {
-  readonly ctx = injectRenderContext<{
-    label?: unknown;
-    checked?: boolean;
-    disabled?: boolean;
-    validation?: ValidationConfig;
-  }>();
+  readonly ctx = injectRenderContext<MaterialProps<'Checkbox'>>();
   readonly props = this.ctx.props;
   readonly field: JrmField = injectJrmField(this.ctx, 'checked', 'change');
 }
@@ -353,13 +315,7 @@ export class JrmCheckbox {
   `,
 })
 export class JrmRadioGroup {
-  readonly ctx = injectRenderContext<{
-    label?: string;
-    value?: string;
-    options?: SelectOption[];
-    direction?: 'vertical' | 'horizontal';
-    validation?: ValidationConfig;
-  }>();
+  readonly ctx = injectRenderContext<MaterialProps<'RadioGroup'>>();
   readonly props = this.ctx.props;
   readonly field: JrmField = injectJrmField(this.ctx, 'value', 'change');
   readonly options = computed<SelectOption[]>(() => {
@@ -384,11 +340,7 @@ export class JrmRadioGroup {
   `,
 })
 export class JrmSlideToggle {
-  readonly ctx = injectRenderContext<{
-    label?: unknown;
-    checked?: boolean;
-    disabled?: boolean;
-  }>();
+  readonly ctx = injectRenderContext<MaterialProps<'SlideToggle'>>();
   readonly props = this.ctx.props;
 }
 
@@ -421,12 +373,6 @@ export class JrmSlideToggle {
   `,
 })
 export class JrmSlider {
-  readonly ctx = injectRenderContext<{
-    label?: string;
-    value?: number;
-    min?: number;
-    max?: number;
-    step?: number;
-  }>();
+  readonly ctx = injectRenderContext<MaterialProps<'Slider'>>();
   readonly props = this.ctx.props;
 }

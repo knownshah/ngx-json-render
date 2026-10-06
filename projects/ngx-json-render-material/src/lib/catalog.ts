@@ -1,4 +1,8 @@
-import { ValidationConfigSchema } from '@json-render/core';
+import {
+  type InferCatalogComponents,
+  type InferComponentProps,
+  ValidationConfigSchema,
+} from '@json-render/core';
 import { schema } from 'ngx-json-render';
 import { z } from 'zod';
 
@@ -344,3 +348,13 @@ export const materialCatalog = schema.createCatalog({
 
 /** Type of the Angular Material catalog. */
 export type MaterialCatalog = typeof materialCatalog;
+
+/**
+ * Props of one catalog component as its Angular component receives them: the
+ * type of its Zod schema with every field optional. The renderer hands props
+ * over as the spec wrote them, checked only when `validate` is on, so a
+ * component cannot count on a field the schema marks required.
+ */
+export type MaterialProps<
+  K extends keyof InferCatalogComponents<MaterialCatalog>,
+> = Partial<InferComponentProps<MaterialCatalog, K>>;

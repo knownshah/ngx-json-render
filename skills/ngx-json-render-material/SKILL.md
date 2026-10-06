@@ -29,6 +29,7 @@ Angular ≥ 20. These are real Material components: the app needs a Material the
 | `materialRegistry`        | Ready registry for `<json-render [registry]="materialRegistry">`                                                              |
 | `materialComponents`      | Catalog name → component map, to override single entries                                                                      |
 | `JrmCard`, `JrmButton`, … | The individual components (`Jrm` + catalog name)                                                                              |
+| `MaterialProps<'Card'>`   | Props of one catalog component, from its Zod schema with every field optional — type a replacement with it                    |
 | `ThemeColor`              | `'primary' \| 'accent' \| 'warn'`                                                                                             |
 
 ## Render a spec
@@ -189,7 +190,11 @@ A submit button validates every bound field and dispatches only when all pass:
 ```ts
 import { Component } from '@angular/core';
 import { JrChildren, defineRegistry, injectRenderContext } from 'ngx-json-render';
-import { materialCatalog, materialComponents } from 'ngx-json-render-material';
+import {
+  type MaterialProps,
+  materialCatalog,
+  materialComponents,
+} from 'ngx-json-render-material';
 
 @Component({
   selector: 'app-branded-card',
@@ -205,7 +210,7 @@ import { materialCatalog, materialComponents } from 'ngx-json-render-material';
   `,
 })
 export class BrandedCard {
-  readonly ctx = injectRenderContext<{ title?: string; subtitle?: string }>();
+  readonly ctx = injectRenderContext<MaterialProps<'Card'>>();
 }
 
 export const { registry } = defineRegistry(materialCatalog, {
@@ -213,7 +218,7 @@ export const { registry } = defineRegistry(materialCatalog, {
 });
 ```
 
-The replacement is a catalog component like any other: it calls `injectRenderContext()` and renders `<jr-children />` for the `default` slot and `<jr-children slot="actions" />` for the footer, the two slots the catalog declares for `Card`.
+The replacement is a catalog component like any other: it calls `injectRenderContext()`, typed with `MaterialProps<'Card'>` so its props are the ones the catalog declares (all optional, since the renderer checks them only when `validate` is on), and renders `<jr-children />` for the `default` slot and `<jr-children slot="actions" />` for the footer, the two slots the catalog declares for `Card`.
 
 ## Extending the vocabulary
 

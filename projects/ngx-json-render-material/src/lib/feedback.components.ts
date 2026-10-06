@@ -3,7 +3,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { injectRenderContext } from 'ngx-json-render';
-import type { ThemeColor } from './theme';
+import type { MaterialProps } from './catalog';
 
 /** Material progress bar (0–100). */
 @Component({
@@ -19,11 +19,7 @@ import type { ThemeColor } from './theme';
   `,
 })
 export class JrmProgressBar {
-  private readonly ctx = injectRenderContext<{
-    value?: number;
-    mode?: 'determinate' | 'indeterminate';
-    color?: ThemeColor;
-  }>();
+  private readonly ctx = injectRenderContext<MaterialProps<'ProgressBar'>>();
   readonly props = this.ctx.props;
 }
 
@@ -41,10 +37,7 @@ export class JrmProgressBar {
   `,
 })
 export class JrmSpinner {
-  private readonly ctx = injectRenderContext<{
-    diameter?: number;
-    color?: ThemeColor;
-  }>();
+  private readonly ctx = injectRenderContext<MaterialProps<'Spinner'>>();
   readonly props = this.ctx.props;
 }
 
@@ -84,11 +77,7 @@ export class JrmSpinner {
   `,
 })
 export class JrmCallout {
-  private readonly ctx = injectRenderContext<{
-    title?: string;
-    content?: unknown;
-    severity?: 'info' | 'success' | 'warning' | 'error';
-  }>();
+  private readonly ctx = injectRenderContext<MaterialProps<'Callout'>>();
   readonly props = this.ctx.props;
   readonly severity = computed(() => this.props().severity ?? 'info');
   readonly icon = computed(() => {
