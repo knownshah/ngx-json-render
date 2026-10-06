@@ -53,8 +53,9 @@ review changes what the reviewers read. Not yet submitted to ChatGPT.
 > fill in a form and see validation messages without another round trip.
 >
 > The tool is read-only. It shows data that is already in the conversation;
-> it does not connect to your systems, store anything, or send data anywhere.
-> No account or sign-in is needed.
+> it does not connect to your systems or store anything. A button can put your
+> choice or a filled-in form in your message box, and once you send it, the
+> assistant continues from what you clicked. No account or sign-in is needed.
 >
 > Built on json-render, the open generative-UI format from Vercel Labs, and
 > ngx-json-render, its open-source Angular renderer (Apache-2.0).
