@@ -102,6 +102,14 @@
         <strong>Claude</strong>: Settings → Connectors → Add custom connector,
         paste the URL.
       </li>
+      <li id="claude-code">
+        <strong>Claude Code</strong>: add the server from a terminal. Without
+        <code>-s user</code> it is added to the current project only.
+        <pre><code>claude mcp add -s user --transport http ngx-json-render-ui https://ngx-json-render.vercel.app/mcp</code></pre>
+        <code>claude mcp get ngx-json-render-ui</code> should report
+        <em>Connected</em>; the <code>render-ui</code> tool is available in
+        sessions started after that.
+      </li>
       <li>
         <strong>ChatGPT</strong>: Settings → Apps → Advanced settings →
         Developer mode, then create an app with the URL.
