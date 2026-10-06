@@ -63,7 +63,9 @@ review changes what the reviewers read. Not yet submitted to ChatGPT.
 
 > Accesses nothing on your behalf. The single tool, render-ui, is read-only:
 > it draws a UI from data already in the conversation, does not connect to
-> your systems, and stores or sends nothing. No account or sign-in.
+> your systems, and stores nothing. A button in the UI can put a message in
+> your message box, such as an approval or a filled-in form; you review it
+> and send it yourself. No account or sign-in.
 
 **Sensitive data types** (Claude): none, left empty on purpose. Each entry is
 shown on the listing as data the server accesses.
