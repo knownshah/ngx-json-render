@@ -59,6 +59,22 @@ export interface JsonRenderApp {
    * for refresh and drill-down interactions.
    */
   callServerTool(name: string, args?: Record<string, unknown>): Promise<void>;
+  /**
+   * Post a user message to the host's chat, so the model answers what the
+   * user did in the view. `data`, if given, follows the text as a JSON block.
+   * Rejects when the host does not accept messages from views or turns this
+   * one down, so an action's `onError` runs.
+   */
+  sendMessage(text: string, data?: Record<string, unknown>): Promise<void>;
+}
+
+/** The text of a {@link JsonRenderApp.sendMessage} message. */
+export function messageText(
+  text: string,
+  data?: Record<string, unknown>,
+): string {
+  if (!data) return text;
+  return `${text}\n\n\`\`\`json\n${JSON.stringify(data, null, 2)}\n\`\`\``;
 }
 
 interface ToolResultLike {
@@ -168,6 +184,16 @@ export function injectJsonRenderApp(
       } finally {
         loading.set(false);
       }
+    },
+    async sendMessage(text, data) {
+      if (!app.getHostCapabilities()?.message) {
+        throw new Error('The host does not accept messages from the view.');
+      }
+      const result = await app.sendMessage({
+        role: 'user',
+        content: [{ type: 'text', text: messageText(text, data) }],
+      });
+      if (result.isError) throw new Error('The host declined the message.');
     },
   };
 }

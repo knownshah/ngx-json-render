@@ -17,6 +17,7 @@ the iframe. This project adds the missing Angular piece:
 | View: render the spec          | `<Renderer>` + shadcn registry | `<json-render>` + `materialRegistry`                |
 | Render while the model writes  | no, waits for the tool result  | yes, from `toolinputpartial` (`streamPartialInput`) |
 | Host theme                     | not handled                    | follows `theme` from the host context               |
+| UI actions reach the model     | no default                     | `sendMessage` action, posted as a chat message      |
 
 ## Run it
 
@@ -60,6 +61,9 @@ dashboard of my last three releases".
 - `server/app.ts`: registers the tool the way `createMcpApp` does, with one
   fix (below), a read-only annotation, and a CSP that allows only Google Fonts
   instead of any `https:` origin. It serves Streamable HTTP statelessly.
+- `server/catalog.ts`: the catalog the tool describes to the model, the
+  Material catalog plus a `sendMessage` action (below). The published catalog
+  stays host-neutral; the action needs the view's handler.
 - `server/server.ts`: stdio and a local HTTP server. `server/vercel.ts`: the
   hosted endpoint. `npm run build:mcp-app -- --vercel` bundles it, with every
   dependency and the view inlined, into `.vercel/output`, and `vercel.json`
@@ -91,11 +95,46 @@ tool's JSON Schema, and components and props stay typed, so an unknown
 component type is still rejected. Once upstream fixes it, the server can go
 back to a plain `createMcpApp({ name, version, catalog, html })`.
 
+## Actions that reach the model
+
+Built-in actions (`setState`, `submitForm`, …) only change the view. For a
+button that should continue the conversation ("Approve", "Show more", a
+submitted form), the tool description offers one more action:
+
+```json
+{
+  "on": {
+    "press": {
+      "action": "submitForm",
+      "params": {
+        "action": "sendMessage",
+        "params": { "text": "Sign me up", "data": { "$state": "/form" } }
+      }
+    }
+  }
+}
+```
+
+The view's handler calls `mcp.sendMessage(text, data)`, which posts a
+`ui/message` to the host as a user message: the text, then `data` as a JSON
+block. The model answers it like anything the user typed, and can call
+`render-ui` again with the next screen. It rejects, so a binding's `onError`
+runs, when the host does not declare the `message` capability or declines the
+message.
+
+`data` has to be a single `{ "$state": "/path" }`: core resolves `$state` only
+at the top level of a custom action's params. Through `submitForm` the inner
+params are resolved deeply, but the description asks for the single reference
+either way so the model has one rule.
+
 ## Not done yet
 
-- Actions that should reach the model (for example "Approve", "Show more")
-  have no default path. `mcp.app.sendMessage()` and `mcp.callServerTool()` are
-  there for an app to wire into `<json-render [handlers]>`.
+- Only `sendMessage` is wired. `mcp.callServerTool()` (replace the spec with a
+  server tool's result) and `app.updateModelContext()` (hand the model context
+  without a visible message) are there for an app that needs them.
+- Not yet tried in a real host: the tests drive the view with the MCP Apps
+  `AppBridge`, and whether Claude and ChatGPT accept `ui/message` from this
+  view, and how they show it, still has to be checked after a deploy.
 - `injectJsonRenderApp` lives in this example. If the approach holds, it
   belongs in a `ngx-json-render/mcp` secondary entry point with
   `@modelcontextprotocol/ext-apps` as an optional peer, plus a README section

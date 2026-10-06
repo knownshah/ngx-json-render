@@ -1,4 +1,5 @@
 import { Component, InjectionToken, effect, inject } from '@angular/core';
+import type { ActionHandler } from '@json-render/core';
 import type { McpUiTheme } from '@modelcontextprotocol/ext-apps';
 import { JsonRenderer } from 'ngx-json-render';
 import { materialRegistry } from 'ngx-json-render-material';
@@ -27,6 +28,7 @@ export const JSON_RENDER_APP_OPTIONS = new InjectionToken<JsonRenderAppOptions>(
         [spec]="spec"
         [loading]="mcp.loading()"
         [registry]="registry"
+        [handlers]="handlers"
       />
     } @else {
       <p class="status">Waiting for the model's spec…</p>
@@ -55,6 +57,23 @@ export class App {
     ...inject(JSON_RENDER_APP_OPTIONS, { optional: true }),
   });
   readonly registry = materialRegistry;
+
+  /**
+   * The actions `server/catalog.ts` adds to the Material catalog. A spec's
+   * built-in actions (setState, submitForm, …) never reach these.
+   */
+  readonly handlers: Record<string, ActionHandler> = {
+    sendMessage: ({ text, data }) => {
+      if (typeof text !== 'string' || !text.trim()) {
+        throw new Error('sendMessage needs a non-empty "text" param.');
+      }
+      const isObject = data && typeof data === 'object' && !Array.isArray(data);
+      return this.mcp.sendMessage(
+        text,
+        isObject ? (data as Record<string, unknown>) : undefined,
+      );
+    },
+  };
 
   constructor() {
     // Follow the host's light/dark theme: the Material theme is emitted under

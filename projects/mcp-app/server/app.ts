@@ -18,7 +18,7 @@ import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/
 import { z } from 'zod';
 // The catalog alone — the build bundles it from source so the server does not
 // load the Angular components (and Angular) along with it. See README.md.
-import { materialCatalog } from '../../ngx-json-render-material/src/lib/catalog';
+import { mcpCatalog } from './catalog';
 
 export const TOOL_NAME = 'render-ui';
 export const RESOURCE_URI = `ui://${TOOL_NAME}/view.html`;
@@ -69,7 +69,7 @@ export function specInputSchema(catalog: Catalog) {
 /** A server exposing the `render-ui` tool and its `ui://` view. */
 export function createServerInstance(
   html: string,
-  catalog: Catalog = materialCatalog,
+  catalog: Catalog = mcpCatalog,
 ) {
   const server = new McpServer({
     name: 'ngx-json-render Material',

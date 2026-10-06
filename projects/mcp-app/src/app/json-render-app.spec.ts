@@ -6,6 +6,7 @@ import {
 } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import type { Spec } from '@json-render/core';
+import type { McpUiHostCapabilities } from '@modelcontextprotocol/ext-apps';
 import { AppBridge } from '@modelcontextprotocol/ext-apps/app-bridge';
 import { InMemoryTransport } from '@modelcontextprotocol/sdk/inMemory.js';
 import type { Transport } from '@modelcontextprotocol/sdk/shared/transport.js';
@@ -13,6 +14,7 @@ import {
   type JsonRenderApp,
   type JsonRenderAppOptions,
   injectJsonRenderApp,
+  messageText,
   parseSpecFromToolResult,
 } from './json-render-app';
 
@@ -43,7 +45,10 @@ async function until(predicate: () => boolean) {
  * An MCP Apps host (the real `AppBridge`) on one end of an in-memory pair and
  * the app under test on the other.
  */
-async function connect(options: JsonRenderAppOptions = {}) {
+async function connect(
+  options: JsonRenderAppOptions = {},
+  hostCapabilities: McpUiHostCapabilities = { serverTools: {}, message: {} },
+) {
   TestBed.configureTestingModule({
     providers: [provideZonelessChangeDetection()],
   });
@@ -51,7 +56,7 @@ async function connect(options: JsonRenderAppOptions = {}) {
   const bridge = new AppBridge(
     null,
     { name: 'test-host', version: '0' },
-    { serverTools: {} },
+    hostCapabilities,
   );
   const initialized = new Promise<void>((resolve) => {
     bridge.oninitialized = () => resolve();
@@ -162,6 +167,52 @@ describe('injectJsonRenderApp', () => {
     expect(mcp.loading()).toBe(false);
   });
 
+  it('posts a user message to the chat, with the data as JSON', async () => {
+    const { bridge, mcp } = await connect();
+    const messages: unknown[] = [];
+    bridge.onmessage = async (params) => {
+      messages.push(params);
+      return {};
+    };
+
+    await mcp.sendMessage('Approve the release', { release: '2.4', ok: true });
+
+    expect(messages).toEqual([
+      {
+        role: 'user',
+        content: [
+          {
+            type: 'text',
+            text: messageText('Approve the release', {
+              release: '2.4',
+              ok: true,
+            }),
+          },
+        ],
+      },
+    ]);
+  });
+
+  it('rejects when the host declines the message', async () => {
+    const { bridge, mcp } = await connect();
+    bridge.onmessage = async () => ({ isError: true });
+
+    await expect(mcp.sendMessage('Approve')).rejects.toThrow(
+      'The host declined the message.',
+    );
+  });
+
+  it('rejects without sending when the host takes no messages', async () => {
+    const { bridge, mcp } = await connect({}, { serverTools: {} });
+    const onmessage = vi.fn(async () => ({}));
+    bridge.onmessage = onmessage;
+
+    await expect(mcp.sendMessage('Approve')).rejects.toThrow(
+      'The host does not accept messages from the view.',
+    );
+    expect(onmessage).not.toHaveBeenCalled();
+  });
+
   it('reports a connection that fails', async () => {
     TestBed.configureTestingModule({
       providers: [provideZonelessChangeDetection()],
@@ -188,6 +239,18 @@ describe('injectJsonRenderApp', () => {
     injector.destroy();
 
     expect(close).toHaveBeenCalledOnce();
+  });
+});
+
+describe('messageText', () => {
+  it('is the text alone without data', () => {
+    expect(messageText('Show more')).toBe('Show more');
+  });
+
+  it('appends the data as a fenced JSON block', () => {
+    expect(messageText('Sign me up', { email: 'ada@example.com' })).toBe(
+      'Sign me up\n\n```json\n{\n  "email": "ada@example.com"\n}\n```',
+    );
   });
 });
 
