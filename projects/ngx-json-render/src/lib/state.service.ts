@@ -37,6 +37,11 @@ export class JsonRenderStateService {
     (changes: StateChange[]) => void
   >();
 
+  /** The snapshot the change listeners last heard about. */
+  private lastSnapshot: StateModel = {};
+  /** True while this service writes, so the store's echo is not reported. */
+  private writing = false;
+
   private readonly _state = signal<StateModel>(
     {},
     // External stores may mutate snapshots in place — always propagate.
@@ -72,9 +77,22 @@ export class JsonRenderStateService {
         }
       }
 
-      untracked(() => this._state.set(store.getSnapshot()));
+      const controlled = store !== this.internalStore;
+      this.lastSnapshot = store.getSnapshot();
+      untracked(() => this._state.set(this.lastSnapshot));
       const unsubscribe = store.subscribe(() => {
-        this._state.set(store.getSnapshot());
+        const prev = this.lastSnapshot;
+        const next = store.getSnapshot();
+        // Recorded before the listeners run: a watch action may write again.
+        this.lastSnapshot = next;
+        this._state.set(next);
+        // A write the host made on its own store reaches no `set`/`update`
+        // here, so the diff is the only way `watch` hears about it. Our own
+        // writes report themselves, with the paths they were given.
+        if (controlled && !this.writing && this.changeListeners.size > 0) {
+          const changes = diffState(prev, next);
+          if (changes.length > 0) this.notifyChanges(changes);
+        }
       });
       onCleanup(unsubscribe);
     });
@@ -117,7 +135,7 @@ export class JsonRenderStateService {
     const store = untracked(this.currentStore);
     const prev = store.getSnapshot();
     const prevValue = getByPath(prev, path);
-    store.set(path, value);
+    this.write(store, () => store.set(path, value));
     if (prevValue !== value) {
       const changes: StateChange[] = [{ path, value }];
       this.notifyChanges(changes);
@@ -131,7 +149,7 @@ export class JsonRenderStateService {
   update(updates: Record<string, unknown>): void {
     const store = untracked(this.currentStore);
     const prev = store.getSnapshot();
-    store.update(updates);
+    this.write(store, () => store.update(updates));
     const changes: StateChange[] = [];
     for (const [path, value] of Object.entries(updates)) {
       if (getByPath(prev, path) !== value) {
@@ -153,8 +171,9 @@ export class JsonRenderStateService {
 
   /**
    * Register a listener called with the list of changed paths whenever state
-   * is written through this service (element `watch` fields rely on this).
-   * Returns an unsubscribe function.
+   * is written through this service, or, in controlled mode, whenever the
+   * external store changes (element `watch` fields rely on this). Returns an
+   * unsubscribe function.
    */
   subscribeChanges(listener: (changes: StateChange[]) => void): () => void {
     this.changeListeners.add(listener);
@@ -163,11 +182,56 @@ export class JsonRenderStateService {
     };
   }
 
+  private write(store: StateStore, apply: () => void): void {
+    const wasWriting = this.writing;
+    this.writing = true;
+    try {
+      apply();
+    } finally {
+      this.writing = wasWriting;
+    }
+    this.lastSnapshot = store.getSnapshot();
+  }
+
   private notifyChanges(changes: StateChange[]): void {
     for (const listener of this.changeListeners) {
       listener(changes);
     }
   }
+}
+
+/**
+ * Every path whose value differs between two state snapshots, each container
+ * before what it holds, values taken from `next`. Subtrees are compared by
+ * reference, so an unchanged branch costs nothing, and a store that mutates a
+ * snapshot in place reports no change: the same rule as a signal's `set`.
+ */
+function diffState(prev: StateModel, next: StateModel): StateChange[] {
+  const changes: StateChange[] = [];
+  const walk = (a: unknown, b: unknown, path: string): void => {
+    if (a === b) return;
+    if (path) changes.push({ path, value: b });
+    const keys = new Set([...childKeys(a), ...childKeys(b)]);
+    for (const key of keys) {
+      walk(child(a, key), child(b, key), `${path}/${escapePointer(key)}`);
+    }
+  };
+  walk(prev, next, '');
+  return changes;
+}
+
+function childKeys(value: unknown): string[] {
+  return value !== null && typeof value === 'object' ? Object.keys(value) : [];
+}
+
+function child(value: unknown, key: string): unknown {
+  return value !== null && typeof value === 'object'
+    ? (value as Record<string, unknown>)[key]
+    : undefined;
+}
+
+function escapePointer(key: string): string {
+  return key.replace(/~/g, '~0').replace(/\//g, '~1');
 }
 
 /**

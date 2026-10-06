@@ -661,6 +661,12 @@ const bound = injectBoundProp<string>(() => ctx.props().value, () => ctx.binding
 
 Share one store across renderers (or drive it from your own state management) by passing a core `StateStore` — `createStateStore()`, or `createStoreAdapter()` over Redux/NgRx/etc. — via the `store` input. `createStoreSetState(store)` adapts a whole-state updater to fine-grained path writes.
 
+`watch` also fires for writes made on that store from outside the renderer: on
+every store notification the renderer compares the new snapshot with the last
+one, branch by branch by reference, and reports each changed path. A store
+that mutates its snapshot in place therefore re-renders but triggers no
+`watch`; replace objects rather than editing them.
+
 ### What a state write re-renders
 
 A write reaches only the components whose resolved props actually changed. Writing `/user/name` re-runs the template of the text that shows it, not the rest of the tree. So `ctx.props()` and `ctx.element()` are the signals to read: a template that reads anything else, such as a mutable object or `Date.now()`, is no longer refreshed by unrelated writes.

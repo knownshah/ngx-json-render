@@ -2,7 +2,11 @@ import { Component, type Provider, signal } from '@angular/core';
 import { type ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideZonelessChangeDetection } from '@angular/core';
 import type { ActionHandler, ActionSettleInfo, Spec } from '@json-render/core';
-import { registerActionObserver } from '@json-render/core';
+import {
+  type StateStore,
+  createStateStore,
+  registerActionObserver,
+} from '@json-render/core';
 import { JrChildren } from './children.component';
 import {
   JR_CONFIRM_DIALOG,
@@ -117,6 +121,7 @@ const REGISTRY: ComponentRegistry = {
     [handlers]="handlers"
     [onAction]="onAction"
     [fallback]="fallback"
+    [store]="store"
     (stateChange)="changes.push($event)"
   />`,
 })
@@ -129,6 +134,7 @@ class Host {
   onAction: ((name: string, params?: Record<string, unknown>) => void) | null =
     null;
   fallback = null as unknown as typeof TFallback | null;
+  store: StateStore | null = null;
   readonly changes: StateChange[][] = [];
 }
 
@@ -707,6 +713,43 @@ describe('JsonRenderer', () => {
     stateService(fixture).set('/country', 'DE');
     await settle(fixture);
     // watch handlers run async — give the microtask queue a turn
+    await new Promise((resolve) => setTimeout(resolve));
+
+    expect(received).toEqual([{ country: 'DE' }]);
+  });
+
+  it('fires watch actions when an external store changes a watched path', async () => {
+    const received: unknown[] = [];
+    const external = createStateStore({ country: '' });
+    const fixture = await setup(
+      {
+        root: 'root',
+        elements: {
+          root: {
+            type: 'Box',
+            props: {},
+            watch: {
+              '/country': {
+                action: 'loadCities',
+                params: { country: { $state: '/country' } },
+              },
+            },
+          },
+        },
+      },
+      (host) => {
+        host.store = external;
+        host.handlers = {
+          loadCities: (params) => {
+            received.push(params);
+          },
+        };
+      },
+    );
+
+    // Written by the host's own state management, not through the renderer.
+    external.set('/country', 'DE');
+    await settle(fixture);
     await new Promise((resolve) => setTimeout(resolve));
 
     expect(received).toEqual([{ country: 'DE' }]);

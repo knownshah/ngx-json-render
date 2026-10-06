@@ -162,6 +162,58 @@ describe('JsonRenderStateService — controlled mode', () => {
     expect(state.get('/count')).toBe(42);
   });
 
+  it('tells watchers about writes made directly on the external store', () => {
+    const external = createStateStore({
+      count: 1,
+      user: { name: 'Ada', role: 'admin' },
+    });
+    const { state } = setup({ store: external });
+    const seen: StateChange[][] = [];
+    state.subscribeChanges((changes) => seen.push(changes));
+
+    external.set('/user/name', 'Bo');
+
+    // The written leaf and the container above it changed; siblings did not.
+    expect(seen).toEqual([
+      [
+        { path: '/user', value: { name: 'Bo', role: 'admin' } },
+        { path: '/user/name', value: 'Bo' },
+      ],
+    ]);
+  });
+
+  it('reports a removed subtree down to its leaves', () => {
+    const external = createStateStore({ user: { name: 'Ada' } });
+    const { state } = setup({ store: external });
+    const seen: StateChange[][] = [];
+    state.subscribeChanges((changes) => seen.push(changes));
+
+    external.set('/user', null);
+
+    expect(seen).toEqual([
+      [
+        { path: '/user', value: null },
+        { path: '/user/name', value: undefined },
+      ],
+    ]);
+  });
+
+  it('escapes the keys of the paths it reports', () => {
+    const external = createStateStore({ 'a/b': 0, 'c~d': 0 });
+    const { state } = setup({ store: external });
+    const seen: StateChange[][] = [];
+    state.subscribeChanges((changes) => seen.push(changes));
+
+    external.update({ '/a~1b': 1, '/c~0d': 2 });
+
+    expect(seen).toEqual([
+      [
+        { path: '/a~1b', value: 1 },
+        { path: '/c~0d', value: 2 },
+      ],
+    ]);
+  });
+
   it('ignores the initial state input', () => {
     const external = createStateStore({ count: 1 });
     const { state } = setup({
