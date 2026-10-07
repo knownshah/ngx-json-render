@@ -37,6 +37,14 @@ export const VIEW_CSP = {
   connectDomains: [] as string[],
 };
 
+/**
+ * The origin ChatGPT derives the view's sandbox origin from; its plugin
+ * submission requires one, unique per plugin. Set through the OpenAI alias
+ * rather than `_meta.ui.domain`, because that key's format is up to each host
+ * and Claude expects a `{hash}.claudemcpcontent.com` value there.
+ */
+export const VIEW_DOMAIN = 'https://ngx-json-render.vercel.app';
+
 /** A server exposing the `render-ui` tool and its `ui://` view. */
 export function createServerInstance(
   html: string,
@@ -85,7 +93,10 @@ export function createServerInstance(
           uri: RESOURCE_URI,
           mimeType: RESOURCE_MIME_TYPE,
           text: html,
-          _meta: { ui: { csp: VIEW_CSP } },
+          _meta: {
+            ui: { csp: VIEW_CSP },
+            'openai/widgetDomain': VIEW_DOMAIN,
+          },
         },
       ],
     }),

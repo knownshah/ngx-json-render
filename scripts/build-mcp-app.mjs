@@ -12,7 +12,13 @@
 // Needs dist/ngx-json-render and dist/ngx-json-render-material, like the demo
 // (`npm run build:lib && npm run build:material`).
 import { execFileSync } from 'node:child_process';
-import { mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import {
+  existsSync,
+  mkdirSync,
+  readFileSync,
+  rmSync,
+  writeFileSync,
+} from 'node:fs';
 import { createRequire } from 'node:module';
 import { join } from 'node:path';
 import { build } from 'esbuild';
@@ -116,9 +122,28 @@ if (process.argv.includes('--vercel')) {
     join(output, 'static', 'index.html'),
     readFileSync('projects/mcp-app/server/landing.html', 'utf8'),
   );
+  // OpenAI's plugin portal verifies the domain by fetching a token it issues
+  // from this exact path, as plain text. Served once the token is committed.
+  const challenge = 'projects/mcp-app/server/openai-apps-challenge.txt';
+  const routes = [];
+  if (existsSync(challenge)) {
+    mkdirSync(join(output, 'static', '.well-known'));
+    writeFileSync(
+      join(output, 'static', '.well-known', 'openai-apps-challenge'),
+      readFileSync(challenge, 'utf8').trim(),
+    );
+    routes.push({
+      src: '/.well-known/openai-apps-challenge',
+      headers: { 'Content-Type': 'text/plain; charset=utf-8' },
+      continue: true,
+    });
+  }
   writeFileSync(
     join(output, 'config.json'),
-    JSON.stringify({ version: 3, routes: [{ handle: 'filesystem' }] }),
+    JSON.stringify({
+      version: 3,
+      routes: [...routes, { handle: 'filesystem' }],
+    }),
   );
   console.log(`Built ${output} for Vercel`);
 }
