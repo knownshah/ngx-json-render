@@ -112,8 +112,10 @@
         the interactive view renders in Claude chat.
       </li>
       <li>
-        <strong>ChatGPT</strong>: Settings → Apps → Advanced settings →
-        Developer mode, then create an app with the URL.
+        <strong>ChatGPT</strong>: turn on Settings → Security and login →
+        Developer mode, then Plugins → + → Add custom MCP server → Create MCP
+        App, with the URL and No Auth. Pick it with <code>@</code> in the
+        message box: without it ChatGPT tends to answer with its own charts.
       </li>
       <li>
         <strong>VS Code, Cursor</strong>: add it to your MCP configuration:
@@ -182,9 +184,10 @@
         button can run <code>sendMessage</code>, which puts a message in the
         chat as yours, such as "Approve the release" or a submitted form as
         JSON, so the assistant carries on from what you clicked. In Claude the
-        message lands in the message box for you to review and send. A form is
-        sent only once it validates. The message goes to your AI client, not to
-        the server, and only in clients that accept messages from apps.
+        message lands in the message box for you to review and send; ChatGPT
+        posts it to the chat at once. A form is sent only once it validates. The
+        message goes to your AI client, not to the server, and only in clients
+        that accept messages from apps.
       </li>
     </ul>
 
@@ -215,6 +218,7 @@
     </p>
     <p class="muted">
       <a href="privacy.html">Privacy policy</a> ·
+      <a href="terms.html">Terms of service</a> ·
       <a href="../">ngx-json-render demo</a>
     </p>
   </body>

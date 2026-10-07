@@ -160,8 +160,9 @@ either way so the model has one rule.
 - Only `sendMessage` is wired. `mcp.callServerTool()` (replace the spec with a
   server tool's result) and `app.updateModelContext()` (hand the model context
   without a visible message) are there for an app that needs them.
-- Tried in Claude (the message lands in the message box, as above), not yet
-  in ChatGPT. Whether Claude passes the whole input schema to the model, or
+- Tried in Claude (the message lands in the message box, as above) and in
+  ChatGPT, which posts it to the chat at once; there the model did not answer
+  the posted message. Whether Claude passes the whole input schema to the model, or
   cuts it off like the description, is checked only by asking it.
 - `injectJsonRenderApp` lives in this example. If the approach holds, it
   belongs in a `ngx-json-render/mcp` secondary entry point with
