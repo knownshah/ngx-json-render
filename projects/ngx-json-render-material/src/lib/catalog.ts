@@ -127,7 +127,8 @@ export const materialCatalog = schema.createCatalog({
         tone: z.enum(['default', 'muted', 'strong']).optional(),
       }),
       slots: [],
-      description: 'A paragraph of body text.',
+      description:
+        'A paragraph of body text; "\\n" in content starts a new line.',
     },
     Icon: {
       props: z.object({

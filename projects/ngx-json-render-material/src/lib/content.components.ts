@@ -32,7 +32,11 @@ export class JrmHeading {
   readonly props = this.ctx.props;
 }
 
-/** A paragraph of body text. */
+/**
+ * A paragraph of body text. A `\n` in `content` starts a new line: models
+ * write poems, addresses and short lists that way. The interpolation touches
+ * the tags so the template's own indentation adds no line.
+ */
 @Component({
   selector: 'jrm-text',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -41,12 +45,10 @@ export class JrmHeading {
       class="mat-body-medium jrm-text"
       [class.jrm-muted]="props().tone === 'muted'"
       [class.jrm-strong]="props().tone === 'strong'"
-    >
-      {{ props().content }}
-    </p>
+    >{{ props().content }}</p>
   `,
   styles: `
-    .jrm-text { margin: 0; }
+    .jrm-text { margin: 0; white-space: pre-line; }
     .jrm-muted { opacity: 0.65; }
     .jrm-strong { font-weight: 600; }
   `,

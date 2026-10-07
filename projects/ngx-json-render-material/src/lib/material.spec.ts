@@ -622,6 +622,28 @@ describe('material layout components', () => {
     expect(grid.style.gridTemplateColumns).toBe('repeat(2, minmax(0, 1fr))');
   });
 
+  it('keeps the line breaks in Text content', async () => {
+    const fixture = await render({
+      root: 'haiku',
+      elements: {
+        haiku: {
+          type: 'Text',
+          props: { content: 'Golden leaves drift down\nCool winds whisper' },
+          children: [],
+        },
+      },
+    } as unknown as Spec);
+
+    const text = (fixture.nativeElement as HTMLElement).querySelector(
+      '.jrm-text',
+    ) as HTMLElement;
+    // Exactly the content: no indentation from the template around it.
+    expect(text.textContent).toBe(
+      'Golden leaves drift down\nCool winds whisper',
+    );
+    expect(getComputedStyle(text).whiteSpace).toBe('pre-line');
+  });
+
   it('renders Card children into the default and actions slots', async () => {
     const fixture = await render({
       root: 'card',
