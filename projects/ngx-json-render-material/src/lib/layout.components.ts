@@ -114,13 +114,22 @@ export class JrmGrid {
         </mat-card-header>
       }
       <mat-card-content><jr-children /></mat-card-content>
-      <mat-card-actions align="end"><jr-children slot="actions" /></mat-card-actions>
+      @if (hasActions()) {
+        <mat-card-actions align="end"><jr-children slot="actions" /></mat-card-actions>
+      }
     </mat-card>
   `,
 })
 export class JrmCard {
   private readonly ctx = injectRenderContext<MaterialProps<'Card'>>();
   readonly props = this.ctx.props;
+  /**
+   * Material gives the actions row a min-height, so rendering it empty left
+   * a blank strip under every card without buttons.
+   */
+  readonly hasActions = computed(
+    () => (this.ctx.element().slots?.['actions']?.length ?? 0) > 0,
+  );
 }
 
 /** Material toolbar for a page or section header. */

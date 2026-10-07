@@ -644,6 +644,26 @@ describe('material layout components', () => {
     expect(getComputedStyle(text).whiteSpace).toBe('pre-line');
   });
 
+  it('leaves out the Card actions row when the slot is empty', async () => {
+    const fixture = await render({
+      root: 'card',
+      elements: {
+        card: {
+          type: 'Card',
+          props: { title: 'Regional performance' },
+          children: ['body'],
+        },
+        body: { type: 'Text', props: { content: 'Body copy' }, children: [] },
+      },
+    } as unknown as Spec);
+
+    const host: HTMLElement = fixture.nativeElement;
+    expect(host.querySelector('mat-card-content')?.textContent).toContain(
+      'Body copy',
+    );
+    expect(host.querySelector('mat-card-actions')).toBeNull();
+  });
+
   it('renders Card children into the default and actions slots', async () => {
     const fixture = await render({
       root: 'card',
