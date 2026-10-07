@@ -123,7 +123,9 @@ developer mode.
    challenge token as `projects/mcp-app/server/openai-apps-challenge.txt`,
    deploy, Verify Domain.
 3. User: demo video URL; Submit, then Publish after approval.
-4. Optional: `outputSchema` on render-ui; Text line breaks; MCP Inspector run.
+4. Optional: `outputSchema` on render-ui; MCP Inspector run. (The Text line
+   breaks and the empty Card actions row found in testing shipped in
+   `ngx-json-render-material` 0.3.8, `fccbcca`.)
 
 ## Approval gates
 
