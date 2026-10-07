@@ -2,9 +2,10 @@
 
 ## Metadata
 
-- Branch: `main` (this repo commits straight to main); changes uncommitted
-- Base commit: `3e158b8`
-- Status: **package ready locally; waiting on the user's OpenAI steps**
+- Branch: `main` (this repo commits straight to main)
+- Committed and pushed: `256bca6`, `a9afc1f`, `b9c4557` (CI green, deployed)
+- Status: **parked 2026-10-07: OpenAI verification needs a payment method,
+  which the user declined to add**
 - Last updated: 2026-10-07
 - Last agent/tool: Claude Code (Opus 5.5)
 
@@ -77,7 +78,7 @@ Findings:
 - Text drops line breaks: a haiku rendered on one line.
 - A table card once kept ~50 px of empty space at its bottom.
 
-## Done this session (uncommitted)
+## Done 2026-10-07 (committed and pushed)
 
 - Domain decision: stay on `ngx-json-render.vercel.app` (user, 2026-10-07).
 - `server/app.ts`: the view resource carries
@@ -102,24 +103,36 @@ Checks run: `npx ng test mcp-app` 31/31; `npm run build:mcp-app -- --vercel`;
 stdio `resources/read` shows `openai/widgetDomain`; `npx ng build demo`;
 `npm run pack:chatgpt-plugin`; prettier on changed files.
 
-## Remaining
+## Blocker
 
-1. User: commit and push (deploys Vercel and GitHub Pages; terms.html must be
-   live before submitting).
-2. User: developer identity verification at platform.openai.com.
-3. Upload `dist/chatgpt-plugin.zip`, get the challenge token, commit it as
-   `projects/mcp-app/server/openai-apps-challenge.txt`, deploy, Verify Domain.
-4. User: demo video URL; Submit, then Publish after approval.
-5. Optional: `outputSchema` on render-ui; Text line breaks; MCP Inspector run.
+OpenAI's organization verification (Settings → Organization → General →
+Verifications) shows "Payment method required": a valid default payment
+method must be on file in Billing before Individual or Business verification
+can start. Without verification the plugin cannot be submitted; an upload of
+`dist/chatgpt-plugin.zip` on platform.openai.com/plugins did not appear in the
+plugin list. The user does not want to add a payment method (2026-10-07), so
+the submission is parked. The plugin keeps working in the user's ChatGPT in
+developer mode.
+
+## Remaining (when unparked)
+
+1. User: a default payment method in Billing (no credits needed for
+   verification as far as known; keep auto-recharge off), then Individual
+   verification.
+2. Upload `dist/chatgpt-plugin.zip` (`npm run pack:chatgpt-plugin`), commit the
+   challenge token as `projects/mcp-app/server/openai-apps-challenge.txt`,
+   deploy, Verify Domain.
+3. User: demo video URL; Submit, then Publish after approval.
+4. Optional: `outputSchema` on render-ui; Text line breaks; MCP Inspector run.
 
 ## Approval gates
 
-- Account verification, domain verification, the demo video, Submit and
-  Publish are the user's.
+- Payment method, account verification, domain verification, the demo
+  video, Submit and Publish are the user's.
 - Security settings in the user's ChatGPT account are switched by the user.
 - Ask before changing the Claude listing while it is in review.
 
 ## Next concrete step
 
-The user commits and pushes this work, then uploads `dist/chatgpt-plugin.zip`
-at platform.openai.com/plugins to obtain the domain challenge token.
+None until the user decides to add a payment method. Then: check
+Verifications status, and once verified upload the ZIP.
