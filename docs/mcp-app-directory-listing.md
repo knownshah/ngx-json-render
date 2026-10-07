@@ -9,7 +9,10 @@ demo on GitHub Pages, from `projects/demo/public/mcp/`.
 review. The Claude sections below match the live listing; edit it from
 [its manage page](https://claude.ai/directory/manage/ngx-json-render-ui) →
 Edit → Open the full editor, and keep this file in step. An edit made during
-review changes what the reviewers read. Not yet submitted to ChatGPT.
+review changes what the reviewers read. Not yet submitted to ChatGPT: the
+ChatGPT listing lives in `projects/mcp-app/chatgpt-plugin/plugin.json`, packed
+by `npm run pack:chatgpt-plugin` into `dist/chatgpt-plugin.zip` and uploaded
+at platform.openai.com/plugins.
 
 ## Links
 
@@ -33,7 +36,8 @@ review changes what the reviewers read. Not yet submitted to ChatGPT.
 - **Short description** (ChatGPT, ≤ 30): Interactive UI in your chat
 - **Categories** (Claude, up to 5): Productivity; Development tools. The
   Claude portal has no Design category.
-- **Categories** (ChatGPT, planned): Design; Productivity; Developer tools
+- **Category** (ChatGPT): Productivity. The manifest takes one category, and
+  OpenAI has no Design category.
 - **Slug**: `ngx-json-render-ui` (permanent once submitted)
 - **Works with** (Claude): Claude (web & mobile), Claude API, Claude Desktop.
   Claude Code was removed on 2026-10-06: the desktop Code tab shows the tool
@@ -147,6 +151,12 @@ Header: anthropic-beta: mcp-client-2025-11-20
 
 ## ChatGPT test cases
 
+The submitted wording is in `plugin.json` (`review.test_cases`). All eight
+passed in ChatGPT developer mode on 2026-10-07, CSP enforced. Positive cases
+need the plugin picked with `@` in the message box; without it ChatGPT draws
+its own chart instead. Negative cases are run without the mention, since with
+it ChatGPT calls the tool even for a haiku.
+
 Positive (the app should be used):
 
 1. "Show me a dashboard of our Q3 sales by region" → metric tiles and a
@@ -171,6 +181,10 @@ Negative (the app should not be used):
       answers (update this file and the docs page if the URL differs).
 - [x] Claude: self-tested and the policy acknowledgements confirmed at
       submission, 2026-10-06.
-- [ ] Tested in ChatGPT developer mode.
+- [x] Tested in ChatGPT developer mode, 2026-10-07.
 - [ ] Tested with MCP Inspector (`npx @modelcontextprotocol/inspector`).
-- [ ] A verified OpenAI developer account and a verified domain for ChatGPT.
+- [ ] A verified OpenAI developer identity (individual or business).
+- [ ] Domain verified: the portal's token committed as
+      `projects/mcp-app/server/openai-apps-challenge.txt`, deployed, and served
+      at `https://ngx-json-render.vercel.app/.well-known/openai-apps-challenge`.
+- [ ] A demo video URL in `review.demo_recording_url` or the dashboard.

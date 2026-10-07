@@ -1,0 +1,98 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "ngx-json-render-ui",
+  "version": "1.0.0",
+  "description": "Renders interactive dashboards, forms, tables and status pages inline in the chat as Angular Material components.",
+  "author": {
+    "name": "ngx-json-render",
+    "url": "https://github.com/shteynu/ngx-json-render"
+  },
+  "homepage": "https://shteynu.github.io/ngx-json-render/mcp/",
+  "repository": "https://github.com/shteynu/ngx-json-render",
+  "license": "Apache-2.0",
+  "keywords": ["ui", "dashboard", "forms", "tables", "generative ui"],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "ngx-json-render UI",
+        "shortDescription": "Interactive UI in your chat",
+        "longDescription": "Ask for a dashboard, a form, a status summary or a comparison, and see it as a real interface instead of a wall of text. ChatGPT describes the UI as a json-render spec, and the render-ui tool draws it inline in the chat with Angular Material: metric tiles, tables, cards, tabs, lists, progress bars, callouts, and forms with inputs, selects, checkboxes and validation. Form fields and buttons are live inside the view, so you can fill in a form and see validation messages without another round trip.\n\nThe tool is read-only. It shows data that is already in the conversation; it does not connect to your systems or store anything. A button can post your choice or a filled-in form to the chat as your message, so ChatGPT continues from what you clicked. No account or sign-in is needed.\n\nBuilt on json-render, the open generative-UI format from Vercel Labs, and ngx-json-render, its open-source Angular renderer (Apache-2.0).",
+        "developerName": "ngx-json-render",
+        "category": "Productivity",
+        "capabilities": [
+          "Render dashboards with metric tiles and tables",
+          "Render forms with live validation",
+          "Render status pages, cards, tabs and lists",
+          "Post a button press or a filled-in form to the chat"
+        ],
+        "websiteURL": "https://shteynu.github.io/ngx-json-render/mcp/",
+        "supportURL": "https://github.com/shteynu/ngx-json-render/issues",
+        "privacyPolicyURL": "https://shteynu.github.io/ngx-json-render/mcp/privacy.html",
+        "termsOfServiceURL": "https://shteynu.github.io/ngx-json-render/mcp/terms.html",
+        "defaultPrompt": [
+          "Show me a dashboard of our Q3 sales by region",
+          "Create a sign-up form for our beta with validation",
+          "Compare the three hosting plans side by side"
+        ],
+        "composerIcon": "./assets/icon.png",
+        "logo": "./assets/icon.png"
+      },
+      "review": {
+        "test_cases": {
+          "positive": [
+            {
+              "description": "Dashboard from conversation data. Select ngx-json-render UI with @ in the message box first; without it ChatGPT answers with its own charts.",
+              "prompt": "Show me a dashboard of our Q3 sales by region",
+              "tools_triggered": "render-ui",
+              "expected_behavior": "An inline view with metric tiles (such as total revenue and growth) and a table with one row per region. The model fills in realistic sample figures."
+            },
+            {
+              "description": "Form with validation. Select ngx-json-render UI with @ first.",
+              "prompt": "Create a sign-up form for our beta with validation",
+              "tools_triggered": "render-ui",
+              "expected_behavior": "An inline form with name, email and further fields. Typing an invalid email and leaving the field shows a validation message under it, without another model turn."
+            },
+            {
+              "description": "Status page. Select ngx-json-render UI with @ first.",
+              "prompt": "Summarize the status of the mobile app release",
+              "tools_triggered": "render-ui",
+              "expected_behavior": "An inline status page with a status badge, a progress bar, a callout for the main risk and a checklist of workstreams."
+            },
+            {
+              "description": "Side-by-side comparison. Select ngx-json-render UI with @ first.",
+              "prompt": "Compare the three hosting plans side by side",
+              "tools_triggered": "render-ui",
+              "expected_behavior": "Three cards in a row, one per plan, each with its price and features; one plan may carry a badge such as Most popular."
+            },
+            {
+              "description": "Table from data in the prompt. Select ngx-json-render UI with @ first.",
+              "prompt": "Show these as a table: Alice 34 Berlin, Bob 29 Lisbon, Chen 41 Taipei",
+              "tools_triggered": "render-ui",
+              "expected_behavior": "An inline table with Name, Age and City columns and exactly the three rows given, with no invented rows."
+            }
+          ],
+          "negative": [
+            {
+              "description": "A factual question needs no UI: ChatGPT answers in plain text and does not call render-ui.",
+              "prompt": "What is the capital of Portugal?"
+            },
+            {
+              "description": "Creative writing needs no UI: ChatGPT answers in plain text and does not call render-ui.",
+              "prompt": "Write a haiku about autumn"
+            },
+            {
+              "description": "A translation needs no UI: ChatGPT answers in plain text and does not call render-ui.",
+              "prompt": "Translate 'good morning' into Spanish"
+            }
+          ]
+        },
+        "commerce": false,
+        "commerce_description": "This plugin does not sell products or process payments."
+      },
+      "publication": {
+        "countries": [],
+        "release_notes": "Initial release: one read-only tool, render-ui, that draws a json-render spec inline as Angular Material components, with live forms and a button action that posts a message to the chat."
+      }
+    }
+  }
+}
