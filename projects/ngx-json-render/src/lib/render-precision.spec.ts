@@ -366,6 +366,26 @@ describe('two-way bound elements', () => {
     },
   };
 
+  const PROBED_FORM_SPEC: Spec = {
+    ...FORM_SPEC,
+    elements: {
+      ...FORM_SPEC.elements,
+      draft: {
+        type: 'Input',
+        props: {
+          value: { $bindState: '/draft' },
+          probe: { $computed: 'tag', args: { label: 'draft' } },
+        },
+      },
+    },
+  };
+
+  function input(fixture: ComponentFixture<unknown>): HTMLInputElement {
+    return (fixture.nativeElement as HTMLElement).querySelector(
+      '.p-input',
+    ) as HTMLInputElement;
+  }
+
   it('re-assert the DOM when state returns to the value they last saw', async () => {
     const { fixture, state } = await setup(FORM_SPEC);
     const input = (fixture.nativeElement as HTMLElement).querySelector(
@@ -381,6 +401,74 @@ describe('two-way bound elements', () => {
     await settle(fixture);
 
     expect(input.value).toBe('');
+  });
+
+  it('follow a write to the path they are bound to', async () => {
+    const { fixture, state } = await setup(FORM_SPEC);
+
+    state.set('/draft', 'milk');
+    await settle(fixture);
+
+    expect(input(fixture).value).toBe('milk');
+    expect(runs['draft']).toBe(1);
+  });
+
+  it('do not resolve or re-run for a write to a path they do not read', async () => {
+    const { fixture, state } = await setup(PROBED_FORM_SPEC);
+
+    state.set('/count', 1);
+    await settle(fixture);
+
+    expect(texts(fixture, '.p-text')).toEqual(['1']);
+    expect(calls).toEqual({});
+    expect(runs['draft']).toBeUndefined();
+  });
+
+  it('re-assert the DOM when a container above their path is replaced', async () => {
+    const spec: Spec = {
+      root: 'draft',
+      state: { form: { draft: '' } },
+      elements: {
+        draft: {
+          type: 'Input',
+          props: { value: { $bindState: '/form/draft' } },
+        },
+      },
+    };
+    const { fixture, state } = await setup(spec);
+
+    input(fixture).value = 'milk';
+    input(fixture).dispatchEvent(new Event('input'));
+    state.set('/form', { draft: '' });
+    await settle(fixture);
+
+    expect(input(fixture).value).toBe('');
+  });
+
+  it('bound to repeat items re-run only for the item written', async () => {
+    const spec: Spec = {
+      root: 'rows',
+      state: { rows: [{ v: 'a' }, { v: 'b' }, { v: 'c' }] },
+      elements: {
+        rows: {
+          type: 'Box',
+          props: {},
+          repeat: { statePath: '/rows' },
+          children: ['row'],
+        },
+        row: { type: 'Input', props: { value: { $bindItem: 'v' } } },
+      },
+    };
+    const { fixture, state } = await setup(spec);
+
+    state.set('/rows/1/v', 'edited');
+    await settle(fixture);
+
+    const values = Array.from(
+      (fixture.nativeElement as HTMLElement).querySelectorAll('.p-input'),
+    ).map((el) => (el as HTMLInputElement).value);
+    expect(values).toEqual(['a', 'edited', 'c']);
+    expect(runs['row']).toBe(1);
   });
 
   it('do not make the unbound elements around them re-run', async () => {

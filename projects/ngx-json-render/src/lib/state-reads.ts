@@ -19,8 +19,6 @@ import {
  *
  * - a registered directive, whose `resolve` receives the whole context and may
  *   read any path at all;
- * - a `$bindState` or `$bindItem` prop — the renderer keeps two-way bound
- *   elements resolving on every write, see `JrElement.resolvedElement`;
  * - a `$`-prefixed key it doesn't recognise, which is what an expression added
  *   to core after this was written would look like;
  * - a read of the whole state (`''` or `'/'`), and a condition it can't parse.
@@ -64,8 +62,13 @@ class StateReader {
     if (typeof value['$state'] === 'string') return this.state(value['$state']);
     if (typeof value['$item'] === 'string') return this.item(value['$item']);
     if ('$index' in value && value['$index'] === true) return true;
-    if (typeof value['$bindState'] === 'string') return false;
-    if (typeof value['$bindItem'] === 'string') return false;
+    // A two-way binding reads the path it writes back to.
+    if (typeof value['$bindState'] === 'string') {
+      return this.state(value['$bindState']);
+    }
+    if (typeof value['$bindItem'] === 'string') {
+      return this.boundItem(value['$bindItem']);
+    }
     if ('$cond' in value && '$then' in value && '$else' in value) {
       return (
         this.condition(value['$cond']) &&
@@ -160,6 +163,19 @@ class StateReader {
     if (path === '' || path === '/') return false;
     this.paths.add(path);
     return true;
+  }
+
+  /**
+   * A `$bindItem`, joined the way core joins it — which is not quite how it
+   * joins an `$item` read. Outside a repeat it resolves to nothing.
+   */
+  private boundItem(itemPath: string): boolean {
+    if (this.repeatBasePath === undefined) return true;
+    return this.state(
+      itemPath === ''
+        ? this.repeatBasePath
+        : `${this.repeatBasePath}/${itemPath}`,
+    );
   }
 
   /**

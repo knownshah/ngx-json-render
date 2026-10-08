@@ -9,6 +9,7 @@ import {
   inject,
   input,
   isDevMode,
+  signal,
   untracked,
 } from '@angular/core';
 import type {
@@ -149,6 +150,18 @@ function sameContent(
         (b as Record<string, unknown>)[key],
         seen,
       ),
+  );
+}
+
+/**
+ * Whether a state write at `written` can change the value at `bound`: the
+ * same path, a container above it, or a path inside it.
+ */
+function touches(written: string, bound: string): boolean {
+  return (
+    written === bound ||
+    bound.startsWith(`${written}/`) ||
+    written.startsWith(`${bound}/`)
   );
 }
 
@@ -325,36 +338,52 @@ export class JrElement {
   });
 
   /**
-   * The element with all prop expressions resolved.
-   *
-   * Resolving builds a new props object on every state write, whatever the
-   * write touched. Handing that on as a change would re-run every catalog
-   * template in the tree for one keystroke, so a result that holds the same
-   * values as the last one counts as unchanged and keeps the old object.
-   *
-   * Two-way bound elements are the exception, and keep treating every
-   * resolution as a change. Their component writes the user's input into the
-   * DOM before it reaches state, so the DOM can differ from a prop whose
-   * value never did: typing and a `clearStatePath` in the same turn take
-   * the prop from '' through 'milk' back to '' with nobody reading 'milk'.
-   * The README tells catalog authors to sync such inputs with an effect on
-   * props, and that effect only gets to put the DOM right if it runs.
+   * How many state writes have touched a path this element is two-way bound
+   * to. See {@link resolution} for why those writes count on their own.
    */
-  readonly resolvedElement = computed<UIElement | undefined>(
+  private readonly boundWrites = signal(0);
+
+  /**
+   * The element with all prop expressions resolved, and the bound writes it
+   * was resolved after.
+   *
+   * Resolving builds a new props object every time, so a result that holds
+   * the same values as the last one counts as unchanged and keeps the old
+   * object; otherwise one keystroke would re-run every catalog template that
+   * happened to resolve.
+   *
+   * A write to a path the element is bound to always counts, though. Its
+   * component writes the user's input into the DOM before it reaches state,
+   * so the DOM can differ from a prop whose value never did: typing and a
+   * `clearStatePath` in the same turn take the prop from '' through 'milk'
+   * back to '' with nobody reading 'milk'. The README tells catalog authors
+   * to sync such inputs with an effect on props, and that effect only gets to
+   * put the DOM right if it runs. Writes anywhere else compare by value, like
+   * any element's.
+   */
+  private readonly resolution = computed<{
+    element: UIElement | undefined;
+    boundWrites: number;
+  }>(
     () => {
+      const boundWrites = this.boundWrites();
       const el = this.rawElement();
-      if (!el) return undefined;
+      if (!el) return { element: undefined, boundWrites };
       return {
-        ...el,
-        props: resolveElementProps(el.props ?? {}, this.resolutionCtx()),
+        element: {
+          ...el,
+          props: resolveElementProps(el.props ?? {}, this.resolutionCtx()),
+        },
+        boundWrites,
       };
     },
     {
       equal: (a, b) => {
-        if (a === b) return true;
-        if (!a || !b || untracked(this.bindings)) return false;
-        const { props: aProps, ...aRest } = a;
-        const { props: bProps, ...bRest } = b;
+        if (a.boundWrites !== b.boundWrites) return false;
+        if (a.element === b.element) return true;
+        if (!a.element || !b.element) return false;
+        const { props: aProps, ...aRest } = a.element;
+        const { props: bProps, ...bRest } = b.element;
         // Everything but props is the spec element itself, never state.
         return (
           sameValues(aRest, bRest, true) &&
@@ -362,6 +391,11 @@ export class JrElement {
         );
       },
     },
+  );
+
+  /** The element with all prop expressions resolved. */
+  readonly resolvedElement = computed<UIElement | undefined>(
+    () => this.resolution().element,
   );
 
   /** Two-way binding paths ($bindState / $bindItem) by prop name. */
@@ -493,6 +527,25 @@ export class JrElement {
         });
       });
     }
+
+    // Count the writes that touch a path this element is bound to. Only an
+    // element with bindings listens, and it reads them when a write arrives,
+    // so a binding that moves (a repeat item that shifts) is followed without
+    // subscribing again.
+    effect((onCleanup) => {
+      if (!this.bindings()) return;
+      const unsubscribe = this.state.subscribeChanges((changes) => {
+        const paths = Object.values(untracked(this.bindings) ?? {});
+        if (
+          changes.some((change) =>
+            paths.some((path) => touches(change.path, path)),
+          )
+        ) {
+          this.boundWrites.update((count) => count + 1);
+        }
+      });
+      onCleanup(unsubscribe);
+    });
 
     // Warn (once per type) about unknown component types.
     const warnedTypes = new Set<string>();

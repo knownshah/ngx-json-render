@@ -113,6 +113,21 @@ describe('collectStateReads', () => {
     expect(reads(el)).toEqual(['/count', '/title']);
   });
 
+  it('reads the path a two-way binding writes back to', () => {
+    expect(
+      reads(
+        element({
+          name: { $bindState: '/user/name' },
+          title: { $bindItem: 'title' },
+          whole: { $bindItem: '' },
+        }),
+        '/todos/1',
+      ),
+    ).toEqual(['/todos/1', '/todos/1/title', '/user/name']);
+    // Outside a repeat, $bindItem resolves to undefined and reads nothing.
+    expect(reads(element({ title: { $bindItem: 'title' } }))).toEqual([]);
+  });
+
   it('reads visibility conditions in every shape core evaluates', () => {
     expect(
       reads(
@@ -143,13 +158,15 @@ describe('collectStateReads', () => {
     });
 
     it.each([
-      ['a prop is two-way bound to state', { v: { $bindState: '/user/name' } }],
-      ['a prop is two-way bound to an item', { v: { $bindItem: 'title' } }],
       ['a prop has a $-key it does not know', { v: { $future: '/x' } }],
       ['a prop reads the whole state', { v: { $state: '/' } }],
       [
+        'a prop is two-way bound to the whole state',
+        { v: { $bindState: '/' } },
+      ],
+      [
         'a nested value is not understood',
-        { v: { $cond: true, $then: { $bindState: '/a' }, $else: 1 } },
+        { v: { $cond: true, $then: { $future: '/a' }, $else: 1 } },
       ],
     ])('%s', (_, props) => {
       expect(reads(element(props), '/todos/0')).toBeNull();
@@ -222,6 +239,15 @@ describe('collectStateReads is a superset of what resolution reads', () => {
     [
       'templates outside a repeat',
       element({ t: { $template: '${title}/${count}/${/user/name}' } }),
+    ],
+    [
+      'two-way bindings to state and to an item',
+      element({
+        a: { $bindState: '/user/name' },
+        b: { $bindItem: 'title' },
+        c: { $bindItem: '' },
+      }),
+      '/todos/0',
     ],
     [
       'item reads and index',
