@@ -105,7 +105,7 @@ Prop names are renderer-neutral (`variant`, not `mat-raised-button`), so a spec 
 ### Forms
 
 - **Button** — `label`, `variant` (`text` | `filled` | `elevated` | `outlined` | `tonal`), `color`, `icon`, `disabled`. Emits `press`. Use `filled` for the primary action on a screen and `text` for secondary ones. The action goes in the element's `on.press`, never in props.
-- **IconButton** — `icon`, `label` (the accessible name, required), `color`, `disabled`. Emits `press`.
+- **IconButton** — `icon`, `label` (the accessible name, required; also shown as a tooltip), `color`, `disabled`. Emits `press`.
 - **Input** — `label`, `value`, `placeholder`, `hint`, `type` (`text` | `number` | `email` | `password`), `required`, `disabled`, `validation`. Emits `submit` on Enter. `required` only draws the asterisk; enforcement comes from `validation`.
 - **Textarea** — `label`, `value`, `placeholder`, `rows`, `disabled`, `validation`.
 - **Select** — `label`, `value`, `options: [{ value, label }]`, `disabled`, `validation`.
