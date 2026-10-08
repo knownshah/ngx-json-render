@@ -694,6 +694,10 @@ Some elements keep resolving on every write, because their reads can't be known 
 
 In dev mode each element that skipped a write resolves anyway, against the whole state, and the console warns once if that gives anything other than what it shows. The warning means a `$computed` function reads more than its arguments, or the renderer missed a read, which is a bug worth reporting. The element itself is left as production would leave it. The check calls the element's `$computed` functions again, so in dev mode they still run on every write.
 
+### What a new spec re-renders
+
+A spec element is compared by content, not by identity. A streamed patch shares every element it did not touch, but a spec can also arrive as all-new objects — a whole-spec part, a host that fetches the spec again, `buildSpecFromParts` replaying a message — and then only the elements whose content changed resolve and re-render. The same goes for `spec.state` in uncontrolled mode: only leaves whose content changed are written to the store, so handing over the same spec again keeps what the user has changed since, including edits inside an array.
+
 ### A note on inputs
 
 If a catalog component renders `<input [value]="ctx.props().value">`, remember that one-way bindings do not re-assert the DOM when the bound value returns to its previously applied value while the user typed in between (e.g. `pushState` + `clearStatePath`). Sync imperatively instead — see `InputComponent` in the demo app for the pattern.

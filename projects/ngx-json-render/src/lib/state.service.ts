@@ -16,6 +16,7 @@ import {
 } from '@json-render/core';
 import { escapePointerSegment, flattenToPointers } from './pointer';
 import { JsonRenderRootContext } from './root-context';
+import { sameJson } from './same-json';
 import type { StateChange } from './types';
 
 /**
@@ -99,7 +100,10 @@ export class JsonRenderStateService {
 
     // Uncontrolled mode: when the (resolved) initial state changes — e.g.
     // `spec.state` grows while streaming — diff it against the previous
-    // initial state and apply only the changed leaves to the store.
+    // initial state and apply only the changed leaves to the store. Leaves
+    // compare by content: arrays are leaves, and a spec handed over again as
+    // new objects would otherwise write every array back, over whatever the
+    // user has since changed inside it.
     let prevFlat: Record<string, unknown> = {};
     effect(() => {
       if (this.root.store()) return;
@@ -114,7 +118,7 @@ export class JsonRenderStateService {
       ]);
       const updates: Record<string, unknown> = {};
       for (const key of allKeys) {
-        if (prevFlat[key] !== nextFlat[key]) {
+        if (!sameJson(prevFlat[key], nextFlat[key])) {
           updates[key] = key in nextFlat ? nextFlat[key] : undefined;
         }
       }

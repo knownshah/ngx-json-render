@@ -27,6 +27,7 @@ import {
 import { JsonRenderActionsService, isActionCancelled } from './actions.service';
 import { injectDevtoolsActive } from './devtools';
 import { JsonRenderRootContext } from './root-context';
+import { sameJson } from './same-json';
 import { collectStateReads } from './state-reads';
 import { JsonRenderStateService } from './state.service';
 import {
@@ -209,9 +210,19 @@ export class JrElement {
   private readonly parentPath = inject(RENDER_PATH, { optional: true });
   private readonly devtoolsActive = injectDevtoolsActive();
 
-  /** The raw (unresolved) element from the spec. */
+  /**
+   * The raw (unresolved) element from the spec.
+   *
+   * Compared by content, not identity. A streamed patch shares every element
+   * it did not touch, and the identity check settles those at once; but a
+   * spec can also arrive as all-new objects — a whole-spec part, a host that
+   * fetches it again, `buildSpecFromParts` replaying a message — and then an
+   * element whose content is unchanged would resolve, and every container
+   * with a fresh `children` array re-render, for nothing.
+   */
   readonly rawElement = computed<UIElement | undefined>(
     () => this.root.spec()?.elements?.[this.elementKey()],
+    { equal: (a, b) => sameJson(a, b) },
   );
 
   /**

@@ -310,6 +310,49 @@ describe('what a data change re-renders', () => {
 
     expect(runs).toEqual({ 'static:Account': 1 });
   });
+
+  it('a spec that arrives as new objects with the same content re-runs nothing', async () => {
+    const { fixture } = await setup(SPEC);
+
+    fixture.componentInstance.spec.set(structuredClone(SPEC));
+    await settle(fixture);
+
+    expect(runs).toEqual({});
+  });
+
+  it('a spec that arrives again as new objects keeps edits made inside its state', async () => {
+    const { fixture, state } = await setup(SPEC);
+
+    state.set('/todos/0/title', 'edited');
+    await settle(fixture);
+    fixture.componentInstance.spec.set(structuredClone(SPEC));
+    await settle(fixture);
+
+    expect(texts(fixture, '.p-text')).toEqual(['Profile', 'Ada', 'edited']);
+  });
+
+  it('a spec whose state array changed still writes the new array', async () => {
+    const { fixture } = await setup(SPEC);
+
+    const next = structuredClone(SPEC);
+    next.state = { ...next.state, todos: [{ title: 'one' }, { title: 'two' }] };
+    fixture.componentInstance.spec.set(next);
+    await settle(fixture);
+
+    expect(texts(fixture, '.p-text')).toEqual(['Profile', 'Ada', 'one', 'two']);
+  });
+
+  it('a spec that arrives as new objects re-runs only the element that changed', async () => {
+    const { fixture } = await setup(SPEC);
+
+    const next = structuredClone(SPEC);
+    next.elements['static']!.props = { content: 'Account' };
+    fixture.componentInstance.spec.set(next);
+    await settle(fixture);
+
+    expect(texts(fixture, '.p-text')).toEqual(['Account', 'Ada', 'one']);
+    expect(runs).toEqual({ 'static:Account': 1 });
+  });
 });
 
 describe('two-way bound elements', () => {
@@ -457,6 +500,20 @@ describe('what a data change resolves', () => {
       'one',
       'one for Grace',
     ]);
+  });
+
+  it('a spec that arrives as new objects resolves only the element that changed', async () => {
+    const { fixture } = await setup(RESOLVE_SPEC);
+
+    fixture.componentInstance.spec.set(structuredClone(RESOLVE_SPEC));
+    await settle(fixture);
+    expect(calls).toEqual({});
+
+    const next = structuredClone(RESOLVE_SPEC);
+    next.elements['email']!.props = { content: tag('contact') };
+    fixture.componentInstance.spec.set(next);
+    await settle(fixture);
+    expect(calls).toEqual({ contact: 1 });
   });
 
   it('a write to a path nobody reads resolves nothing', async () => {
