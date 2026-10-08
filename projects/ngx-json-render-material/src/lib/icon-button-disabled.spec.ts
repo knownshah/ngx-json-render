@@ -1,4 +1,8 @@
-import { Component, provideZonelessChangeDetection, signal } from '@angular/core';
+import {
+  Component,
+  provideZonelessChangeDetection,
+  signal,
+} from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { MatTooltip } from '@angular/material/tooltip';
 import { By } from '@angular/platform-browser';
@@ -60,8 +64,10 @@ describe('disabled Material IconButton', () => {
 
     button.click();
     await fixture.whenStable();
-    expect(fixture.componentInstance.changes.flat()).not.toEqual(
-      expect.arrayContaining([expect.objectContaining({ path: '/pressed', value: true })]),
-    );
+    expect(
+      fixture.componentInstance.changes
+        .flat()
+        .some((change) => change.path === '/pressed' && change.value === true),
+    ).toBe(false);
   });
 });
